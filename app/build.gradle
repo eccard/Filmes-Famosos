@@ -10,7 +10,18 @@ android {
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
+
     buildTypes {
+
+        def STRING = "String"
+        def THEMOVIEDB_API_KEY = "THEMOVIEDB_API_KEY"
+
+        def CONFIG = { k -> "\"${System.getProperty(k)}\"" }
+
+        debug{
+            buildConfigField STRING, THEMOVIEDB_API_KEY, CONFIG(THEMOVIEDB_API_KEY)
+        }
+
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'

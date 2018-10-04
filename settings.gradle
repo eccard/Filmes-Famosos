@@ -1,1 +1,30 @@
 include ':app'
+loadLocalProperties()
+
+def loadLocalProperties() {
+
+    def localProperties = new File(rootDir, "local.properties")
+    if (!localProperties.exists()) {
+        throw new GradleException("local.properties is missing!")
+    }
+
+    Properties properties = new Properties()
+    localProperties.withInputStream { instr ->
+        properties.load(instr)
+    }
+
+    def map = [
+            'THEMOVIEDB_API_KEY'  : 'THEMOVIEDB_API_KEY not configured. Add THEMOVIEDB_API_KEY to local.properties. For example, set THEMOVIEDB_API_KEY=ABCDEF, where ABCDEF is the KEY of API '
+    ]
+
+    String var
+    for (e in map) {
+        var = properties.get(e.key)
+        if (var == null) {
+            throw new GradleException(e.key + " not configured. Add " + e.key + " to local.properties. " + e.value)
+        } else {
+            System.setProperty(e.key, var)
+        }
+    }
+
+}
