@@ -37,4 +37,7 @@ project.ext {
     butterKnifeVersion = '8.8.1'
     retrofitLibVersion = '2.4.0'
     picassoLibVersion = '2.71828'
+    rx2FastAndroidNetworking = '1.0.2'
+    rxjava2Version = '2.0.6'
+    rxandroidVersion = '2.0.1'
 }

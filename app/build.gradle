@@ -13,16 +13,22 @@ android {
 
     buildTypes {
 
-        def STRING = "String"
+        def TYPE_STRING = "String"
         def THEMOVIEDB_API_KEY = "THEMOVIEDB_API_KEY"
+        def VAR_NAME_BASE_URL = "BASE_URL"
+
+        def BASE_URL = "https://api.themoviedb.org/3"
 
         def CONFIG = { k -> "\"${System.getProperty(k)}\"" }
 
         debug{
-            buildConfigField STRING, THEMOVIEDB_API_KEY, CONFIG(THEMOVIEDB_API_KEY)
+            buildConfigField TYPE_STRING, VAR_NAME_BASE_URL, "\"" + BASE_URL + "\""
+            buildConfigField TYPE_STRING, THEMOVIEDB_API_KEY, CONFIG(THEMOVIEDB_API_KEY)
         }
 
         release {
+            buildConfigField TYPE_STRING, VAR_NAME_BASE_URL, "\"" + BASE_URL + "\""
+            buildConfigField TYPE_STRING, THEMOVIEDB_API_KEY, CONFIG(THEMOVIEDB_API_KEY)
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
@@ -32,9 +38,17 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "com.android.support:appcompat-v7:$compatLibVersion"
+    implementation "com.android.support:recyclerview-v7:$compatLibVersion"
     implementation "com.android.support.constraint:constraint-layout:$constraintLayoutVersion"
     implementation "com.squareup.picasso:picasso:$picassoLibVersion"
     implementation "com.squareup.retrofit2:retrofit:$retrofitLibVersion"
     implementation "com.jakewharton:butterknife:$butterKnifeVersion"
     annotationProcessor "com.jakewharton:butterknife-compiler:$butterKnifeVersion"
+
+    // network
+    implementation "com.amitshekhar.android:rx2-android-networking:$rx2FastAndroidNetworking"
+
+    // reactive
+    implementation "io.reactivex.rxjava2:rxjava:$rxjava2Version"
+    implementation "io.reactivex.rxjava2:rxandroid:$rxandroidVersion"
 }
