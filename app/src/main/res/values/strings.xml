@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">Filmes Famosos</string>
     <string name="refresh">Refresh</string>
+    <string name="movie_item_poster">Movie poster</string>
 </resources>
