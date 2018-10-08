@@ -80,8 +80,41 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if ( item.getItemId() == R.id.action_refresh){
-            getData();
+        if ( item.getItemId() == R.id.action_order_by){
+
+            AlertDialog.Builder builderSingle = new AlertDialog.Builder(MainActivity.this);
+            builderSingle.setTitle(getString(R.string.select_order));
+
+
+            ArrayAdapter<CharSequence> arrayAdapter = ArrayAdapter.createFromResource
+                    (MainActivity.this,
+                            R.array.order_array,
+                            android.R.layout.simple_list_item_1);
+
+            builderSingle.setNegativeButton(android.R.string.cancel, new DialogInterface
+                    .OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+
+            builderSingle.setAdapter(arrayAdapter, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    AppApiHelper.MovieOrderType movieOrderType;
+                    if ( which == 0 ){
+                        movieOrderType = AppApiHelper.MovieOrderType.POPULAR;
+                    }else {
+                        movieOrderType = AppApiHelper.MovieOrderType.TOP_RATED;
+
+                    }
+                    getData(movieOrderType);
+
+                }
+            });
+            builderSingle.show();
+
             return true;
         }else {
             return super.onOptionsItemSelected(item);
