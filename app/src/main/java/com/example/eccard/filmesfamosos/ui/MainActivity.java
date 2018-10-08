@@ -1,5 +1,7 @@
 package com.example.eccard.filmesfamosos.ui;
 
+import android.content.DialogInterface;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -8,6 +10,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -22,10 +25,13 @@ import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
+import static android.content.res.Configuration.ORIENTATION_LANDSCAPE;
+
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = MainActivity.class.getSimpleName();
-    private static final int GRID_COLLUMS = 2;
+    private static final int GRID_COLLUMS_PORTRAIT = 2;
+    private static final int GRID_COLLUMS_LANDSCAPE = 3;
 
     @BindView(R.id.rv_movies)
     RecyclerView mRecycleView;
@@ -48,11 +54,18 @@ public class MainActivity extends AppCompatActivity {
 
         setUpViews();
 
-        getData();
+        getData(AppApiHelper.MovieOrderType.POPULAR);
     }
 
     private void setUpViews() {
-        RecyclerView.LayoutManager layoutManager = new GridLayoutManager(this, GRID_COLLUMS);
+
+        RecyclerView.LayoutManager layoutManager;
+
+        if(getResources().getConfiguration().orientation == ORIENTATION_LANDSCAPE) {
+            layoutManager = new GridLayoutManager(this, GRID_COLLUMS_LANDSCAPE);
+        } else {
+            layoutManager = new GridLayoutManager(this, GRID_COLLUMS_PORTRAIT);
+        }
 
         mRecycleView.setLayoutManager(layoutManager);
         mRecycleView.setHasFixedSize(true);
@@ -80,22 +93,56 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if ( item.getItemId() == R.id.action_refresh){
-            getData();
+        if ( item.getItemId() == R.id.action_order_by){
+
+            AlertDialog.Builder builderSingle = new AlertDialog.Builder(MainActivity.this);
+            builderSingle.setTitle(getString(R.string.select_order));
+
+
+            ArrayAdapter<CharSequence> arrayAdapter = ArrayAdapter.createFromResource
+                    (MainActivity.this,
+                            R.array.order_array,
+                            android.R.layout.simple_list_item_1);
+
+            builderSingle.setNegativeButton(android.R.string.cancel, new DialogInterface
+                    .OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+
+            builderSingle.setAdapter(arrayAdapter, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    AppApiHelper.MovieOrderType movieOrderType;
+                    if ( which == 0 ){
+                        movieOrderType = AppApiHelper.MovieOrderType.POPULAR;
+                    }else {
+                        movieOrderType = AppApiHelper.MovieOrderType.TOP_RATED;
+
+                    }
+                    getData(movieOrderType);
+
+                }
+            });
+            builderSingle.show();
+
             return true;
         }else {
             return super.onOptionsItemSelected(item);
         }
     }
 
-    void getData(){
+    void getData(AppApiHelper.MovieOrderType movieOrderType){
 
+        // TODO get next pages
         if (compositeDisposable == null){
             compositeDisposable = new CompositeDisposable();
         }
 
         compositeDisposable.add(AppApiHelper.getInstance()
-                .doGetPopularMoviesApiCall()
+                .doGetMoviesApiCall(movieOrderType)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Consumer<MovieResponse>() {
@@ -110,8 +157,8 @@ public class MainActivity extends AppCompatActivity {
                         new Consumer<Throwable>() {
                             @Override
                             public void accept(Throwable throwable) throws Exception {
-                                   Log.e(TAG,throwable.toString());
-				   showLoadingError();
+                                Log.e(TAG,throwable.toString());
+                                showLoadingError();
                             }
                         }
                 )

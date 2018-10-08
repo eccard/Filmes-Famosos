@@ -16,6 +16,10 @@ public class AppApiHelper implements ApiHelper{
 
     private static AppApiHelper instance;
 
+    public enum MovieOrderType {
+        POPULAR,
+        TOP_RATED
+    }
 
     private AppApiHelper(){}
 
@@ -44,8 +48,13 @@ public class AppApiHelper implements ApiHelper{
     }
 
     @Override
-    public Single<MovieResponse> doGetPopularMoviesApiCall() {
-        String url = ApiEndPoint.ENDPOINT_POPULAR_MOVIES;
+    public Single<MovieResponse> doGetMoviesApiCall(MovieOrderType movieOrderType) {
+        String url;
+        if (movieOrderType == MovieOrderType.POPULAR ){
+            url = ApiEndPoint.ENDPOINT_POPULAR_MOVIES;
+        }else {
+            url = ApiEndPoint.ENDPOINT_TOP_RATED_MOVIES;
+        }
         return Rx2AndroidNetworking.post(url)
                 .addQueryParameter(Constants.API_KEY,BuildConfig.THEMOVIEDB_API_KEY)
                 .build()

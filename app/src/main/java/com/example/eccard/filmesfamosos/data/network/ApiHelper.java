@@ -10,6 +10,6 @@ public interface ApiHelper {
 
     URL generatePosterPath(String imagePath);
 
-    Single<MovieResponse> doGetPopularMoviesApiCall();
+    Single<MovieResponse> doGetMoviesApiCall(AppApiHelper.MovieOrderType movieOrderType);
 
 }
