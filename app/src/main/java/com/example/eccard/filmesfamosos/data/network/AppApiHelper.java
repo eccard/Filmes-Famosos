@@ -1,11 +1,16 @@
 package com.example.eccard.filmesfamosos.data.network;
 
+import android.net.Uri;
+
 import io.reactivex.Single;
 
 import com.example.eccard.filmesfamosos.BuildConfig;
 import com.example.eccard.filmesfamosos.data.network.model.MovieResponse;
 import com.example.eccard.filmesfamosos.utils.Constants;
 import com.rx2androidnetworking.Rx2AndroidNetworking;
+
+import java.net.MalformedURLException;
+import java.net.URL;
 
 public class AppApiHelper implements ApiHelper{
 
@@ -21,6 +26,21 @@ public class AppApiHelper implements ApiHelper{
         }
 
         return instance;
+    }
+
+    @Override
+    public URL generatePosterPath(String imagePath){
+        Uri uri = Uri.parse(ApiEndPoint.ENDPOINT_MOVIES_POSTER_BASE_URL +imagePath );
+
+        URL url = null;
+
+        try {
+            url = new URL(uri.toString());
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+
+        return url;
     }
 
     @Override
