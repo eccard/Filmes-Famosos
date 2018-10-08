@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Filmes Famosos</string>
+    <string name="app_name">Popular Movies</string>
     <string name="order_by">Order By</string>
     <string name="movie_item_poster">Movie poster</string>
 </resources>
