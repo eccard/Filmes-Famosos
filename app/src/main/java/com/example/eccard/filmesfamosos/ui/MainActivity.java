@@ -1,6 +1,7 @@
 package com.example.eccard.filmesfamosos.ui;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -17,6 +18,8 @@ import android.widget.TextView;
 import com.example.eccard.filmesfamosos.R;
 import com.example.eccard.filmesfamosos.data.network.AppApiHelper;
 import com.example.eccard.filmesfamosos.data.network.model.MovieResponse;
+import com.example.eccard.filmesfamosos.data.network.model.MovieResult;
+import com.example.eccard.filmesfamosos.ui.moviedetail.MovieDetailActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -27,7 +30,7 @@ import io.reactivex.schedulers.Schedulers;
 
 import static android.content.res.Configuration.ORIENTATION_LANDSCAPE;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements MoviesAdapter.OnMovieClickListener{
 
     private static final String TAG = MainActivity.class.getSimpleName();
     private static final int GRID_COLLUMS_PORTRAIT = 2;
@@ -70,6 +73,7 @@ public class MainActivity extends AppCompatActivity {
         mRecycleView.setLayoutManager(layoutManager);
         mRecycleView.setHasFixedSize(true);
         moviesAdapter = new MoviesAdapter();
+        moviesAdapter.setOnMovieClickListener(this);
         mRecycleView.setAdapter(moviesAdapter);
     }
 
@@ -165,4 +169,11 @@ public class MainActivity extends AppCompatActivity {
         );
     }
 
+    @Override
+    public void onMovieItemClick(MovieResult movie) {
+        Intent intent = MovieDetailActivity.newIntent(MainActivity.this);
+        intent.putExtra(MovieResult.class.getSimpleName(),movie);
+
+        startActivity(intent);
+    }
 }
