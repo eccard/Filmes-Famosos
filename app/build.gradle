@@ -21,7 +21,7 @@ android {
 
         def CONFIG = { k -> "\"${System.getProperty(k)}\"" }
 
-        debug{
+        debug {
             buildConfigField TYPE_STRING, VAR_NAME_BASE_URL, "\"" + BASE_URL + "\""
             buildConfigField TYPE_STRING, THEMOVIEDB_API_KEY, CONFIG(THEMOVIEDB_API_KEY)
         }
@@ -43,6 +43,7 @@ dependencies {
     implementation "com.squareup.picasso:picasso:$picassoLibVersion"
     implementation "com.squareup.retrofit2:retrofit:$retrofitLibVersion"
     implementation "com.jakewharton:butterknife:$butterKnifeVersion"
+    implementation 'com.android.support.constraint:constraint-layout:1.1.3'
     annotationProcessor "com.jakewharton:butterknife-compiler:$butterKnifeVersion"
 
     // network
