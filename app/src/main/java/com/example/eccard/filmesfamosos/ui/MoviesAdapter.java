@@ -23,6 +23,16 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.ItemViewHo
         this.movieResults = movieResults;
     }
 
+    public interface OnMovieClickListener{
+        void onMovieItemClick(MovieResult movie);
+    }
+
+    private OnMovieClickListener onMovieClickListener;
+
+    public void setOnMovieClickListener(OnMovieClickListener onMovieClickListener) {
+        this.onMovieClickListener = onMovieClickListener;
+    }
+
     @NonNull
     @Override
     public ItemViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
@@ -54,19 +64,25 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.ItemViewHo
         return size;
     }
 
-    public class ItemViewHolder extends RecyclerView.ViewHolder{
+    public class ItemViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
         private final ImageView imgMovie;
 
         public ItemViewHolder(@NonNull View itemView) {
             super(itemView);
             imgMovie = itemView.findViewById(R.id.img_movie_item);
+            itemView.setOnClickListener(this);
         }
 
         private void bind(String url){
             URL posterUrl = AppApiHelper.getInstance().generatePosterPath(url);
 
             Picasso.get().load(posterUrl.toString()).into(imgMovie);
+        }
+
+        @Override
+        public void onClick(View v) {
+            onMovieClickListener.onMovieItemClick(movieResults.get(getAdapterPosition()));
         }
     }
 }
