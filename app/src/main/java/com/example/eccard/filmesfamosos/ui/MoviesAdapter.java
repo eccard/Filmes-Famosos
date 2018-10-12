@@ -74,8 +74,8 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.ItemViewHo
             itemView.setOnClickListener(this);
         }
 
-        private void bind(String url){
-            URL posterUrl = AppApiHelper.getInstance().generatePosterPath(url);
+        private void bind(String posterPath){
+            URL posterUrl = AppApiHelper.getInstance().generatePosterPath(posterPath);
 
             Picasso.get().load(posterUrl.toString()).into(imgMovie);
         }
