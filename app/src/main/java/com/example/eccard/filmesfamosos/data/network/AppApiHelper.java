@@ -48,7 +48,7 @@ public class AppApiHelper implements ApiHelper{
     }
 
     @Override
-    public Single<MovieResponse> doGetMoviesApiCall(MovieOrderType movieOrderType) {
+    public Single<MovieResponse> doGetMoviesApiCall(MovieOrderType movieOrderType, int page) {
         String url;
         if (movieOrderType == MovieOrderType.POPULAR ){
             url = ApiEndPoint.ENDPOINT_POPULAR_MOVIES;
@@ -57,6 +57,7 @@ public class AppApiHelper implements ApiHelper{
         }
         return Rx2AndroidNetworking.post(url)
                 .addQueryParameter(Constants.API_KEY,BuildConfig.THEMOVIEDB_API_KEY)
+                .addQueryParameter(Constants.PAGE,String.valueOf(page))
                 .build()
                 .getObjectSingle(MovieResponse.class);
     }
