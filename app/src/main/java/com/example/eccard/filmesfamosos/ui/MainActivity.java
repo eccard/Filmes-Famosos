@@ -20,6 +20,7 @@ import com.example.eccard.filmesfamosos.data.network.AppApiHelper;
 import com.example.eccard.filmesfamosos.data.network.model.MovieResponse;
 import com.example.eccard.filmesfamosos.data.network.model.MovieResult;
 import com.example.eccard.filmesfamosos.ui.moviedetail.MovieDetailActivity;
+import com.example.eccard.filmesfamosos.utils.EndlessRecyclerViewScrollListener;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -47,6 +48,8 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.OnM
 
     private CompositeDisposable compositeDisposable;
     private MoviesAdapter moviesAdapter;
+    private EndlessRecyclerViewScrollListener scrollListener;
+    private AppApiHelper.MovieOrderType mCurrentMovieOrderType = AppApiHelper.MovieOrderType.POPULAR;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,12 +60,13 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.OnM
 
         setUpViews();
 
-        getData(AppApiHelper.MovieOrderType.POPULAR);
+        getData(EndlessRecyclerViewScrollListener.STARTING_PAGE_INDEX);
     }
 
+    // todo check internet conection
     private void setUpViews() {
 
-        RecyclerView.LayoutManager layoutManager;
+        GridLayoutManager layoutManager;
 
         if(getResources().getConfiguration().orientation == ORIENTATION_LANDSCAPE) {
             layoutManager = new GridLayoutManager(this, GRID_COLLUMS_LANDSCAPE);
@@ -75,6 +79,16 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.OnM
         moviesAdapter = new MoviesAdapter();
         moviesAdapter.setOnMovieClickListener(this);
         mRecycleView.setAdapter(moviesAdapter);
+
+        scrollListener = new EndlessRecyclerViewScrollListener(layoutManager) {
+            @Override
+            public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
+
+                getData(page);
+            }
+        };
+
+        mRecycleView.addOnScrollListener(scrollListener);
     }
 
     private void showMovies(){
@@ -119,14 +133,36 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.OnM
             builderSingle.setAdapter(arrayAdapter, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    AppApiHelper.MovieOrderType movieOrderType;
+
+                    AppApiHelper.MovieOrderType newOrderType;
                     if ( which == 0 ){
-                        movieOrderType = AppApiHelper.MovieOrderType.POPULAR;
+                        newOrderType = AppApiHelper.MovieOrderType.POPULAR;
                     }else {
-                        movieOrderType = AppApiHelper.MovieOrderType.TOP_RATED;
+                        newOrderType = AppApiHelper.MovieOrderType.TOP_RATED;
 
                     }
-                    getData(movieOrderType);
+
+                    if (mCurrentMovieOrderType == newOrderType){
+
+                        mRecycleView.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                mRecycleView.smoothScrollToPosition(0);
+                            }
+                        });
+
+                    }else {
+
+                        mCurrentMovieOrderType = newOrderType;
+
+                        moviesAdapter.resetMoviewResults();
+                        moviesAdapter.notifyDataSetChanged();
+                        scrollListener.resetState();
+
+                        getData(EndlessRecyclerViewScrollListener.STARTING_PAGE_INDEX);
+
+                    }
+
 
                 }
             });
@@ -138,7 +174,7 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.OnM
         }
     }
 
-    void getData(AppApiHelper.MovieOrderType movieOrderType){
+    void getData(int pageIndex){
 
         // TODO get next pages
         if (compositeDisposable == null){
@@ -146,7 +182,7 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.OnM
         }
 
         compositeDisposable.add(AppApiHelper.getInstance()
-                .doGetMoviesApiCall(movieOrderType)
+                .doGetMoviesApiCall(mCurrentMovieOrderType,pageIndex)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Consumer<MovieResponse>() {
@@ -154,7 +190,8 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.OnM
                                public void accept(MovieResponse movieResponse) throws Exception {
                                    Log.d(TAG,movieResponse.toString());
                                    showMovies();
-                                   moviesAdapter.setMovieResults(movieResponse.getMovieResults());
+
+                                   moviesAdapter.appendMovieResults(movieResponse.getMovieResults());
                                    moviesAdapter.notifyDataSetChanged();
                                }
                            },
