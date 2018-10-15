@@ -133,14 +133,36 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.OnM
             builderSingle.setAdapter(arrayAdapter, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    AppApiHelper.MovieOrderType movieOrderType;
+
+                    AppApiHelper.MovieOrderType newOrderType;
                     if ( which == 0 ){
-                        movieOrderType = AppApiHelper.MovieOrderType.POPULAR;
+                        newOrderType = AppApiHelper.MovieOrderType.POPULAR;
                     }else {
-                        movieOrderType = AppApiHelper.MovieOrderType.TOP_RATED;
+                        newOrderType = AppApiHelper.MovieOrderType.TOP_RATED;
 
                     }
-                    getData(movieOrderType);
+
+                    if (mCurrentMovieOrderType == newOrderType){
+
+                        mRecycleView.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                mRecycleView.smoothScrollToPosition(0);
+                            }
+                        });
+
+                    }else {
+
+                        mCurrentMovieOrderType = newOrderType;
+
+                        moviesAdapter.resetMoviewResults();
+                        moviesAdapter.notifyDataSetChanged();
+                        scrollListener.resetState();
+
+                        getData(EndlessRecyclerViewScrollListener.STARTING_PAGE_INDEX);
+
+                    }
+
 
                 }
             });
