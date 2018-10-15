@@ -4,7 +4,11 @@
     <dimen name="pb_height">42dp</dimen>
     <dimen name="img_view_recycler_view_holder_width">185dp</dimen>
     <dimen name="img_view_recycler_view_holder_height">275dp</dimen>
-    <dimen name="img_view_movie_detail_width">100dp</dimen>
-    <dimen name="img_view_movie_detail_heiht">140dp</dimen>
+
+    <dimen name="img_view_movie_detail_width">185dp</dimen>
+    <dimen name="img_view_movie_detail_height">275dp</dimen>
+
+    <dimen name="img_view_movie_detail_land_width">204dp</dimen>
+    <dimen name="img_view_movie_detail_land_height">303dp</dimen>
 
 </resources>

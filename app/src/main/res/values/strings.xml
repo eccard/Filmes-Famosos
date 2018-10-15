@@ -6,6 +6,7 @@
     <string name="rate">Rate :</string>
     <string name="overview">Overview</string>
     <string name="lauch_date">Launch date :</string>
+    <string name="title">Title :</string>
 
     <string-array name="order_array">
         <item name="most_popular">Most popular</item>
