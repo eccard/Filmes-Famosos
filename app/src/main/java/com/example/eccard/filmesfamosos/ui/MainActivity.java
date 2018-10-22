@@ -2,12 +2,12 @@ package com.example.eccard.filmesfamosos.ui;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,25 +17,21 @@ import android.widget.TextView;
 
 import com.example.eccard.filmesfamosos.R;
 import com.example.eccard.filmesfamosos.data.network.AppApiHelper;
-import com.example.eccard.filmesfamosos.data.network.model.MovieResponse;
 import com.example.eccard.filmesfamosos.data.network.model.MovieResult;
 import com.example.eccard.filmesfamosos.ui.moviedetail.MovieDetailActivity;
 import com.example.eccard.filmesfamosos.utils.EndlessRecyclerViewScrollListener;
 
+import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.functions.Consumer;
-import io.reactivex.schedulers.Schedulers;
 
 import static android.content.res.Configuration.ORIENTATION_LANDSCAPE;
 
-public class MainActivity extends AppCompatActivity implements MoviesAdapter.OnMovieClickListener{
+public class MainActivity extends AppCompatActivity implements MoviesAdapter.OnMovieClickListener, GetMoviesFragment.GetMoviesCallbacks {
 
-    private static final String TAG = MainActivity.class.getSimpleName();
-    private static final int GRID_COLLUMNS_PORTRAIT = 2;
-    private static final int GRID_COLLUMNS_LANDSCAPE = 3;
+    private static final int GRID_COLUMNS_PORTRAIT = 2;
+    private static final int GRID_COLUMNS_LANDSCAPE = 3;
 
     @SuppressWarnings("WeakerAccess")
     @BindView(R.id.rv_movies)
@@ -49,21 +45,39 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.OnM
     @BindView(R.id.tv_generic_error)
     TextView mTvGenericError;
 
-    private CompositeDisposable compositeDisposable;
+
     private MoviesAdapter moviesAdapter;
     private EndlessRecyclerViewScrollListener scrollListener;
     private AppApiHelper.MovieOrderType mCurrentMovieOrderType = AppApiHelper.MovieOrderType.POPULAR;
+
+    private GetMoviesFragment mGetMoviewFrg;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
         ButterKnife.bind(this);
 
         setUpViews();
 
-        getData(EndlessRecyclerViewScrollListener.STARTING_PAGE_INDEX);
+
+        FragmentManager fm = getSupportFragmentManager();
+        mGetMoviewFrg = (GetMoviesFragment) fm.findFragmentByTag(GetMoviesFragment.TAG);
+
+        if ( mGetMoviewFrg == null){
+            mGetMoviewFrg = new GetMoviesFragment();
+            fm.beginTransaction().add(mGetMoviewFrg, GetMoviesFragment.TAG).commit();
+
+            getMoviePage(EndlessRecyclerViewScrollListener.STARTING_PAGE_INDEX);
+        } else {
+            onMoviesResult(mGetMoviewFrg.getRetainMovies());
+        }
+    }
+
+    private void getMoviePage(int startingPageIndex) {
+        mGetMoviewFrg.getData(startingPageIndex, mCurrentMovieOrderType);
     }
 
     // todo check internet conection
@@ -72,9 +86,9 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.OnM
         GridLayoutManager layoutManager;
 
         if(getResources().getConfiguration().orientation == ORIENTATION_LANDSCAPE) {
-            layoutManager = new GridLayoutManager(this, GRID_COLLUMNS_LANDSCAPE);
+            layoutManager = new GridLayoutManager(this, GRID_COLUMNS_LANDSCAPE);
         } else {
-            layoutManager = new GridLayoutManager(this, GRID_COLLUMNS_PORTRAIT);
+            layoutManager = new GridLayoutManager(this, GRID_COLUMNS_PORTRAIT);
         }
 
         mRecycleView.setLayoutManager(layoutManager);
@@ -86,8 +100,7 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.OnM
         scrollListener = new EndlessRecyclerViewScrollListener(layoutManager) {
             @Override
             public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
-
-                getData(page);
+                getMoviePage(page);
             }
         };
 
@@ -162,7 +175,7 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.OnM
                         moviesAdapter.notifyDataSetChanged();
                         scrollListener.resetState();
 
-                        getData(EndlessRecyclerViewScrollListener.STARTING_PAGE_INDEX);
+                        getMoviePage(EndlessRecyclerViewScrollListener.STARTING_PAGE_INDEX);
 
                     }
 
@@ -177,37 +190,7 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.OnM
         }
     }
 
-    private void getData(int pageIndex){
 
-        // TODO get next pages
-        if (compositeDisposable == null){
-            compositeDisposable = new CompositeDisposable();
-        }
-
-        compositeDisposable.add(AppApiHelper.getInstance()
-                .doGetMoviesApiCall(mCurrentMovieOrderType,pageIndex)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<MovieResponse>() {
-                               @Override
-                               public void accept(MovieResponse movieResponse) throws Exception {
-                                   Log.d(TAG,movieResponse.toString());
-                                   showMovies();
-
-                                   moviesAdapter.appendMovieResults(movieResponse.getMovieResults());
-                                   moviesAdapter.notifyDataSetChanged();
-                               }
-                           },
-                        new Consumer<Throwable>() {
-                            @Override
-                            public void accept(Throwable throwable) throws Exception {
-                                Log.e(TAG,throwable.toString());
-                                showLoadingError();
-                            }
-                        }
-                )
-        );
-    }
 
     @Override
     public void onMovieItemClick(MovieResult movie) {
@@ -215,5 +198,18 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.OnM
         intent.putExtra(MovieResult.class.getSimpleName(),movie);
 
         startActivity(intent);
+    }
+
+    @Override
+    public void onMovieError(Throwable throwable) {
+        showLoadingError();
+    }
+
+    @Override
+    public void onMoviesResult(List<MovieResult> movies) {
+        showMovies();
+        moviesAdapter.appendMovieResults(movies);
+        moviesAdapter.notifyDataSetChanged();
+
     }
 }
