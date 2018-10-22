@@ -12,7 +12,8 @@
         android:layout_width="@dimen/img_view_movie_detail_width"
         android:layout_height="@dimen/img_view_movie_detail_height"
         android:layout_gravity="center_horizontal"
-        tools:src="@mipmap/ic_launcher" />
+        tools:src="@mipmap/ic_launcher"
+        android:contentDescription="@string/detail_movie_poster_image"/>
 
     <include layout="@layout/activivty_movie_details_cardview"/>
 

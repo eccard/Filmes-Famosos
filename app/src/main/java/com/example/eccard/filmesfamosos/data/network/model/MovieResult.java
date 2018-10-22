@@ -210,7 +210,7 @@ public class MovieResult implements Parcelable {
         this.posterPath = in.readString();
         this.originalLanguage = in.readString();
         this.originalTitle = in.readString();
-        this.genreIds = new ArrayList<Integer>();
+        this.genreIds = new ArrayList<>();
         in.readList(this.genreIds, Integer.class.getClassLoader());
         this.adult = (Boolean) in.readValue(Boolean.class.getClassLoader());
         this.overview = in.readString();
