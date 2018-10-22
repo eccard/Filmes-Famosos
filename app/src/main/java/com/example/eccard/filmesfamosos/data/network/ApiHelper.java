@@ -6,7 +6,7 @@ import java.net.URL;
 
 import io.reactivex.Single;
 
-public interface ApiHelper {
+interface ApiHelper {
 
     URL generatePosterPath(String imagePath);
 

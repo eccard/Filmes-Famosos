@@ -17,7 +17,7 @@ import java.util.List;
 
 public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.ItemViewHolder>{
 
-    List<MovieResult> movieResults;
+    private List<MovieResult> movieResults;
 
     public void appendMovieResults(List<MovieResult> movieResults) {
         if ( this.movieResults == null){
@@ -27,7 +27,7 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.ItemViewHo
         }
     }
 
-    public void resetMoviewResults(){
+    public void resetMovieResults(){
         this.movieResults = null;
     }
 
@@ -76,7 +76,7 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.ItemViewHo
 
         private final ImageView imgMovie;
 
-        public ItemViewHolder(@NonNull View itemView) {
+        ItemViewHolder(@NonNull View itemView) {
             super(itemView);
             imgMovie = itemView.findViewById(R.id.img_movie_item);
             itemView.setOnClickListener(this);

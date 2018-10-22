@@ -34,15 +34,18 @@ import static android.content.res.Configuration.ORIENTATION_LANDSCAPE;
 public class MainActivity extends AppCompatActivity implements MoviesAdapter.OnMovieClickListener{
 
     private static final String TAG = MainActivity.class.getSimpleName();
-    private static final int GRID_COLLUMS_PORTRAIT = 2;
-    private static final int GRID_COLLUMS_LANDSCAPE = 3;
+    private static final int GRID_COLLUMNS_PORTRAIT = 2;
+    private static final int GRID_COLLUMNS_LANDSCAPE = 3;
 
+    @SuppressWarnings("WeakerAccess")
     @BindView(R.id.rv_movies)
     RecyclerView mRecycleView;
 
+    @SuppressWarnings("WeakerAccess")
     @BindView(R.id.pb_main)
     ProgressBar mPB;
 
+    @SuppressWarnings("WeakerAccess")
     @BindView(R.id.tv_generic_error)
     TextView mTvGenericError;
 
@@ -69,9 +72,9 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.OnM
         GridLayoutManager layoutManager;
 
         if(getResources().getConfiguration().orientation == ORIENTATION_LANDSCAPE) {
-            layoutManager = new GridLayoutManager(this, GRID_COLLUMS_LANDSCAPE);
+            layoutManager = new GridLayoutManager(this, GRID_COLLUMNS_LANDSCAPE);
         } else {
-            layoutManager = new GridLayoutManager(this, GRID_COLLUMS_PORTRAIT);
+            layoutManager = new GridLayoutManager(this, GRID_COLLUMNS_PORTRAIT);
         }
 
         mRecycleView.setLayoutManager(layoutManager);
@@ -155,7 +158,7 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.OnM
 
                         mCurrentMovieOrderType = newOrderType;
 
-                        moviesAdapter.resetMoviewResults();
+                        moviesAdapter.resetMovieResults();
                         moviesAdapter.notifyDataSetChanged();
                         scrollListener.resetState();
 
@@ -174,7 +177,7 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.OnM
         }
     }
 
-    void getData(int pageIndex){
+    private void getData(int pageIndex){
 
         // TODO get next pages
         if (compositeDisposable == null){

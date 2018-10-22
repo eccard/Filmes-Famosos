@@ -13,7 +13,8 @@
         android:id="@+id/img_view_detail_activity"
         android:layout_width="@dimen/img_view_movie_detail_land_width"
         android:layout_height="@dimen/img_view_movie_detail_land_height"
-        tools:src="@mipmap/ic_launcher"/>
+        tools:src="@mipmap/ic_launcher"
+        android:contentDescription="@string/detail_movie_poster_image"/>
 
 
     <include layout="@layout/activivty_movie_details_cardview"/>
