@@ -77,6 +77,7 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.OnM
     }
 
     private void getMoviePage(int startingPageIndex) {
+        showLoading();
         mGetMoviewFrg.getData(startingPageIndex, mCurrentMovieOrderType);
     }
 
@@ -110,6 +111,12 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.OnM
     private void showMovies(){
         mRecycleView.setVisibility(View.VISIBLE);
         mPB.setVisibility(View.INVISIBLE);
+        mTvGenericError.setVisibility(View.INVISIBLE);
+    }
+
+    private void showLoading(){
+        mRecycleView.setVisibility(View.INVISIBLE);
+        mPB.setVisibility(View.VISIBLE);
         mTvGenericError.setVisibility(View.INVISIBLE);
     }
 

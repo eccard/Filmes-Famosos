@@ -21,6 +21,7 @@
         android:id="@+id/pb_main"
         android:layout_width="@dimen/pb_width"
         android:layout_height="@dimen/pb_height"
-        android:visibility="invisible"/>
+        android:visibility="invisible"
+        android:layout_gravity="center"/>
 
 </merge>
