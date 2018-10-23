@@ -1,17 +1,18 @@
-package com.example.eccard.filmesfamosos.ui;
+package com.example.eccard.filmesfamosos.ui.main;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -25,6 +26,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 import static android.content.res.Configuration.ORIENTATION_LANDSCAPE;
 
@@ -45,6 +47,13 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.OnM
     @BindView(R.id.tv_generic_error)
     TextView mTvGenericError;
 
+    @SuppressWarnings("WeakerAccess")
+    @OnClick(R.id.btn_retry)
+    public void onRetry(View view) {
+        getMoviePage(EndlessRecyclerViewScrollListener.STARTING_PAGE_INDEX);
+    }
+    @BindView(R.id.btn_retry)
+    Button mBtnRetry;
 
     private MoviesAdapter moviesAdapter;
     private EndlessRecyclerViewScrollListener scrollListener;
@@ -81,7 +90,6 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.OnM
         mGetMoviewFrg.getData(startingPageIndex, mCurrentMovieOrderType);
     }
 
-    // todo check internet conection
     private void setUpViews() {
 
         GridLayoutManager layoutManager;
@@ -106,24 +114,28 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.OnM
         };
 
         mRecycleView.addOnScrollListener(scrollListener);
+
     }
 
     private void showMovies(){
         mRecycleView.setVisibility(View.VISIBLE);
         mPB.setVisibility(View.INVISIBLE);
         mTvGenericError.setVisibility(View.INVISIBLE);
+        mBtnRetry.setVisibility(View.INVISIBLE);
     }
 
     private void showLoading(){
         mRecycleView.setVisibility(View.INVISIBLE);
         mPB.setVisibility(View.VISIBLE);
         mTvGenericError.setVisibility(View.INVISIBLE);
+        mBtnRetry.setVisibility(View.INVISIBLE);
     }
 
     private void showLoadingError(){
         mRecycleView.setVisibility(View.INVISIBLE);
         mPB.setVisibility(View.INVISIBLE);
         mTvGenericError.setVisibility(View.VISIBLE);
+        mBtnRetry.setVisibility(View.VISIBLE);
     }
 
     @Override
