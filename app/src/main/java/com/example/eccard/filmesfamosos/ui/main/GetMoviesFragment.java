@@ -1,4 +1,4 @@
-package com.example.eccard.filmesfamosos.ui;
+package com.example.eccard.filmesfamosos.ui.main;
 
 import android.content.Context;
 import android.os.Bundle;

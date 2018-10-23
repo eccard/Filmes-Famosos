@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.MainActivity">
+    tools:context=".ui.main.MainActivity">
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_movies"
@@ -11,11 +11,32 @@
         android:layout_height="match_parent"
         />
 
-    <TextView
-        android:id="@+id/tv_generic_error"
+
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:visibility="invisible"/>
+        android:orientation="vertical"
+        android:layout_gravity="center"
+        >
+
+        <TextView
+            android:id="@+id/tv_generic_error"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            android:visibility="invisible"
+            android:text="@string/generic_error"/>
+        <Button
+            android:id="@+id/btn_retry"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/retry"
+            android:layout_gravity="center_horizontal|bottom"
+            android:visibility="invisible"/>
+
+
+    </LinearLayout>
 
     <ProgressBar
         android:id="@+id/pb_main"

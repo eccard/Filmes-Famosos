@@ -1,4 +1,4 @@
-package com.example.eccard.filmesfamosos.ui;
+package com.example.eccard.filmesfamosos.ui.main;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
