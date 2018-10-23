@@ -178,7 +178,7 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.OnM
 
                         mCurrentMovieOrderType = newOrderType;
 
-                        moviesAdapter.resetMovieResults();
+                        mGetMoviewFrg.resetMovieResults();
                         moviesAdapter.notifyDataSetChanged();
                         scrollListener.resetState();
 
@@ -215,7 +215,7 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.OnM
     @Override
     public void onMoviesResult(List<MovieResult> movies) {
         showMovies();
-        moviesAdapter.appendMovieResults(movies);
+        moviesAdapter.setMovieResults(movies);
         moviesAdapter.notifyDataSetChanged();
 
     }

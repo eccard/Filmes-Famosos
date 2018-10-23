@@ -19,16 +19,8 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.ItemViewHo
 
     private List<MovieResult> movieResults;
 
-    public void appendMovieResults(List<MovieResult> movieResults) {
-        if ( this.movieResults == null){
-            this.movieResults = movieResults;
-        }else{
-            this.movieResults.addAll(movieResults);
-        }
-    }
-
-    public void resetMovieResults(){
-        this.movieResults = null;
+    public void setMovieResults(List<MovieResult> movieResults) {
+        this.movieResults = movieResults;
     }
 
     public interface OnMovieClickListener{
