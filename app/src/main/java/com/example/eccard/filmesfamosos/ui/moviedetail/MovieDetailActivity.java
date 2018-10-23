@@ -45,7 +45,7 @@ public class MovieDetailActivity extends AppCompatActivity {
                     .generatePosterPath(movieResult.getPosterPath());
 
             Picasso.get().load(posterUrl.toString()).into(imgPoster);
-            tvTitle.setText(movieResult.getTitle());
+            tvTitle.setText(movieResult.getOriginalTitle());
             tvRate.setText(String.valueOf(movieResult.getVoteAverage()));
             tvLauchDate.setText(movieResult.getReleaseDate());
             tvOverView.setText(movieResult.getOverview());
