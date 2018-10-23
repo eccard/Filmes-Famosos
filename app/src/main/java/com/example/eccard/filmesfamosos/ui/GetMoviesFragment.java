@@ -29,8 +29,16 @@ public class GetMoviesFragment extends Fragment {
         return retainMovies;
     }
 
-    private void setRetainMovies(List<MovieResult> retainMovies) {
-        this.retainMovies = retainMovies;
+    public void appendMovieResults(List<MovieResult> movieResults) {
+        if ( this.retainMovies == null){
+            this.retainMovies = movieResults;
+        }else{
+            this.retainMovies.addAll(movieResults);
+        }
+    }
+
+    public void resetMovieResults(){
+        this.retainMovies.clear();
     }
 
     private CompositeDisposable compositeDisposable;
@@ -77,10 +85,11 @@ public class GetMoviesFragment extends Fragment {
                                @Override
                                public void accept(MovieResponse movieResponse) throws Exception {
                                    Log.d(TAG,movieResponse.toString());
-                                   setRetainMovies(movieResponse.getMovieResults());
+
+                                   appendMovieResults(movieResponse.getMovieResults());
 
                                    if ( mCallbacks != null){
-                                       mCallbacks.onMoviesResult(movieResponse.getMovieResults());
+                                       mCallbacks.onMoviesResult(retainMovies);
                                    }else{
                                        Log.e(TAG,"mCallbacks == nul");
                                    }
