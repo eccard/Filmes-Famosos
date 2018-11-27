@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.example.eccard.filmesfamosos.R;
-import com.example.eccard.filmesfamosos.data.network.AppApiHelper;
+import com.example.eccard.filmesfamosos.data.network.api.AppApiHelper;
 import com.example.eccard.filmesfamosos.data.network.model.MovieResult;
 import com.squareup.picasso.Picasso;
 
