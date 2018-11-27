@@ -18,7 +18,8 @@ public class AppApiHelper implements ApiHelper{
 
     public enum MovieOrderType {
         POPULAR,
-        TOP_RATED
+        TOP_RATED,
+        TOP_BOOKMARK
     }
 
     private AppApiHelper(){}

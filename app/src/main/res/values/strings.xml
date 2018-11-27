@@ -14,5 +14,6 @@
     <string-array name="order_array">
         <item name="most_popular">Most popular</item>
         <item name="top_rated">Top rated</item>
+        <item name="top_bookmarked">Bookmarks</item>
     </string-array>
 </resources>
