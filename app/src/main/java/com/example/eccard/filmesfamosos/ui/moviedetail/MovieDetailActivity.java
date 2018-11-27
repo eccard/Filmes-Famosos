@@ -40,7 +40,7 @@ public class MovieDetailActivity extends AppCompatActivity {
         return alreadeInFavoritos;
     }
 
-    ImageButton btnBookMark;
+    ImageView btnBookMark;
     boolean movieIsBookmarked = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
