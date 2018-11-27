@@ -172,9 +172,11 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.OnM
                     AppApiHelper.MovieOrderType newOrderType;
                     if ( which == 0 ){
                         newOrderType = AppApiHelper.MovieOrderType.POPULAR;
-                    }else {
+                    }else if (which == 1) {
                         newOrderType = AppApiHelper.MovieOrderType.TOP_RATED;
 
+                    }else {
+                        newOrderType = AppApiHelper.MovieOrderType.TOP_BOOKMARK;
                     }
 
                     if (mCurrentMovieOrderType == newOrderType){
