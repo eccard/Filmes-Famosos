@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.util.Log;
 
 import com.example.eccard.filmesfamosos.data.network.api.AppApiHelper;
+import com.example.eccard.filmesfamosos.data.network.database.AppDatabase;
 import com.example.eccard.filmesfamosos.data.network.model.MovieResponse;
 import com.example.eccard.filmesfamosos.data.network.model.MovieResult;
 
@@ -70,43 +71,53 @@ public class GetMoviesFragment extends Fragment {
         mCallbacks = null;
     }
 
-    public void getData(int pageIndex, AppApiHelper.MovieOrderType mCurrentMovieOrderType){
+    public void getData(int pageIndex, AppApiHelper.MovieOrderType mCurrentMovieOrderType) {
 
         // TODO get next pages
-        if (compositeDisposable == null){
+        if (compositeDisposable == null) {
             compositeDisposable = new CompositeDisposable();
         }
 
-        compositeDisposable.add(AppApiHelper.getInstance()
-                .doGetMoviesApiCall(mCurrentMovieOrderType,pageIndex)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<MovieResponse>() {
-                               @Override
-                               public void accept(MovieResponse movieResponse) throws Exception {
-                                   Log.d(TAG,movieResponse.toString());
+        if (mCurrentMovieOrderType == AppApiHelper.MovieOrderType.TOP_BOOKMARK) {
+            List<MovieResult> movies = AppDatabase.getInstance(getContext()).movieDao().loadAllMovies();
 
-                                   appendMovieResults(movieResponse.getMovieResults());
+            if (mCallbacks != null) {
+                mCallbacks.onMoviesResult(movies);
+            } else {
+                Log.e(TAG, "mCallbacks == nul");
+            }
+        } else {
+            compositeDisposable.add(AppApiHelper.getInstance()
+                    .doGetMoviesApiCall(mCurrentMovieOrderType, pageIndex)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new Consumer<MovieResponse>() {
+                                   @Override
+                                   public void accept(MovieResponse movieResponse) throws Exception {
+                                       Log.d(TAG, movieResponse.toString());
 
-                                   if ( mCallbacks != null){
-                                       mCallbacks.onMoviesResult(retainMovies);
-                                   }else{
-                                       Log.e(TAG,"mCallbacks == nul");
+                                       appendMovieResults(movieResponse.getMovieResults());
+
+                                       if (mCallbacks != null) {
+                                           mCallbacks.onMoviesResult(retainMovies);
+                                       } else {
+                                           Log.e(TAG, "mCallbacks == nul");
+                                       }
                                    }
-                               }
-                           },
-                        new Consumer<Throwable>() {
-                            @Override
-                            public void accept(Throwable throwable) throws Exception {
-                                Log.e(TAG,throwable.toString());
-                                if ( mCallbacks != null){
-                                    mCallbacks.onMovieError(throwable);
-                                }else{
-                                    Log.e(TAG,"mCallbacks == nul");
+                               },
+                            new Consumer<Throwable>() {
+                                @Override
+                                public void accept(Throwable throwable) throws Exception {
+                                    Log.e(TAG, throwable.toString());
+                                    if (mCallbacks != null) {
+                                        mCallbacks.onMovieError(throwable);
+                                    } else {
+                                        Log.e(TAG, "mCallbacks == nul");
+                                    }
                                 }
                             }
-                        }
-                )
-        );
+                    )
+            );
+        }
     }
 }
