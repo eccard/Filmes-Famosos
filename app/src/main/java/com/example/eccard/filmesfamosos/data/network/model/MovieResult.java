@@ -1,6 +1,9 @@
 package com.example.eccard.filmesfamosos.data.network.model;
 
 
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Ignore;
+import android.arch.persistence.room.PrimaryKey;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -9,6 +12,7 @@ import java.util.List;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+@Entity(tableName = "movie")
 public class MovieResult implements Parcelable {
 
     @SerializedName("vote_count")
@@ -16,6 +20,7 @@ public class MovieResult implements Parcelable {
     private Integer voteCount;
     @SerializedName("id")
     @Expose
+    @PrimaryKey(autoGenerate = true)
     private Integer id;
     @SerializedName("video")
     @Expose
@@ -38,12 +43,6 @@ public class MovieResult implements Parcelable {
     @SerializedName("original_title")
     @Expose
     private String originalTitle;
-    @SerializedName("genre_ids")
-    @Expose
-    private List<Integer> genreIds = null;
-    @SerializedName("adult")
-    @Expose
-    private Boolean adult;
     @SerializedName("overview")
     @Expose
     private String overview;
@@ -123,22 +122,6 @@ public class MovieResult implements Parcelable {
         this.originalTitle = originalTitle;
     }
 
-    public List<Integer> getGenreIds() {
-        return genreIds;
-    }
-
-    public void setGenreIds(List<Integer> genreIds) {
-        this.genreIds = genreIds;
-    }
-
-    public Boolean getAdult() {
-        return adult;
-    }
-
-    public void setAdult(Boolean adult) {
-        this.adult = adult;
-    }
-
     public String getOverview() {
         return overview;
     }
@@ -167,13 +150,38 @@ public class MovieResult implements Parcelable {
                 ", posterPath='" + posterPath + '\'' +
                 ", originalLanguage='" + originalLanguage + '\'' +
                 ", originalTitle='" + originalTitle + '\'' +
-                ", genreIds=" + genreIds +
-                ", adult=" + adult +
                 ", overview='" + overview + '\'' +
                 ", releaseDate='" + releaseDate + '\'' +
                 '}';
     }
 
+    @Ignore
+    public MovieResult(Integer voteCount, Boolean video, Double voteAverage, String title, Double popularity, String posterPath, String originalLanguage, String originalTitle, String overview, String releaseDate) {
+        this.voteCount = voteCount;
+        this.video = video;
+        this.voteAverage = voteAverage;
+        this.title = title;
+        this.popularity = popularity;
+        this.posterPath = posterPath;
+        this.originalLanguage = originalLanguage;
+        this.originalTitle = originalTitle;
+        this.overview = overview;
+        this.releaseDate = releaseDate;
+    }
+
+    public MovieResult(Integer voteCount, Integer id, Boolean video, Double voteAverage, String title, Double popularity, String posterPath, String originalLanguage, String originalTitle, String overview, String releaseDate) {
+        this.voteCount = voteCount;
+        this.id = id;
+        this.video = video;
+        this.voteAverage = voteAverage;
+        this.title = title;
+        this.popularity = popularity;
+        this.posterPath = posterPath;
+        this.originalLanguage = originalLanguage;
+        this.originalTitle = originalTitle;
+        this.overview = overview;
+        this.releaseDate = releaseDate;
+    }
 
     @Override
     public int describeContents() {
@@ -191,12 +199,11 @@ public class MovieResult implements Parcelable {
         dest.writeString(this.posterPath);
         dest.writeString(this.originalLanguage);
         dest.writeString(this.originalTitle);
-        dest.writeList(this.genreIds);
-        dest.writeValue(this.adult);
         dest.writeString(this.overview);
         dest.writeString(this.releaseDate);
     }
 
+    @Ignore
     public MovieResult() {
     }
 
@@ -210,9 +217,6 @@ public class MovieResult implements Parcelable {
         this.posterPath = in.readString();
         this.originalLanguage = in.readString();
         this.originalTitle = in.readString();
-        this.genreIds = new ArrayList<>();
-        in.readList(this.genreIds, Integer.class.getClassLoader());
-        this.adult = (Boolean) in.readValue(Boolean.class.getClassLoader());
         this.overview = in.readString();
         this.releaseDate = in.readString();
     }

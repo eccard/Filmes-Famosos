@@ -1,4 +1,4 @@
-package com.example.eccard.filmesfamosos.data.network;
+package com.example.eccard.filmesfamosos.data.network.api;
 
 import android.net.Uri;
 

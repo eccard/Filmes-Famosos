@@ -6,7 +6,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 
-import com.example.eccard.filmesfamosos.data.network.AppApiHelper;
+import com.example.eccard.filmesfamosos.data.network.api.AppApiHelper;
 import com.example.eccard.filmesfamosos.data.network.model.MovieResponse;
 import com.example.eccard.filmesfamosos.data.network.model.MovieResult;
 

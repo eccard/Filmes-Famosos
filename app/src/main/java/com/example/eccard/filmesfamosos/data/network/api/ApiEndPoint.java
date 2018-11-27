@@ -1,4 +1,4 @@
-package com.example.eccard.filmesfamosos.data.network;
+package com.example.eccard.filmesfamosos.data.network.api;
 
 import com.example.eccard.filmesfamosos.BuildConfig;
 
