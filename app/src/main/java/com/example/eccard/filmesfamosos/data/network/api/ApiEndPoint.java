@@ -11,4 +11,12 @@ final class ApiEndPoint {
             + "/movie/top_rated";
 
     public static final String ENDPOINT_MOVIES_POSTER_BASE_URL = "https://image.tmdb.org/t/p/w185/";
+
+    public static final String ENDPOINT_MOVIE_TRAILERS = BuildConfig.BASE_URL
+            + "/movie/%d/videos";
+
+    public static final String ENDPOINT_MOVIE_REVIEWS = BuildConfig.BASE_URL
+            + "/movie/%d/reviews";
+
+
 }
