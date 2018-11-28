@@ -16,10 +16,18 @@ import android.widget.TextView;
 import com.example.eccard.filmesfamosos.R;
 import com.example.eccard.filmesfamosos.data.network.api.AppApiHelper;
 import com.example.eccard.filmesfamosos.data.network.database.AppDatabase;
+import com.example.eccard.filmesfamosos.data.network.model.MovieResponse;
 import com.example.eccard.filmesfamosos.data.network.model.MovieResult;
+import com.example.eccard.filmesfamosos.data.network.model.MovieReviewResponse;
+import com.example.eccard.filmesfamosos.data.network.model.MovieTrailersReviewResponse;
 import com.squareup.picasso.Picasso;
 
 import java.net.URL;
+
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.functions.Consumer;
+import io.reactivex.schedulers.Schedulers;
 
 public class MovieDetailActivity extends AppCompatActivity {
 
@@ -73,6 +81,8 @@ public class MovieDetailActivity extends AppCompatActivity {
             tvLauchDate.setText(movieResult.getReleaseDate());
             tvOverView.setText(movieResult.getOverview());
 
+            getMovieTrailler(movieResult.getId(),1);
+
         }
 
         btnBookMark.setOnClickListener(new View.OnClickListener() {
@@ -110,5 +120,49 @@ public class MovieDetailActivity extends AppCompatActivity {
 
         }
         btnBookMark.setImageDrawable(draw);
+    }
+
+    private void getMovieReviews(int movieId, int page){
+        CompositeDisposable compositeDisposable = new CompositeDisposable();
+        compositeDisposable.add(AppApiHelper.getInstance()
+                .doGetReviewsFromMovieApiCall(movieId,page)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<MovieReviewResponse>() {
+                               @Override
+                               public void accept(MovieReviewResponse movieResponse) throws Exception {
+                                   Log.d(TAG,movieResponse.toString());
+                               }
+                           },
+                        new Consumer<Throwable>() {
+                            @Override
+                            public void accept(Throwable throwable) throws Exception {
+                                Log.e(TAG,throwable.getLocalizedMessage());
+                            }
+                        }
+                )
+        );
+    }
+
+    private void getMovieTrailler(int movieId,int page){
+        CompositeDisposable compositeDisposable = new CompositeDisposable();
+        compositeDisposable.add(AppApiHelper.getInstance()
+                .doGetTrailersFromMovieApiCall(movieId,page)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<MovieTrailersReviewResponse>() {
+                               @Override
+                               public void accept(MovieTrailersReviewResponse movieResponse) throws Exception {
+                                   Log.d(TAG,movieResponse.toString());
+                               }
+                           },
+                        new Consumer<Throwable>() {
+                            @Override
+                            public void accept(Throwable throwable) throws Exception {
+                                Log.e(TAG,throwable.getLocalizedMessage());
+                            }
+                        }
+                )
+        );
     }
 }

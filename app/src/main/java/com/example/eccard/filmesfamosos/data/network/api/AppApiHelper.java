@@ -6,11 +6,14 @@ import io.reactivex.Single;
 
 import com.example.eccard.filmesfamosos.BuildConfig;
 import com.example.eccard.filmesfamosos.data.network.model.MovieResponse;
+import com.example.eccard.filmesfamosos.data.network.model.MovieReviewResponse;
+import com.example.eccard.filmesfamosos.data.network.model.MovieTrailersReviewResponse;
 import com.example.eccard.filmesfamosos.utils.Constants;
 import com.rx2androidnetworking.Rx2AndroidNetworking;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Formatter;
 
 public class AppApiHelper implements ApiHelper{
 
@@ -56,10 +59,32 @@ public class AppApiHelper implements ApiHelper{
         }else {
             url = ApiEndPoint.ENDPOINT_TOP_RATED_MOVIES;
         }
-        return Rx2AndroidNetworking.post(url)
+        return Rx2AndroidNetworking.get(url)
                 .addQueryParameter(Constants.API_KEY,BuildConfig.THEMOVIEDB_API_KEY)
                 .addQueryParameter(Constants.PAGE,String.valueOf(page))
                 .build()
                 .getObjectSingle(MovieResponse.class);
+    }
+
+    @Override
+    public Single<MovieTrailersReviewResponse> doGetTrailersFromMovieApiCall(int movieId, int page) {
+        String url = String.format(ApiEndPoint.ENDPOINT_MOVIE_TRAILERS, movieId);
+
+        return Rx2AndroidNetworking.get(url)
+                .addQueryParameter(Constants.API_KEY,BuildConfig.THEMOVIEDB_API_KEY)
+                .addQueryParameter(Constants.PAGE,String.valueOf(page))
+                .build()
+                .getObjectSingle(MovieTrailersReviewResponse.class);
+    }
+
+    @Override
+    public Single<MovieReviewResponse> doGetReviewsFromMovieApiCall(int movieId, int page) {
+        String url = String.format(ApiEndPoint.ENDPOINT_MOVIE_REVIEWS, movieId);
+
+        return Rx2AndroidNetworking.get(url)
+                .addQueryParameter(Constants.API_KEY,BuildConfig.THEMOVIEDB_API_KEY)
+                .addQueryParameter(Constants.PAGE,String.valueOf(page))
+                .build()
+                .getObjectSingle(MovieReviewResponse.class);
     }
 }
