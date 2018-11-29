@@ -1,20 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<android.support.v4.view.ViewPager
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/pager"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ui.moviedetail.MovieDetailActivity"
-    android:orientation="vertical"
-    android:layout_margin="8dp">
-
-    <ImageView
-        android:id="@+id/img_view_detail_activity"
-        android:layout_width="@dimen/img_view_movie_detail_width"
-        android:layout_height="@dimen/img_view_movie_detail_height"
-        android:layout_gravity="center_horizontal"
-        tools:src="@mipmap/ic_launcher"
-        android:contentDescription="@string/detail_movie_poster_image"/>
-
-    <include layout="@layout/activivty_movie_details_cardview"/>
-
-</LinearLayout>
+    android:layout_height="match_parent" />
