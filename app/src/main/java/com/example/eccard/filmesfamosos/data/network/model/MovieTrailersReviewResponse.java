@@ -6,46 +6,16 @@ import com.google.gson.annotations.SerializedName;
 
 public class MovieTrailersReviewResponse {
 
-    @SerializedName("id")
+
+    @SerializedName("results")
     @Expose
-    private Integer id;
-    @SerializedName("quicktime")
-    @Expose
-    private List<Object> quicktime = null;
-    @SerializedName("youtube")
-    @Expose
-    private List<Youtube> youtube = null;
+    private List<TrailerResult> results = null;
 
-    public Integer getId() {
-        return id;
+    public List<TrailerResult> getResults() {
+        return results;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public List<Object> getQuicktime() {
-        return quicktime;
-    }
-
-    public void setQuicktime(List<Object> quicktime) {
-        this.quicktime = quicktime;
-    }
-
-    public List<Youtube> getYoutube() {
-        return youtube;
-    }
-
-    public void setYoutube(List<Youtube> youtube) {
-        this.youtube = youtube;
-    }
-
-    @Override
-    public String toString() {
-        return "MovieTrailersReviewResponse{" +
-                "id=" + id +
-                ", quicktime=" + quicktime +
-                ", youtube=" + youtube +
-                '}';
+    public void setResults(List<TrailerResult> results) {
+        this.results = results;
     }
 }
