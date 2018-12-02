@@ -9,6 +9,8 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+        vectorDrawables.useSupportLibrary = true
     }
 
     buildTypes {
@@ -17,7 +19,7 @@ android {
         def THEMOVIEDB_API_KEY = "THEMOVIEDB_API_KEY"
         def VAR_NAME_BASE_URL = "BASE_URL"
 
-        def BASE_URL = "https://api.themoviedb.org/3"
+        def BASE_URL = "https://api.themoviedb.org/3/"
 
         def CONFIG = { k -> "\"${System.getProperty(k)}\"" }
 
@@ -47,10 +49,28 @@ dependencies {
     implementation 'com.android.support.constraint:constraint-layout:1.1.3'
     annotationProcessor "com.jakewharton:butterknife-compiler:$butterKnifeVersion"
 
-    // network
-    implementation "com.amitshekhar.android:rx2-android-networking:$rx2FastAndroidNetworking"
-
     // reactive
     implementation "io.reactivex.rxjava2:rxjava:$rxjava2Version"
     implementation "io.reactivex.rxjava2:rxandroid:$rxandroidVersion"
+
+    // ROOM
+    compile "android.arch.persistence.room:runtime:$androidArch"
+    annotationProcessor "android.arch.persistence.room:compiler:$androidArch"
+
+    implementation "android.arch.lifecycle:extensions:$androidArch"
+    annotationProcessor "android.arch.lifecycle:compiler:$androidArch"
+
+    implementation "com.android.support:design:$compatLibVersion"
+
+    // database
+    debugImplementation 'com.amitshekhar.android:debug-db:1.0.4'
+
+
+    // network
+    implementation "com.squareup.retrofit2:retrofit:$retrofitLibVersion"
+    implementation "com.squareup.retrofit2:adapter-rxjava2:$retrofitLibVersion"
+    implementation "com.squareup.retrofit2:converter-gson:$retrofitLibVersion"
+    implementation "com.squareup.okhttp3:logging-interceptor:$loggingInterceptor"
+
+
 }

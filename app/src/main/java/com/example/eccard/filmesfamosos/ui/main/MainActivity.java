@@ -2,12 +2,16 @@ package com.example.eccard.filmesfamosos.ui.main;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.DisplayMetrics;
+import android.util.TypedValue;
+import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,7 +21,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.eccard.filmesfamosos.R;
-import com.example.eccard.filmesfamosos.data.network.AppApiHelper;
+import com.example.eccard.filmesfamosos.data.network.api.AppApiHelper;
 import com.example.eccard.filmesfamosos.data.network.model.MovieResult;
 import com.example.eccard.filmesfamosos.ui.moviedetail.MovieDetailActivity;
 import com.example.eccard.filmesfamosos.utils.EndlessRecyclerViewScrollListener;
@@ -31,9 +35,6 @@ import butterknife.OnClick;
 import static android.content.res.Configuration.ORIENTATION_LANDSCAPE;
 
 public class MainActivity extends AppCompatActivity implements MoviesAdapter.OnMovieClickListener, GetMoviesFragment.GetMoviesCallbacks {
-
-    private static final int GRID_COLUMNS_PORTRAIT = 2;
-    private static final int GRID_COLUMNS_LANDSCAPE = 3;
 
     @SuppressWarnings("WeakerAccess")
     @BindView(R.id.rv_movies)
@@ -59,7 +60,7 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.OnM
     private EndlessRecyclerViewScrollListener scrollListener;
     private AppApiHelper.MovieOrderType mCurrentMovieOrderType = AppApiHelper.MovieOrderType.POPULAR;
 
-    private GetMoviesFragment mGetMoviewFrg;
+    private GetMoviesFragment mGetMovieFrg;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,32 +74,28 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.OnM
 
 
         FragmentManager fm = getSupportFragmentManager();
-        mGetMoviewFrg = (GetMoviesFragment) fm.findFragmentByTag(GetMoviesFragment.TAG);
+        mGetMovieFrg = (GetMoviesFragment) fm.findFragmentByTag(GetMoviesFragment.TAG);
 
-        if ( mGetMoviewFrg == null){
-            mGetMoviewFrg = new GetMoviesFragment();
-            fm.beginTransaction().add(mGetMoviewFrg, GetMoviesFragment.TAG).commit();
+        if ( mGetMovieFrg == null){
+            mGetMovieFrg = new GetMoviesFragment();
+            fm.beginTransaction().add(mGetMovieFrg, GetMoviesFragment.TAG).commit();
 
             getMoviePage(EndlessRecyclerViewScrollListener.STARTING_PAGE_INDEX);
         } else {
-            onMoviesResult(mGetMoviewFrg.getRetainMovies());
+            onMoviesResult(mGetMovieFrg.getRetainMovies());
         }
     }
 
     private void getMoviePage(int startingPageIndex) {
         showLoading();
-        mGetMoviewFrg.getData(startingPageIndex, mCurrentMovieOrderType);
+        mGetMovieFrg.getData(startingPageIndex, mCurrentMovieOrderType);
     }
 
     private void setUpViews() {
 
         GridLayoutManager layoutManager;
 
-        if(getResources().getConfiguration().orientation == ORIENTATION_LANDSCAPE) {
-            layoutManager = new GridLayoutManager(this, GRID_COLUMNS_LANDSCAPE);
-        } else {
-            layoutManager = new GridLayoutManager(this, GRID_COLUMNS_PORTRAIT);
-        }
+        layoutManager = new GridLayoutManager(this, calculateBestSpanCount());
 
         mRecycleView.setLayoutManager(layoutManager);
         mRecycleView.setHasFixedSize(true);
@@ -115,6 +112,17 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.OnM
 
         mRecycleView.addOnScrollListener(scrollListener);
 
+    }
+
+    private int calculateBestSpanCount() {
+
+        float posterWidth = getResources().getDimension(R.dimen.img_view_recycler_view_holder_width);
+
+        Display display = getWindowManager().getDefaultDisplay();
+        DisplayMetrics outMetrics = new DisplayMetrics();
+        display.getMetrics(outMetrics);
+        float screenWidth = outMetrics.widthPixels;
+        return Math.round(screenWidth / posterWidth);
     }
 
     private void showMovies(){
@@ -172,9 +180,11 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.OnM
                     AppApiHelper.MovieOrderType newOrderType;
                     if ( which == 0 ){
                         newOrderType = AppApiHelper.MovieOrderType.POPULAR;
-                    }else {
+                    }else if (which == 1) {
                         newOrderType = AppApiHelper.MovieOrderType.TOP_RATED;
 
+                    }else {
+                        newOrderType = AppApiHelper.MovieOrderType.TOP_BOOKMARK;
                     }
 
                     if (mCurrentMovieOrderType == newOrderType){
@@ -190,7 +200,7 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.OnM
 
                         mCurrentMovieOrderType = newOrderType;
 
-                        mGetMoviewFrg.resetMovieResults();
+                        mGetMovieFrg.resetMovieResults();
                         moviesAdapter.notifyDataSetChanged();
                         scrollListener.resetState();
 
