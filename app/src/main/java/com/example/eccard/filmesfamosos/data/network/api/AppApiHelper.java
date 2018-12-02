@@ -6,6 +6,7 @@ import com.example.eccard.filmesfamosos.BuildConfig;
 import com.example.eccard.filmesfamosos.data.network.model.MovieResponse;
 import com.example.eccard.filmesfamosos.data.network.model.MovieReviewResponse;
 import com.example.eccard.filmesfamosos.data.network.model.MovieTrailersReviewResponse;
+import com.example.eccard.filmesfamosos.utils.Constants;
 import com.google.gson.Gson;
 
 import java.io.IOException;
@@ -62,7 +63,7 @@ public class AppApiHelper implements ApiHelper{
                             HttpUrl originalUrl = originalRequest.url();
 
                             HttpUrl newUrl = originalUrl.newBuilder()
-                                    .addQueryParameter("api_key", BuildConfig.THEMOVIEDB_API_KEY)
+                                    .addQueryParameter(Constants.API_KEY, BuildConfig.THEMOVIEDB_API_KEY)
                                     .build();
 
                             Request newRequest = originalRequest.newBuilder()
