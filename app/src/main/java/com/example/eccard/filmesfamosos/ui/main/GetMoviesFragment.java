@@ -1,5 +1,7 @@
 package com.example.eccard.filmesfamosos.ui.main;
 
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -81,10 +83,20 @@ public class GetMoviesFragment extends Fragment {
         }
 
         if (mCurrentMovieOrderType == AppApiHelper.MovieOrderType.TOP_BOOKMARK) {
-            List<MovieResult> movies = AppDatabase.getInstance(getContext()).movieDao().loadAllMovies();
 
             if (mCallbacks != null) {
-                mCallbacks.onMoviesResult(movies);
+
+                final GetMoviesViewModel getMoviesViewModel = ViewModelProviders.of(this)
+                        .get(GetMoviesViewModel.class);
+                getMoviesViewModel.getMoviews().observe(this, new Observer<List<MovieResult>>() {
+                    @Override
+                    public void onChanged(@Nullable List<MovieResult> movieResults) {
+                        getMoviesViewModel.getMoviews().removeObserver(this);
+                        mCallbacks.onMoviesResult(movieResults);
+                    }
+                });
+
+
             } else {
                 Log.e(TAG, "mCallbacks == nul");
             }

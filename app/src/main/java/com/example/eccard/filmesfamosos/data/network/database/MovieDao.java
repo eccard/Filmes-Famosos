@@ -1,5 +1,6 @@
 package com.example.eccard.filmesfamosos.data.network.database;
 
+import android.arch.lifecycle.LiveData;
 import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
@@ -13,10 +14,10 @@ import java.util.List;
 public interface MovieDao {
 
     @Query("SELECT * FROM movie")
-    List<MovieResult> loadAllMovies();
+    LiveData<List<MovieResult>> loadAllMovies();
 
     @Query("SELECT * FROM movie WHERE id = :movieId")
-    MovieResult getMovieResult(int movieId);
+    LiveData<MovieResult> getMovieResult(int movieId);
 
     @Insert
     void insertMovie(MovieResult movieResult);
