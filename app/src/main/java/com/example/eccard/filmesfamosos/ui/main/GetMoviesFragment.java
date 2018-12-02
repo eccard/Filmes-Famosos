@@ -9,7 +9,6 @@ import android.support.v4.app.Fragment;
 import android.util.Log;
 
 import com.example.eccard.filmesfamosos.data.network.api.AppApiHelper;
-import com.example.eccard.filmesfamosos.data.network.database.AppDatabase;
 import com.example.eccard.filmesfamosos.data.network.model.MovieResponse;
 import com.example.eccard.filmesfamosos.data.network.model.MovieResult;
 
@@ -27,12 +26,13 @@ public class GetMoviesFragment extends Fragment {
 
 
     private List<MovieResult> retainMovies = null;
+    private GetMoviesViewModel getMoviesViewModel;
 
     public List<MovieResult> getRetainMovies() {
         return retainMovies;
     }
 
-    public void appendMovieResults(List<MovieResult> movieResults) {
+    private void appendMovieResults(List<MovieResult> movieResults) {
         if ( this.retainMovies == null){
             this.retainMovies = movieResults;
         }else{
@@ -65,7 +65,15 @@ public class GetMoviesFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        getMoviesViewModel = ViewModelProviders.of(this)
+                .get(GetMoviesViewModel.class);
         setRetainInstance(true);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        removeObservers();
     }
 
     @Override
@@ -86,12 +94,9 @@ public class GetMoviesFragment extends Fragment {
 
             if (mCallbacks != null) {
 
-                final GetMoviesViewModel getMoviesViewModel = ViewModelProviders.of(this)
-                        .get(GetMoviesViewModel.class);
-                getMoviesViewModel.getMoviews().observe(this, new Observer<List<MovieResult>>() {
+                getMoviesViewModel.getMovies().observe(this, new Observer<List<MovieResult>>() {
                     @Override
                     public void onChanged(@Nullable List<MovieResult> movieResults) {
-                        getMoviesViewModel.getMoviews().removeObserver(this);
                         mCallbacks.onMoviesResult(movieResults);
                     }
                 });
@@ -101,6 +106,9 @@ public class GetMoviesFragment extends Fragment {
                 Log.e(TAG, "mCallbacks == nul");
             }
         } else {
+
+            removeObservers();
+
             compositeDisposable.add(AppApiHelper.getInstance()
                     .doGetMoviesApiCall(mCurrentMovieOrderType, pageIndex)
                     .subscribeOn(Schedulers.io())
@@ -132,6 +140,12 @@ public class GetMoviesFragment extends Fragment {
                             }
                     )
             );
+        }
+    }
+
+    private void removeObservers() {
+        if ( getMoviesViewModel != null && getMoviesViewModel.getMovies().hasObservers()){
+            getMoviesViewModel.getMovies().removeObservers(this);
         }
     }
 }

@@ -9,7 +9,7 @@ import retrofit2.http.GET;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 
-public interface MoviesApi {
+interface MoviesApi {
 
     @GET("movie/popular")
     Single<MovieResponse> doGetPopularMovies( @Query("page") int page);

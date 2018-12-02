@@ -54,11 +54,11 @@ dependencies {
     implementation "io.reactivex.rxjava2:rxandroid:$rxandroidVersion"
 
     // ROOM
-    compile "android.arch.persistence.room:runtime:1.0.0"
-    annotationProcessor "android.arch.persistence.room:compiler:1.0.0"
+    compile "android.arch.persistence.room:runtime:$androidArch"
+    annotationProcessor "android.arch.persistence.room:compiler:$androidArch"
 
-    implementation "android.arch.lifecycle:extensions:1.1.0"
-    annotationProcessor "android.arch.lifecycle:compiler:1.1.0"
+    implementation "android.arch.lifecycle:extensions:$androidArch"
+    annotationProcessor "android.arch.lifecycle:compiler:$androidArch"
 
     implementation "com.android.support:design:$compatLibVersion"
 

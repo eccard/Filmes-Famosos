@@ -33,8 +33,6 @@ import static com.example.eccard.filmesfamosos.ui.moviedetail.FrgSummary.TAG;
 
 public class FrgTrailers extends Fragment implements TrailerAdapter.OnViewClicked {
 
-    private MovieResult movieResult;
-    private RecyclerView recyclerView;
     private TrailerAdapter trailerAdapter;
 
     @Nullable
@@ -43,7 +41,7 @@ public class FrgTrailers extends Fragment implements TrailerAdapter.OnViewClicke
         View view = inflater.inflate(R.layout.frg_trailers,container,false);
 
 
-        recyclerView = view.findViewById(R.id.rv_trailers);
+        RecyclerView recyclerView = view.findViewById(R.id.rv_trailers);
         trailerAdapter = new TrailerAdapter(getContext(),this);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
@@ -57,17 +55,17 @@ public class FrgTrailers extends Fragment implements TrailerAdapter.OnViewClicke
 
         Intent intent = getActivity().getIntent();
         if (intent.hasExtra(MovieResult.class.getSimpleName())) {
-            movieResult = intent.getParcelableExtra(MovieResult.class.getSimpleName());
+            MovieResult movieResult = intent.getParcelableExtra(MovieResult.class.getSimpleName());
 
 
-            getMovieTrailler(movieResult.getId(),1);
+            getMovieTrailer(movieResult.getId(),1);
         }
 
         return view;
     }
 
 
-    private void getMovieTrailler(final int movieId, int page){
+    private void getMovieTrailer(final int movieId, int page){
         CompositeDisposable compositeDisposable = new CompositeDisposable();
         compositeDisposable.add(AppApiHelper.getInstance()
                 .doGetTrailersFromMovieApiCall(movieId,page)
@@ -92,7 +90,7 @@ public class FrgTrailers extends Fragment implements TrailerAdapter.OnViewClicke
     }
 
     @Override
-    public void onVideoCliked(String videoKey) {
+    public void onVideoClicked(String videoKey) {
         Intent videoIntent = new Intent();
         videoIntent.setAction(ACTION_VIEW);
         videoIntent.setData(buildVideoUri(videoKey));
@@ -105,7 +103,7 @@ public class FrgTrailers extends Fragment implements TrailerAdapter.OnViewClicke
 
 
     private static final String YOUTUBE_BASE_URL = "https://www.youtube.com/watch";
-    public static Uri buildVideoUri(String videoKey) {
+    private static Uri buildVideoUri(String videoKey) {
         return Uri.parse(YOUTUBE_BASE_URL)
                 .buildUpon()
                 .appendQueryParameter("v", videoKey)
