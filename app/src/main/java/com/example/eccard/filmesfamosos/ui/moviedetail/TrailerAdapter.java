@@ -14,15 +14,22 @@ import java.util.List;
 
 public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.ViewHolder> {
 
+    public interface OnViewClicked{
+        void onVideoCliked(String videoKey);
+    }
+
+    OnViewClicked videoClickListener;
+
     Context context;
 
     LayoutInflater layoutInflater;
 
     List<TrailerResult> trailerResults;
 
-    public TrailerAdapter(Context context) {
+    public TrailerAdapter(Context context, OnViewClicked videoClickListener) {
         this.context = context;
         this.layoutInflater = LayoutInflater.from(context);
+        this.videoClickListener = videoClickListener;
     }
 
     public void setTrailerResults(List<TrailerResult> trailerResults) {
@@ -47,12 +54,19 @@ public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.ViewHold
         return trailerResults == null ? 0 : trailerResults.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder{
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         TextView tvTrailerName;
 
         public ViewHolder(View itemView) {
             super(itemView);
             tvTrailerName = itemView.findViewById(R.id.tv_trailer_name);
+
+            itemView.findViewById(R.id.fl_adapter_trailler).setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            videoClickListener.onVideoCliked(trailerResults.get(getAdapterPosition()).getKey());
         }
     }
 }
