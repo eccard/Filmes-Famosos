@@ -39,7 +39,9 @@ public class GetMoviesFragment extends Fragment {
     }
 
     public void resetMovieResults(){
-        this.retainMovies.clear();
+        if (this.retainMovies != null){
+            this.retainMovies.clear();
+        }
     }
 
     private CompositeDisposable compositeDisposable;
