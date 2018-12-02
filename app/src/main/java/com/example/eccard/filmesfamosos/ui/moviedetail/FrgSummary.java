@@ -1,5 +1,7 @@
 package com.example.eccard.filmesfamosos.ui.moviedetail;
 
+import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.Observer;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -18,6 +20,7 @@ import com.example.eccard.filmesfamosos.R;
 import com.example.eccard.filmesfamosos.data.network.api.AppApiHelper;
 import com.example.eccard.filmesfamosos.data.network.database.AppDatabase;
 import com.example.eccard.filmesfamosos.data.network.model.MovieResult;
+import com.example.eccard.filmesfamosos.utils.AppExecutors;
 import com.squareup.picasso.Picasso;
 
 import java.net.URL;
@@ -58,8 +61,7 @@ public class FrgSummary extends Fragment {
 
             getActivity().setTitle(movieResult.getTitle());
 
-            movieIsBookmarked = alreadInFavoritos(movieResult.getId());
-            updateBookmarkedState(movieIsBookmarked);
+            checkIfMovieIsAlreadyBookmarked(movieResult.getId());
 
             URL posterUrl = AppApiHelper.getInstance()
                     .generatePosterPath(movieResult.getPosterPath());
@@ -78,15 +80,22 @@ public class FrgSummary extends Fragment {
             @Override
             public void onClick(View view) {
                 if (movieResult != null) {
-                    if (!movieIsBookmarked) {
-                        mDb.movieDao().insertMovie(movieResult);
-                        movieIsBookmarked = true;
-                    } else {
-                        mDb.movieDao().deleteMovie(movieResult);
-                        movieIsBookmarked = false;
 
-                    }
-                    updateBookmarkedState(movieIsBookmarked);
+                    AppExecutors.getInstance().diskIO().execute(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (!movieIsBookmarked) {
+                                mDb.movieDao().insertMovie(movieResult);
+                                movieIsBookmarked = true;
+                            } else {
+                                mDb.movieDao().deleteMovie(movieResult);
+                                movieIsBookmarked = false;
+
+                            }
+                            updateBookmarkedState(movieIsBookmarked);
+                        }
+                    });
+
                 } else {
                     Log.d(TAG, "btnbookMark onClick movieResult == null");
                 }
@@ -97,17 +106,27 @@ public class FrgSummary extends Fragment {
 
 
 
-    private boolean alreadInFavoritos(int movieId){
-        boolean alreadeInFavoritos = false;
-        if (mDb.movieDao().getMovieResult(movieId) != null){
-            alreadeInFavoritos = true;
-        }
-        return alreadeInFavoritos;
+    private void checkIfMovieIsAlreadyBookmarked(int movieId){
+
+        final LiveData<MovieResult> movie = mDb.movieDao().getMovieResult(movieId);
+        movie.observe(this, new Observer<MovieResult>() {
+            @Override
+            public void onChanged(@Nullable MovieResult movieResult) {
+                movie.removeObserver(this);
+
+                if (movieResult != null){
+                    movieIsBookmarked = true;
+                }else {
+                    movieIsBookmarked = false;
+                }
+                updateBookmarkedState(movieIsBookmarked);
+            }
+        });
     }
 
 
     private void updateBookmarkedState(boolean isBookmarked){
-        Drawable draw;
+        final Drawable draw;
         if (isBookmarked){
             draw = ResourcesCompat.getDrawable(getResources(),
                     android.R.drawable.btn_star_big_on,
@@ -119,7 +138,13 @@ public class FrgSummary extends Fragment {
                     null);
 
         }
-        btnBookMark.setImageDrawable(draw);
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                btnBookMark.setImageDrawable(draw);
+
+            }
+        });
     }
 
 
