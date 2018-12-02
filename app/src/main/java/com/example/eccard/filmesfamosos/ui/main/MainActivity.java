@@ -2,12 +2,16 @@ package com.example.eccard.filmesfamosos.ui.main;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.DisplayMetrics;
+import android.util.TypedValue;
+import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -31,9 +35,6 @@ import butterknife.OnClick;
 import static android.content.res.Configuration.ORIENTATION_LANDSCAPE;
 
 public class MainActivity extends AppCompatActivity implements MoviesAdapter.OnMovieClickListener, GetMoviesFragment.GetMoviesCallbacks {
-
-    private static final int GRID_COLUMNS_PORTRAIT = 2;
-    private static final int GRID_COLUMNS_LANDSCAPE = 3;
 
     @SuppressWarnings("WeakerAccess")
     @BindView(R.id.rv_movies)
@@ -94,11 +95,7 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.OnM
 
         GridLayoutManager layoutManager;
 
-        if(getResources().getConfiguration().orientation == ORIENTATION_LANDSCAPE) {
-            layoutManager = new GridLayoutManager(this, GRID_COLUMNS_LANDSCAPE);
-        } else {
-            layoutManager = new GridLayoutManager(this, GRID_COLUMNS_PORTRAIT);
-        }
+        layoutManager = new GridLayoutManager(this, calculateBestSpanCount());
 
         mRecycleView.setLayoutManager(layoutManager);
         mRecycleView.setHasFixedSize(true);
@@ -115,6 +112,17 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.OnM
 
         mRecycleView.addOnScrollListener(scrollListener);
 
+    }
+
+    private int calculateBestSpanCount() {
+
+        float posterWidth = getResources().getDimension(R.dimen.img_view_recycler_view_holder_width);
+
+        Display display = getWindowManager().getDefaultDisplay();
+        DisplayMetrics outMetrics = new DisplayMetrics();
+        display.getMetrics(outMetrics);
+        float screenWidth = outMetrics.widthPixels;
+        return Math.round(screenWidth / posterWidth);
     }
 
     private void showMovies(){
