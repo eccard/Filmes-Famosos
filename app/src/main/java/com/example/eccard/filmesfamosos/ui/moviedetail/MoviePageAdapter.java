@@ -8,7 +8,7 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 
 import com.example.eccard.filmesfamosos.R;
 
-public class MoviePageAdapter extends FragmentStatePagerAdapter {
+class MoviePageAdapter extends FragmentStatePagerAdapter {
 
     private static final int TOTAL_OF_FRGS = 3;
     private final Context context;

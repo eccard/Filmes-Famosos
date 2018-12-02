@@ -2,7 +2,6 @@ package com.example.eccard.filmesfamosos.ui.moviedetail;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -27,9 +26,8 @@ import io.reactivex.schedulers.Schedulers;
 
 public class FrgReviews extends Fragment {
 
-    public static final String TAG = FrgReviews.class.getSimpleName();
+    private static final String TAG = FrgReviews.class.getSimpleName();
 
-    private MovieResult movieResult;
     private ReviewsAdapter reviewAdapter;
 
     @Nullable
@@ -52,7 +50,7 @@ public class FrgReviews extends Fragment {
 
         Intent intent = getActivity().getIntent();
         if (intent.hasExtra(MovieResult.class.getSimpleName())) {
-            movieResult = intent.getParcelableExtra(MovieResult.class.getSimpleName());
+            MovieResult movieResult = intent.getParcelableExtra(MovieResult.class.getSimpleName());
 
 
             getMovieReviews(movieResult.getId(),1);

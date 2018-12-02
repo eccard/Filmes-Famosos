@@ -14,12 +14,12 @@ public class GetMoviesViewModel extends AndroidViewModel {
     public GetMoviesViewModel(@NonNull Application application) {
         super(application);
 
-        mMoviews = AppDatabase.getInstance(application.getApplicationContext()).movieDao().loadAllMovies();
+        mMovies = AppDatabase.getInstance(application.getApplicationContext()).movieDao().loadAllMovies();
     }
 
-    LiveData<List<MovieResult>> mMoviews;
+    final LiveData<List<MovieResult>> mMovies;
 
-    public LiveData<List<MovieResult>> getMoviews() {
-        return mMoviews;
+    public LiveData<List<MovieResult>> getMovies() {
+        return mMovies;
     }
 }

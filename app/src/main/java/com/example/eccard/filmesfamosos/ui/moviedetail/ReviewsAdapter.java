@@ -14,7 +14,7 @@ import java.util.List;
 
 public class ReviewsAdapter extends RecyclerView.Adapter<ReviewsAdapter.ReviewItem> {
 
-    private LayoutInflater layoutInflater;
+    private final LayoutInflater layoutInflater;
     private List<MovieReviewResult> reviews;
 
     public void setReviews(List<MovieReviewResult> reviews) {
@@ -48,7 +48,7 @@ public class ReviewsAdapter extends RecyclerView.Adapter<ReviewsAdapter.ReviewIt
 
         TextView tvUser;
         TextView tvReviewContent;
-        public ReviewItem(View itemView) {
+        ReviewItem(View itemView) {
             super(itemView);
 
             tvUser = itemView.findViewById(R.id.textViewUser);

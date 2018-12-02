@@ -15,10 +15,10 @@ import java.util.List;
 public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.ViewHolder> {
 
     public interface OnViewClicked{
-        void onVideoCliked(String videoKey);
+        void onVideoClicked(String videoKey);
     }
 
-    OnViewClicked videoClickListener;
+    private final OnViewClicked videoClickListener;
 
     Context context;
 
@@ -66,7 +66,7 @@ public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.ViewHold
 
         @Override
         public void onClick(View v) {
-            videoClickListener.onVideoCliked(trailerResults.get(getAdapterPosition()).getKey());
+            videoClickListener.onVideoClicked(trailerResults.get(getAdapterPosition()).getKey());
         }
     }
 }

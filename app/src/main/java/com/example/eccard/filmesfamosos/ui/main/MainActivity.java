@@ -59,7 +59,7 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.OnM
     private EndlessRecyclerViewScrollListener scrollListener;
     private AppApiHelper.MovieOrderType mCurrentMovieOrderType = AppApiHelper.MovieOrderType.POPULAR;
 
-    private GetMoviesFragment mGetMoviewFrg;
+    private GetMoviesFragment mGetMovieFrg;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,21 +73,21 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.OnM
 
 
         FragmentManager fm = getSupportFragmentManager();
-        mGetMoviewFrg = (GetMoviesFragment) fm.findFragmentByTag(GetMoviesFragment.TAG);
+        mGetMovieFrg = (GetMoviesFragment) fm.findFragmentByTag(GetMoviesFragment.TAG);
 
-        if ( mGetMoviewFrg == null){
-            mGetMoviewFrg = new GetMoviesFragment();
-            fm.beginTransaction().add(mGetMoviewFrg, GetMoviesFragment.TAG).commit();
+        if ( mGetMovieFrg == null){
+            mGetMovieFrg = new GetMoviesFragment();
+            fm.beginTransaction().add(mGetMovieFrg, GetMoviesFragment.TAG).commit();
 
             getMoviePage(EndlessRecyclerViewScrollListener.STARTING_PAGE_INDEX);
         } else {
-            onMoviesResult(mGetMoviewFrg.getRetainMovies());
+            onMoviesResult(mGetMovieFrg.getRetainMovies());
         }
     }
 
     private void getMoviePage(int startingPageIndex) {
         showLoading();
-        mGetMoviewFrg.getData(startingPageIndex, mCurrentMovieOrderType);
+        mGetMovieFrg.getData(startingPageIndex, mCurrentMovieOrderType);
     }
 
     private void setUpViews() {
@@ -192,7 +192,7 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.OnM
 
                         mCurrentMovieOrderType = newOrderType;
 
-                        mGetMoviewFrg.resetMovieResults();
+                        mGetMovieFrg.resetMovieResults();
                         moviesAdapter.notifyDataSetChanged();
                         scrollListener.resetState();
 

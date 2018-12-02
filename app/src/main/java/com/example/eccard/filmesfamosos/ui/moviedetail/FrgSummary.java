@@ -30,7 +30,7 @@ public class FrgSummary extends Fragment {
     public static final String TAG = FrgSummary.class.getSimpleName();
 
 
-    ImageView btnBookMark;
+    private ImageView btnBookMark;
 
 
     AppDatabase mDb;
@@ -114,11 +114,7 @@ public class FrgSummary extends Fragment {
             public void onChanged(@Nullable MovieResult movieResult) {
                 movie.removeObserver(this);
 
-                if (movieResult != null){
-                    movieIsBookmarked = true;
-                }else {
-                    movieIsBookmarked = false;
-                }
+                movieIsBookmarked = movieResult != null;
                 updateBookmarkedState(movieIsBookmarked);
             }
         });

@@ -18,22 +18,14 @@ public class MovieDetailActivity extends AppCompatActivity {
     }
 
 
-    ViewPager mViewPager;
-
-
-
-    private MoviePageAdapter moviePageAdapter;
-
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movie_detail);
 
-        mViewPager = (ViewPager) findViewById(R.id.pager);
+        ViewPager mViewPager = findViewById(R.id.pager);
 
-        moviePageAdapter = new MoviePageAdapter( getSupportFragmentManager() , this);
+        MoviePageAdapter moviePageAdapter = new MoviePageAdapter(getSupportFragmentManager(), this);
 
         mViewPager.setAdapter(moviePageAdapter);
 
