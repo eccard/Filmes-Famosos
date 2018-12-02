@@ -18,16 +18,9 @@ import com.example.eccard.filmesfamosos.R;
 import com.example.eccard.filmesfamosos.data.network.api.AppApiHelper;
 import com.example.eccard.filmesfamosos.data.network.database.AppDatabase;
 import com.example.eccard.filmesfamosos.data.network.model.MovieResult;
-import com.example.eccard.filmesfamosos.data.network.model.MovieReviewResponse;
-import com.example.eccard.filmesfamosos.data.network.model.MovieTrailersReviewResponse;
 import com.squareup.picasso.Picasso;
 
 import java.net.URL;
-
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.functions.Consumer;
-import io.reactivex.schedulers.Schedulers;
 
 public class FrgSummary extends Fragment {
 
@@ -62,6 +55,8 @@ public class FrgSummary extends Fragment {
 
         if (intent.hasExtra(MovieResult.class.getSimpleName())) {
             movieResult = intent.getParcelableExtra(MovieResult.class.getSimpleName());
+
+            getActivity().setTitle(movieResult.getTitle());
 
             movieIsBookmarked = alreadInFavoritos(movieResult.getId());
             updateBookmarkedState(movieIsBookmarked);
@@ -127,27 +122,7 @@ public class FrgSummary extends Fragment {
         btnBookMark.setImageDrawable(draw);
     }
 
-    private void getMovieReviews(int movieId, int page){
-        CompositeDisposable compositeDisposable = new CompositeDisposable();
-        compositeDisposable.add(AppApiHelper.getInstance()
-                .doGetReviewsFromMovieApiCall(movieId,page)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<MovieReviewResponse>() {
-                               @Override
-                               public void accept(MovieReviewResponse movieResponse) throws Exception {
-                                   Log.d(TAG,movieResponse.toString());
-                               }
-                           },
-                        new Consumer<Throwable>() {
-                            @Override
-                            public void accept(Throwable throwable) throws Exception {
-                                Log.e(TAG,throwable.getLocalizedMessage());
-                            }
-                        }
-                )
-        );
-    }
+
 
 
 }

@@ -10,7 +10,7 @@ import com.example.eccard.filmesfamosos.R;
 
 public class MoviePageAdapter extends FragmentStatePagerAdapter {
 
-    private static final int TOTAL_OF_FRGS = 2;
+    private static final int TOTAL_OF_FRGS = 3;
     private final Context context;
 
     public MoviePageAdapter(FragmentManager fm, Context context) {
@@ -29,6 +29,8 @@ public class MoviePageAdapter extends FragmentStatePagerAdapter {
             case 1:
                 frg = new FrgTrailers();
                 break;
+            case 2 :
+                frg = new FrgReviews();
             default:
                 break;
         }
