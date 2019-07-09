@@ -7,7 +7,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.1.3'
+        classpath 'com.android.tools.build:gradle:3.4.1'
         
 
         // NOTE: Do not place your application dependencies here; they belong
@@ -31,14 +31,4 @@ project.ext {
     compileVersion = 28
     minSdkVer = 15
     targetSdkVer = 28
-
-    compatLibVersion = '28.0.0'
-    constraintLayoutVersion = '1.1.3'
-    butterKnifeVersion = '8.8.1'
-    retrofitLibVersion = '2.4.0'
-    loggingInterceptor = '3.10.0'
-    picassoLibVersion = '2.71828'
-    rxjava2Version = '2.0.6'
-    rxandroidVersion = '2.0.1'
-    androidArch = '1.1.0'
 }

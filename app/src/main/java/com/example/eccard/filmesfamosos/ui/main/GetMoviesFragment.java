@@ -1,12 +1,13 @@
 package com.example.eccard.filmesfamosos.ui.main;
 
-import android.arch.lifecycle.Observer;
-import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.util.Log;
+
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
 
 import com.example.eccard.filmesfamosos.data.network.api.AppApiHelper;
 import com.example.eccard.filmesfamosos.data.network.model.MovieResponse;
