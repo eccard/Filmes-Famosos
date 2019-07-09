@@ -1,11 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.appcompat.widget.AppCompatImageView
-    xmlns:tools="http://schemas.android.com/tools"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/img_movie_item"
-    android:layout_width="@dimen/img_view_recycler_view_holder_width"
-    android:layout_height="@dimen/img_view_recycler_view_holder_height"
-    android:src="@mipmap/ic_launcher"
-    tools:src="@mipmap/ic_launcher"
-    android:contentDescription="@string/movie_item_poster"
-    />
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <import type="android.view.View" />
+        <variable
+            name="position"
+            type="java.lang.Integer" />
+        <variable
+            name="viewModel"
+            type="com.example.eccard.filmesfamosos.ui.main.MainViewModel" />
+    </data>
+    <FrameLayout
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:onClick="@{() -> viewModel.onItemClick(position)}"
+        >
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/img_movie_item"
+            android:layout_width="@dimen/img_view_recycler_view_holder_width"
+            android:layout_height="@dimen/img_view_recycler_view_holder_height"
+            app:imageUrl="@{viewModel.getMovieAt(position).genereatePosterUrl()}"
+            android:contentDescription="@string/movie_item_poster"
+            />
+            <!--android:src="@mipmap/ic_launcher"-->
+            <!--tools:src="@mipmap/ic_launcher"-->
+
+    </FrameLayout>
+</layout>
+

@@ -1,6 +1,7 @@
 package com.example.eccard.filmesfamosos.data.network.model;
 
 
+import android.net.Uri;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -8,8 +9,12 @@ import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
+import com.example.eccard.filmesfamosos.AppConstants;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+
+import java.net.MalformedURLException;
+import java.net.URL;
 
 @Entity(tableName = "movie")
 public class MovieResult implements Parcelable {
@@ -231,4 +236,20 @@ public class MovieResult implements Parcelable {
             return new MovieResult[size];
         }
     };
+
+    public String genereatePosterUrl(){
+
+        Uri uri = Uri.parse(AppConstants.INSTANCE.getENDPOINT_MOVIES_POSTER_BASE_URL$app_debug() + posterPath);
+
+        String url;
+
+        try {
+            url = new URL(uri.toString()).toString();
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+            url = null;
+        }
+
+        return url;
+    }
 }
