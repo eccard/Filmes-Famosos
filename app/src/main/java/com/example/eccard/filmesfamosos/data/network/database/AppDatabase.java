@@ -1,10 +1,11 @@
 package com.example.eccard.filmesfamosos.data.network.database;
 
-import android.arch.persistence.room.Database;
-import android.arch.persistence.room.Room;
-import android.arch.persistence.room.RoomDatabase;
 import android.content.Context;
 import android.util.Log;
+
+import androidx.room.Database;
+import androidx.room.Room;
+import androidx.room.RoomDatabase;
 
 import com.example.eccard.filmesfamosos.data.network.model.MovieResult;
 

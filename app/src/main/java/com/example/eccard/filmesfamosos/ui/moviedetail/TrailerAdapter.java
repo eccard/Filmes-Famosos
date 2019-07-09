@@ -1,11 +1,12 @@
 package com.example.eccard.filmesfamosos.ui.moviedetail;
 
 import android.content.Context;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.eccard.filmesfamosos.R;
 import com.example.eccard.filmesfamosos.data.network.model.TrailerResult;

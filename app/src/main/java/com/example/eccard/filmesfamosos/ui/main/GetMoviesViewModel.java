@@ -1,9 +1,10 @@
 package com.example.eccard.filmesfamosos.ui.main;
 
 import android.app.Application;
-import android.arch.lifecycle.AndroidViewModel;
-import android.arch.lifecycle.LiveData;
-import android.support.annotation.NonNull;
+
+import androidx.annotation.NonNull;
+import androidx.lifecycle.AndroidViewModel;
+import androidx.lifecycle.LiveData;
 
 import com.example.eccard.filmesfamosos.data.network.database.AppDatabase;
 import com.example.eccard.filmesfamosos.data.network.model.MovieResult;

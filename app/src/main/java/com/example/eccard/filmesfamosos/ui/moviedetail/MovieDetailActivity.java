@@ -3,11 +3,12 @@ package com.example.eccard.filmesfamosos.ui.moviedetail;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.TabLayout;
-import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.viewpager.widget.ViewPager;
 
 import com.example.eccard.filmesfamosos.R;
+import com.google.android.material.tabs.TabLayout;
 
 public class MovieDetailActivity extends AppCompatActivity {
 
