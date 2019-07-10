@@ -11,10 +11,12 @@ import com.example.eccard.filmesfamosos.data.network.model.MovieResult
 class MoviesAdapter (@param:LayoutRes private val layoutId: Int, private val viewModel: MainViewModel) :
         RecyclerView.Adapter<MovieViewHolder>(){
 
-    private var movies:List<MovieResult>? = null
+    private var movies = mutableListOf<MovieResult>()
 
-    fun setMovies(movieResult: List<MovieResult>){
+    fun setMovies(movieResult: MutableList<MovieResult>){
+//        this.movies.addAll(movieResult)
         this.movies = movieResult
+        notifyDataSetChanged()
     }
 
     override fun getItemViewType(position: Int): Int {
@@ -28,7 +30,7 @@ class MoviesAdapter (@param:LayoutRes private val layoutId: Int, private val vie
     }
 
     override fun getItemCount(): Int {
-        return if (movies == null) 0 else movies!!.size
+        return  movies.size
     }
 
     override fun onBindViewHolder(holder: MovieViewHolder, position: Int) {

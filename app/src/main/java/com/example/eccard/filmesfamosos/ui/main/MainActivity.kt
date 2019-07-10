@@ -1,15 +1,20 @@
 package com.example.eccard.filmesfamosos.ui.main
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.DisplayMetrics
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.view.WindowManager
 import android.widget.ArrayAdapter
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.eccard.filmesfamosos.BR
 import com.example.eccard.filmesfamosos.R
 import com.example.eccard.filmesfamosos.data.network.api.AppApiHelper
@@ -21,6 +26,8 @@ import com.example.eccard.filmesfamosos.utils.EndlessRecyclerViewScrollListener
 //import kotlinx.android.synthetic.main.activity_main.*
 import muxi.kotlin.walletfda.ui.base.BaseActivity
 import javax.inject.Inject
+import kotlin.math.roundToInt
+
 //import android.R
 
 
@@ -29,7 +36,7 @@ class MainActivity : BaseActivity<ActivityMainBinding,MainViewModel>(), Lifecycl
 
     private var moviesAdapter: MoviesAdapter? = null
     private var scrollListener: EndlessRecyclerViewScrollListener? = null
-    private var mCurrentMovieOrderType: AppApiHelper.MovieOrderType = AppApiHelper.MovieOrderType.POPULAR
+//    private var mCurrentMovieOrderType: AppApiHelper.MovieOrderType = AppApiHelper.MovieOrderType.POPULAR
 
 //    private var mGetMovieFrg: GetMoviesFragment? = null
 
@@ -48,30 +55,19 @@ class MainActivity : BaseActivity<ActivityMainBinding,MainViewModel>(), Lifecycl
         mainViewModel.setNavigator(this)
 
         setUpViews()
-
-//        setupListUpdate()
-
-//        val fm = supportFragmentManager
-//        mGetMovieFrg = fm.findFragmentByTag(GetMoviesFragment.TAG) as GetMoviesFragment?
-
-//        if (mGetMovieFrg == null) {
-//            mGetMovieFrg = GetMoviesFragment()
-//            fm.beginTransaction().add(mGetMovieFrg!!, GetMoviesFragment.TAG).commit()
-//
-//            getMoviePage(EndlessRecyclerViewScrollListener.STARTING_PAGE_INDEX)
-//        } else {
-//            onMoviesResult(mGetMovieFrg!!.retainMovies)
-//        }
     }
 
-    private fun getMoviePage(startingPageIndex: Int) {
-        showLoading()
-//        mGetMovieFrg!!.getData(startingPageIndex, mCurrentMovieOrderType)
-    }
+//    private fun getMoviePage(startingPageIndex: Int) {
+//        showLoading()
+////        mGetMovieFrg!!.getData(startingPageIndex, mCurrentMovieOrderType)
+//    }
 
     private fun setUpViews() {
 
         showLoading()
+
+        setupRecyclerview()
+
 //        mainViewModel.loading.set(View.VISIBLE)
 
 //        btn_retry.setOnClickListener { getMoviePage(EndlessRecyclerViewScrollListener.STARTING_PAGE_INDEX) }
@@ -89,17 +85,17 @@ class MainActivity : BaseActivity<ActivityMainBinding,MainViewModel>(), Lifecycl
 
 
 
-
 //        scrollListener = object : EndlessRecyclerViewScrollListener(layoutManager) {
 //            public override fun onLoadMore(page: Int, totalItemsCount: Int, view: RecyclerView) {
 //                getMoviePage(page)
 //            }
 //        }
+//        getViewDataBinding().rvMovies.addOnScrollListener(scrollListener)
 //        getViewDataBinding().rvMovies.addOnScrollListener(scrollListener!!)
 
 
         mainViewModel.loading.set(View.VISIBLE)
-        mainViewModel.getFirstPage()
+
         mainViewModel.getMovies().observe(this, Observer<List<MovieResult>> { movies ->
             mainViewModel.loading.set(View.INVISIBLE)
             if (movies.isEmpty()) {
@@ -107,17 +103,43 @@ class MainActivity : BaseActivity<ActivityMainBinding,MainViewModel>(), Lifecycl
             } else {
 
                 mainViewModel.showEmpty.set(View.GONE)
+
                 mainViewModel.setMoviesInAdapter(movies)
             }
         })
 
-
-        mainViewModel.getSelectedMovie().observe(this, Observer<MovieResult> { movie ->
-            if (movie != null) {
-                onSelectedMovie(movie)
+        mainViewModel.selected.observe(this, Observer {
+            it.getContentIfNotHandled()?.let {
+                onSelectedMovie(it)
             }
         })
 
+    }
+
+    fun setupRecyclerview(){
+
+
+        val posterWidth = mActivityMainBinding.rvMovies.context.resources.getDimension(R.dimen.img_view_recycler_view_holder_width)
+        val windowManager = mActivityMainBinding.rvMovies.context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
+        val display = windowManager.defaultDisplay
+        val outMetrics = DisplayMetrics()
+        display.getMetrics(outMetrics)
+        val screenWidth = outMetrics.widthPixels.toFloat()
+        val bestSpanCount = (screenWidth / posterWidth).roundToInt()
+
+        mActivityMainBinding.rvMovies.setHasFixedSize(true)
+        val layoutManager = GridLayoutManager(mActivityMainBinding.rvMovies.context,bestSpanCount)
+        mActivityMainBinding.rvMovies.layoutManager = layoutManager
+        mActivityMainBinding.rvMovies.setHasFixedSize(true)
+        mActivityMainBinding.rvMovies.adapter =  mainViewModel.getAdapter()
+
+
+        scrollListener = object : EndlessRecyclerViewScrollListener(layoutManager) {
+            public override fun onLoadMore(page: Int, totalItemsCount: Int, view: RecyclerView) {
+                mainViewModel.getData(page)
+            }
+        }
+        mActivityMainBinding.rvMovies.addOnScrollListener(scrollListener!!)
     }
 
     private fun showMovies() {
@@ -165,19 +187,18 @@ class MainActivity : BaseActivity<ActivityMainBinding,MainViewModel>(), Lifecycl
                     newOrderType = AppApiHelper.MovieOrderType.TOP_BOOKMARK
                 }
 
-                if (mCurrentMovieOrderType === newOrderType) {
+                if (mainViewModel.mCurrentMovieOrderType === newOrderType) {
 
                     getViewDataBinding().rvMovies.post { getViewDataBinding().rvMovies.smoothScrollToPosition(0) }
 
                 } else {
-
-                    mCurrentMovieOrderType = newOrderType
+                    mainViewModel.mCurrentMovieOrderType = newOrderType
 
 //                    mGetMovieFrg!!.resetMovieResults()
-                    moviesAdapter!!.notifyDataSetChanged()
+//                    moviesAdapter!!.notifyDataSetChanged()
                     scrollListener!!.resetState()
-
-                    getMoviePage(EndlessRecyclerViewScrollListener.STARTING_PAGE_INDEX)
+                    mainViewModel.getData(EndlessRecyclerViewScrollListener.STARTING_PAGE_INDEX)
+//                    getMoviePage(EndlessRecyclerViewScrollListener.STARTING_PAGE_INDEX)
 
                 }
             }
