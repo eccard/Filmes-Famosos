@@ -11,7 +11,7 @@ import com.example.eccard.filmesfamosos.data.network.model.MovieResult
 interface MovieDao {
 
     @Query("SELECT * FROM movie")
-    fun loadAllMovies(): LiveData<List<MovieResult>>
+    fun loadAllMovies(): List<MovieResult>
 
     @Query("SELECT * FROM movie WHERE id = :movieId")
     fun getMovieResult(movieId: Int): LiveData<MovieResult>

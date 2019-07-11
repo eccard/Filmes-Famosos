@@ -1,20 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ui.moviedetail.MovieDetailActivity"
-    android:orientation="vertical"
-    android:layout_margin="8dp">
+<layout
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:bind="http://schemas.android.com/apk/res-auto">
+    <data>
+        <variable name="viewModel" type="com.example.eccard.filmesfamosos.ui.moviedetail.summary.SummaryViewModel" />
+    </data>
 
-    <ImageView
-        android:id="@+id/img_view_detail_activity"
-        android:layout_width="@dimen/img_view_movie_detail_width"
-        android:layout_height="@dimen/img_view_movie_detail_height"
-        android:layout_gravity="center_horizontal"
-        tools:src="@mipmap/ic_launcher"
-        android:contentDescription="@string/detail_movie_poster_image"/>
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".ui.moviedetail.MovieDetailActivity"
+        android:orientation="vertical"
+        android:layout_margin="8dp">
 
-    <include layout="@layout/activivty_movie_details_cardview"/>
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/img_view_detail_activity"
+            android:layout_width="@dimen/img_view_movie_detail_width"
+            android:layout_height="@dimen/img_view_movie_detail_height"
+            android:layout_gravity="center_horizontal"
+            tools:src="@mipmap/ic_launcher"
+            app:imageUrl="@{viewModel.movie.genereatePosterUrl()}"
+            android:contentDescription="@string/detail_movie_poster_image"/>
 
-</LinearLayout>
+        <include layout="@layout/activivty_movie_details_cardview"
+            bind:secondaryViewModel="@{viewModel}"/>
+
+    </LinearLayout>
+
+</layout>
+

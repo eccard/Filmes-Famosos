@@ -1,4 +1,4 @@
-package com.example.eccard.filmesfamosos.ui.moviedetail;
+package com.example.eccard.filmesfamosos.ui.moviedetail.trailers;
 
 import android.content.Context;
 import android.view.LayoutInflater;

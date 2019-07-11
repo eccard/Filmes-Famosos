@@ -47,14 +47,12 @@ class MainViewModel @Inject constructor(private var moviesDao: MovieDao, private
         moviesAdapter = MoviesAdapter(R.layout.movie_item_view_holder,this)
         showEmpty = ObservableInt(View.GONE)
         loading = ObservableInt(View.VISIBLE)
-//        selected = MutableLiveData()
         moviesData = MutableLiveData()
         getFirstPage()
     }
 
 
     fun onItemClick(index: Int?) {
-//        selected.value = Event(getMovieAt(index))
         getMovieAt(index)?.let {
             _selected.value = Event(it)
         }
@@ -69,7 +67,9 @@ class MainViewModel @Inject constructor(private var moviesDao: MovieDao, private
 
     fun setMoviesInAdapter(movies: List<MovieResult>){
 
-        moviesDataRepo.addAll(movies)
+        if (mCurrentMovieOrderType != AppApiHelper.MovieOrderType.TOP_BOOKMARK){
+            moviesDataRepo.addAll(movies)
+        }
 
         this.moviesAdapter.setMovies(moviesDataRepo)
     }
@@ -87,24 +87,6 @@ class MainViewModel @Inject constructor(private var moviesDao: MovieDao, private
             field = value
         }
 
-//    fun getNotes( ): LiveData<List<MovieResult>>? {
-//        return moviesData
-//    }
-
-    fun subscribeToNotesDBChanges( callback: OnSync) {
-//        doAsync {
-
-//            moviesData = moviesDao.loadAllMovies()
-//            info("Notes received.")
-//            callback.notesReceived()
-
-//        }
-    }
-
-    public interface OnSync {
-        fun notesReceived( )
-    }
-
     fun getFirstPage() {
         getData(EndlessRecyclerViewScrollListener.STARTING_PAGE_INDEX)
     }
@@ -112,24 +94,24 @@ class MainViewModel @Inject constructor(private var moviesDao: MovieDao, private
     fun getData(pageIndex: Int) {
         loading.set(View.VISIBLE)
 
+        val scope = CoroutineScope(Dispatchers.Main)
+
             if (mCurrentMovieOrderType === AppApiHelper.MovieOrderType.TOP_BOOKMARK) {
+                scope.launch(context = Dispatchers.Main) {
 
-//            if (mCallbacks != null) {
+                    val response = withContext(context = Dispatchers.IO) {
+                        moviesDao.loadAllMovies()
+                    }
 
-                //                getMoviesViewModel.getMovies().observe(this, new Observer<List<MovieResult>>() {
-                //                    @Override
-                //                    public void onChanged(@Nullable List<MovieResult> movieResults) {
-                //                        mCallbacks.onMoviesResult(movieResults);
-                //                    }
-                //                });
+                    loading.set(View.INVISIBLE)
 
+                    moviesData.value = response
+                    moviesDataRepo = response.toMutableList()
 
-//            } else {
-//                Log.e(TAG, "mCallbacks == nul")
-//            }
+                }
             } else {
 
-                val scope = CoroutineScope(Dispatchers.Main)
+
                 scope.launch(context = Dispatchers.Main) {
 
                     val response = withContext(context = Dispatchers.IO) {

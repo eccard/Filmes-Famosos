@@ -1,5 +1,7 @@
-package com.example.eccard.filmesfamosos.ui.moviedetail
+package com.example.eccard.filmesfamosos.ui.moviedetail.trailers
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,21 +13,23 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.eccard.filmesfamosos.R
 import com.example.eccard.filmesfamosos.data.network.model.MovieResult
+import java.net.MalformedURLException
+import java.net.URL
 
-class FrgReviews : Fragment() {
+class FrgTrailers : Fragment(), TrailerAdapter.OnViewClicked {
 
-    private var reviewAdapter: ReviewsAdapter? = null
+    private var trailerAdapter: TrailerAdapter? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.frg_trailers, container, false)
 
 
         val recyclerView = view.findViewById<RecyclerView>(R.id.rv_trailers)
-        reviewAdapter = ReviewsAdapter(context)
+        trailerAdapter = TrailerAdapter(context, this)
 
         val layoutManager = LinearLayoutManager(context)
         recyclerView.layoutManager = layoutManager
-        recyclerView.adapter = reviewAdapter
+        recyclerView.adapter = trailerAdapter
         val dividerItemDecoration = DividerItemDecoration(recyclerView.context,
                 DividerItemDecoration.VERTICAL)
         dividerItemDecoration.setDrawable(ContextCompat.getDrawable(context!!, R.drawable.divider)!!)
@@ -37,30 +41,25 @@ class FrgReviews : Fragment() {
             val movieResult = intent.getParcelableExtra<MovieResult>(MovieResult::class.java.simpleName)
 
 
-            //            getMovieReviews(movieResult.getId(),1);
+            //            getMovieTrailer(movieResult.getId(),1);
         }
 
         return view
     }
 
-    companion object {
 
-        private val TAG = FrgReviews::class.java.simpleName
-    }
-
-
-    /*private void getMovieReviews(int movieId, int page){
+    /*private void getMovieTrailer(final int movieId, int page){
         CompositeDisposable compositeDisposable = new CompositeDisposable();
         compositeDisposable.add(AppApiHelper.getInstance()
-                .doGetReviewsFromMovieApiCall(movieId,page)
+                .doGetTrailersFromMovieApiCall(movieId,page)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<MovieReviewResponse>() {
+                .subscribe(new Consumer<MovieTrailersReviewResponse>() {
                                @Override
-                               public void accept(MovieReviewResponse movieResponse) throws Exception {
+                               public void accept(MovieTrailersReviewResponse movieResponse) throws Exception {
                                    Log.d(TAG,movieResponse.toString());
-                                   reviewAdapter.setReviews(movieResponse.getResults());
-                                   reviewAdapter.notifyDataSetChanged();
+                                   trailerAdapter.setTrailerResults(movieResponse.getResults());
+                                   trailerAdapter.notifyDataSetChanged();
                                }
                            },
                         new Consumer<Throwable>() {
@@ -72,4 +71,41 @@ class FrgReviews : Fragment() {
                 )
         );
     }*/
+
+    override fun onVideoClicked(videoKey: String) {
+        val videoIntent = Intent()
+        videoIntent.action = Intent.ACTION_VIEW
+        videoIntent.data = buildVideoUri(videoKey)
+
+        if (videoIntent.resolveActivity(activity!!.packageManager) != null) {
+            startActivity(videoIntent)
+        }
+    }
+
+    companion object {
+
+
+        private val YOUTUBE_BASE_URL = "https://www.youtube.com/watch"
+        private fun buildVideoUri(videoKey: String): Uri {
+            return Uri.parse(YOUTUBE_BASE_URL)
+                    .buildUpon()
+                    .appendQueryParameter("v", videoKey)
+                    .build()
+        }
+
+        fun buildVideoUrl(videoKey: String): URL? {
+
+            val builtUri = buildVideoUri(videoKey)
+
+            var videoUrl: URL? = null
+
+            try {
+                videoUrl = URL(builtUri.toString())
+            } catch (e: MalformedURLException) {
+                e.printStackTrace()
+            }
+
+            return videoUrl
+        }
+    }
 }

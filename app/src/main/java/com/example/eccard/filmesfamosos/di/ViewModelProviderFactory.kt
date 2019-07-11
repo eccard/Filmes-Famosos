@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.eccard.filmesfamosos.data.network.api.AppApiHelper
 import com.example.eccard.filmesfamosos.data.network.database.MovieDao
 import com.example.eccard.filmesfamosos.ui.main.MainViewModel
+import com.example.eccard.filmesfamosos.ui.moviedetail.summary.SummaryViewModel
 import java.lang.IllegalArgumentException
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -17,6 +18,8 @@ class ViewModelProviderFactory @Inject constructor(private var moviewDao: MovieD
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         if(modelClass.isAssignableFrom(MainViewModel::class.java)) {
             return MainViewModel(moviewDao,apiHelper) as T
+        } else if(modelClass.isAssignableFrom(SummaryViewModel::class.java)){
+            return SummaryViewModel(moviewDao, apiHelper) as T
         }
 //        else {
 //            if(modelClass.isAssignableFrom(PaymentViewModel::class.java)) {

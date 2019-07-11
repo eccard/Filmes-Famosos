@@ -5,6 +5,8 @@ import dagger.android.ContributesAndroidInjector
 
 @Module
 abstract class MainActivityProvider{
+
+    // todo talvez possa deletar essa classe
     @ContributesAndroidInjector
     abstract fun provideMainViewFactory() : MainActivity
 }
