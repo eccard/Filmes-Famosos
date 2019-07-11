@@ -1,6 +1,5 @@
 package com.example.eccard.filmesfamosos.ui.main
 
-import android.util.Log
 import android.view.View
 import androidx.databinding.ObservableInt
 import androidx.lifecycle.LiveData
@@ -30,10 +29,6 @@ class MainViewModel @Inject constructor(private var moviesDao: MovieDao, private
 
     private var moviesData : MutableLiveData<List<MovieResult>>
 
-    init {
-        moviesData = MutableLiveData()
-        getFirstPage()
-    }
 
     private val _selected = MutableLiveData<Event<MovieResult>>()
 
@@ -51,8 +46,10 @@ class MainViewModel @Inject constructor(private var moviesDao: MovieDao, private
     init {
         moviesAdapter = MoviesAdapter(R.layout.movie_item_view_holder,this)
         showEmpty = ObservableInt(View.GONE)
-        loading = ObservableInt(View.GONE)
+        loading = ObservableInt(View.VISIBLE)
 //        selected = MutableLiveData()
+        moviesData = MutableLiveData()
+        getFirstPage()
     }
 
 
@@ -84,6 +81,7 @@ class MainViewModel @Inject constructor(private var moviesDao: MovieDao, private
         set(value) {
             if (mCurrentMovieOrderType != value) {
                 moviesDataRepo.clear()
+                moviesAdapter.notifyDataSetChanged()
 
             }
             field = value
@@ -111,17 +109,8 @@ class MainViewModel @Inject constructor(private var moviesDao: MovieDao, private
         getData(EndlessRecyclerViewScrollListener.STARTING_PAGE_INDEX)
     }
 
-//    fun setCurrentOrderType(orderType : AppApiHelper.MovieOrderType){
-//        this.mCurrentMovieOrderType = orderType
-//    }
-
     fun getData(pageIndex: Int) {
-
-//        if (pageIndex == 1){
-//            if (moviesData.value != null) {
-//                moviesAdapter.notifyDataSetChanged()
-//            }
-//        }
+        loading.set(View.VISIBLE)
 
             if (mCurrentMovieOrderType === AppApiHelper.MovieOrderType.TOP_BOOKMARK) {
 
@@ -143,78 +132,17 @@ class MainViewModel @Inject constructor(private var moviesDao: MovieDao, private
                 val scope = CoroutineScope(Dispatchers.Main)
                 scope.launch(context = Dispatchers.Main) {
 
-                    loading.set(View.VISIBLE)
-
                     val response = withContext(context = Dispatchers.IO) {
                         apiHelper.doGetMoviesApiCall(mCurrentMovieOrderType, pageIndex)
                     }
 
-
+                    loading.set(View.INVISIBLE)
                     if (response.isSuccessful){
-//                        moviesData.value = (response.body() as MovieResponse).movieResults
-
-//                        if (moviesData.value == null){
                             moviesData.value = (response.body() as MovieResponse).movieResults
-//                        } else {
-//                            moviesData.value!!.addAll((response.body() as MovieResponse)
-//                            .movieResults)
-//                        }
-
-                        var asdf = 123
-                        asdf = asdf +1
-//                        moviesData.value.let {
-//                                it?.addAll((response.body() as MovieResponse).movieResults)
-//                        }
-
                     } else {
-                        //                    loading.set(View.INVISIBLE)
-                        Log.e("error","response.isSuccessful falseeee")
+                        showEmpty.set(View.VISIBLE)
                     }
                 }
-
-                
-
-
-//                getNavigator()!!.
-//                }
-                /*
-            removeObservers();
-
-            compositeDisposable.add(AppApiHelper.getInstance()
-                    .doGetMoviesApiCall(mCurrentMovieOrderType, pageIndex)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(new Consumer<MovieResponse>() {
-                                   @Override
-                                   public void accept(MovieResponse movieResponse) throws Exception {
-                                       Log.d(TAG, movieResponse.toString());
-
-                                       appendMovieResults(movieResponse.getMovieResults());
-
-                                       if (mCallbacks != null) {
-                                           mCallbacks.onMoviesResult(retainMovies);
-                                       } else {
-                                           Log.e(TAG, "mCallbacks == nul");
-                                       }
-                                   }
-                               },
-                            new Consumer<Throwable>() {
-                                @Override
-                                public void accept(Throwable throwable) throws Exception {
-                                    Log.e(TAG, throwable.toString());
-                                    if (mCallbacks != null) {
-                                        mCallbacks.onMovieError(throwable);
-                                    } else {
-                                        Log.e(TAG, "mCallbacks == nul");
-                                    }
-                                }
-                            }
-                    )
-            );
-        }
-    }
-        */
-
             }
     }
 }

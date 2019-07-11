@@ -9,17 +9,17 @@
         <variable name="viewModel" type="com.example.eccard.filmesfamosos.ui.main.MainViewModel" />
     </data>
 
-    <LinearLayout
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
         tools:context=".ui.main.MainActivity">
+
 
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_movies"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             />
             <!--app:setAdapter="@{viewModel.getAdapter()}"-->
 
@@ -29,13 +29,14 @@
             android:layout_height="@dimen/pb_height"
             android:visibility="@{viewModel.loading}"
             android:layout_gravity="center"/>
+
         <!--android:visibility="invisible"-->
 
         <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:orientation="vertical"
-            android:layout_gravity="center"
+            android:gravity="center"
             android:visibility="@{viewModel.showEmpty}"
             >
 
@@ -61,5 +62,5 @@
         </LinearLayout>
 
 
-    </LinearLayout>
+    </FrameLayout>
 </layout>

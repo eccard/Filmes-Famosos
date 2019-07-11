@@ -1,7 +1,6 @@
 package com.example.eccard.filmesfamosos.ui.main
 
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.util.DisplayMetrics
 import android.view.Menu
@@ -66,7 +65,7 @@ class MainActivity : BaseActivity<ActivityMainBinding,MainViewModel>(), Lifecycl
 
         showLoading()
 
-        setupRecyclerview()
+        setupRecyclerView()
 
 //        mainViewModel.loading.set(View.VISIBLE)
 
@@ -93,17 +92,12 @@ class MainActivity : BaseActivity<ActivityMainBinding,MainViewModel>(), Lifecycl
 //        getViewDataBinding().rvMovies.addOnScrollListener(scrollListener)
 //        getViewDataBinding().rvMovies.addOnScrollListener(scrollListener!!)
 
-
-        mainViewModel.loading.set(View.VISIBLE)
-
         mainViewModel.getMovies().observe(this, Observer<List<MovieResult>> { movies ->
             mainViewModel.loading.set(View.INVISIBLE)
             if (movies.isEmpty()) {
                 mainViewModel.showEmpty.set(View.VISIBLE)
             } else {
-
                 mainViewModel.showEmpty.set(View.GONE)
-
                 mainViewModel.setMoviesInAdapter(movies)
             }
         })
@@ -116,7 +110,7 @@ class MainActivity : BaseActivity<ActivityMainBinding,MainViewModel>(), Lifecycl
 
     }
 
-    fun setupRecyclerview(){
+    private fun setupRecyclerView(){
 
 
         val posterWidth = mActivityMainBinding.rvMovies.context.resources.getDimension(R.dimen.img_view_recycler_view_holder_width)
@@ -154,7 +148,6 @@ class MainActivity : BaseActivity<ActivityMainBinding,MainViewModel>(), Lifecycl
 
     private fun showLoadingError() {
         mainViewModel.loading.set(View.INVISIBLE)
-
         mainViewModel.showEmpty.set(View.VISIBLE)
     }
 
@@ -193,11 +186,8 @@ class MainActivity : BaseActivity<ActivityMainBinding,MainViewModel>(), Lifecycl
 
                 } else {
                     mainViewModel.mCurrentMovieOrderType = newOrderType
-
-//                    mGetMovieFrg!!.resetMovieResults()
-//                    moviesAdapter!!.notifyDataSetChanged()
                     scrollListener!!.resetState()
-                    mainViewModel.getData(EndlessRecyclerViewScrollListener.STARTING_PAGE_INDEX)
+                    mainViewModel.getFirstPage()
 //                    getMoviePage(EndlessRecyclerViewScrollListener.STARTING_PAGE_INDEX)
 
                 }
