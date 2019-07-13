@@ -50,6 +50,8 @@ class TrailerViewModel @Inject constructor(private var apiHelper: AppApiHelper):
 
 
     private var trailerAdapter : TrailerAdapter
+
+    
     init {
         trailerAdapter = TrailerAdapter(R.layout.adapter_trailer,this)
         getMovieTrailers()
@@ -62,7 +64,7 @@ class TrailerViewModel @Inject constructor(private var apiHelper: AppApiHelper):
         scope.launch(context = Dispatchers.Main) {
 
             val response = withContext(context = Dispatchers.IO) {
-                apiHelper.doGetTrailersFromMovieApiCall(movie.value!!.id,1)
+                apiHelper.doGetTrailersFromMovieApiCall(movie.value!!.id)
             }
 
             if (response.isSuccessful){

@@ -39,8 +39,8 @@ class AppApiHelper @Inject constructor(private val moviesApi : MoviesApi) {
         }
     }
 
-    suspend fun doGetTrailersFromMovieApiCall(movieId: Int, page: Int): Response<MovieTrailersReviewResponse> {
-        return moviesApi.doGetTrailersFromMovieApiCall(movieId, page)
+    suspend fun doGetTrailersFromMovieApiCall(movieId: Int): Response<MovieTrailersReviewResponse> {
+        return moviesApi.doGetTrailersFromMovieApiCall(movieId)
     }
 
     suspend fun doGetReviewsFromMovieApiCall(movieId: Int, page: Int): Response<MovieReviewResponse> {
