@@ -1,9 +1,6 @@
 package com.example.eccard.filmesfamosos.ui.moviedetail.summary
 
-import androidx.databinding.ObservableField
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Observer
 import com.example.eccard.filmesfamosos.data.network.api.AppApiHelper
 import com.example.eccard.filmesfamosos.data.network.database.MovieDao
 import com.example.eccard.filmesfamosos.data.network.model.MovieResult
@@ -19,10 +16,6 @@ class SummaryViewModel @Inject constructor(private var moviesDao: MovieDao, priv
 
     var movie = MutableLiveData<MovieResult>()
     var movieIsBookmarked = MutableLiveData<Boolean>().apply { value = false }
-
-//    var isMovieBookMarked = false
-
-//    val movieInDb = moviesDao.getMovieResult(movie.value.id)
 
     fun getMovieFromDb(id :Int) = moviesDao.getMovieResult(id)
 
@@ -50,18 +43,4 @@ class SummaryViewModel @Inject constructor(private var moviesDao: MovieDao, priv
 
         }
     }
-
-//    fun updateBookMarkStatus()
-/*
-    private fun checkIfMovieIsAlreadyBookmarked(movieId: Int) {
-        movie.observe(this, object : Observer<MovieResult> {
-            override fun onChanged(movieResult: MovieResult?) {
-                movie.removeObserver(this)
-
-                movieIsBookmarked = movieResult != null
-                updateBookmarkedState(movieIsBookmarked)
-            }
-        })
-    }
-*/
 }

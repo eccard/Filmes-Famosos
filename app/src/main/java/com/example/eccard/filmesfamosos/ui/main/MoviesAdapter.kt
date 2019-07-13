@@ -19,9 +19,7 @@ class MoviesAdapter (@param:LayoutRes private val layoutId: Int, private val vie
         notifyDataSetChanged()
     }
 
-    override fun getItemViewType(position: Int): Int {
-        return layoutId
-    }
+    override fun getItemViewType(position: Int) = layoutId
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)

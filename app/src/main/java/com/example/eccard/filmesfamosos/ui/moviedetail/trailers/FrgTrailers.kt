@@ -7,72 +7,70 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
-import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
+import com.example.eccard.filmesfamosos.BR
 import com.example.eccard.filmesfamosos.R
 import com.example.eccard.filmesfamosos.data.network.model.MovieResult
-import java.net.MalformedURLException
-import java.net.URL
+import com.example.eccard.filmesfamosos.databinding.FrgTrailersBinding
+import com.example.eccard.filmesfamosos.di.ViewModelProviderFactory
+import muxi.kotlin.walletfda.ui.base.BaseFragment
+import javax.inject.Inject
 
-class FrgTrailers : Fragment(), TrailerAdapter.OnViewClicked {
+class FrgTrailers : BaseFragment<FrgTrailersBinding,TrailerViewModel>() {
 
-    private var trailerAdapter: TrailerAdapter? = null
+    private lateinit var trailersViewModel: TrailerViewModel
+
+    @Inject
+    lateinit var factory: ViewModelProviderFactory
+
+    private lateinit var frgTrailersBinding: FrgTrailersBinding
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val view = inflater.inflate(R.layout.frg_trailers, container, false)
+        val view = super.onCreateView(inflater, container, savedInstanceState)
+        setupRecyclerView()
+        return view
+    }
 
 
-        val recyclerView = view.findViewById<RecyclerView>(R.id.rv_trailers)
-        trailerAdapter = TrailerAdapter(context, this)
+    fun setupRecyclerView(){
+        frgTrailersBinding = getViewDataBinding()
 
         val layoutManager = LinearLayoutManager(context)
-        recyclerView.layoutManager = layoutManager
-        recyclerView.adapter = trailerAdapter
-        val dividerItemDecoration = DividerItemDecoration(recyclerView.context,
+        frgTrailersBinding.rvTrailers.layoutManager = layoutManager
+        frgTrailersBinding.rvTrailers.adapter = trailersViewModel.getAdapter()
+        val dividerItemDecoration = DividerItemDecoration(frgTrailersBinding.rvTrailers.context,
                 DividerItemDecoration.VERTICAL)
         dividerItemDecoration.setDrawable(ContextCompat.getDrawable(context!!, R.drawable.divider)!!)
 
-        recyclerView.addItemDecoration(dividerItemDecoration)
+        frgTrailersBinding.rvTrailers.addItemDecoration(dividerItemDecoration)
+
+
+
+        trailersViewModel.trailers.observe(this, Observer {
+            trailersViewModel.updateTralersList(it)
+        })
+
+        trailersViewModel.selected.observe(this, Observer {
+            onSelectedTrailers(it.peekContent().key)
+        })
+
+
 
         val intent = activity!!.intent
         if (intent.hasExtra(MovieResult::class.java.simpleName)) {
             val movieResult = intent.getParcelableExtra<MovieResult>(MovieResult::class.java.simpleName)
 
 
-            //            getMovieTrailer(movieResult.getId(),1);
+            trailersViewModel.movie.value = movieResult
         }
 
-        return view
+
     }
 
-
-    /*private void getMovieTrailer(final int movieId, int page){
-        CompositeDisposable compositeDisposable = new CompositeDisposable();
-        compositeDisposable.add(AppApiHelper.getInstance()
-                .doGetTrailersFromMovieApiCall(movieId,page)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<MovieTrailersReviewResponse>() {
-                               @Override
-                               public void accept(MovieTrailersReviewResponse movieResponse) throws Exception {
-                                   Log.d(TAG,movieResponse.toString());
-                                   trailerAdapter.setTrailerResults(movieResponse.getResults());
-                                   trailerAdapter.notifyDataSetChanged();
-                               }
-                           },
-                        new Consumer<Throwable>() {
-                            @Override
-                            public void accept(Throwable throwable) throws Exception {
-                                Log.e(TAG,throwable.getLocalizedMessage());
-                            }
-                        }
-                )
-        );
-    }*/
-
-    override fun onVideoClicked(videoKey: String) {
+    private fun onSelectedTrailers(videoKey: String) {
         val videoIntent = Intent()
         videoIntent.action = Intent.ACTION_VIEW
         videoIntent.data = buildVideoUri(videoKey)
@@ -82,8 +80,8 @@ class FrgTrailers : Fragment(), TrailerAdapter.OnViewClicked {
         }
     }
 
-    companion object {
 
+    companion object {
 
         private val YOUTUBE_BASE_URL = "https://www.youtube.com/watch"
         private fun buildVideoUri(videoKey: String): Uri {
@@ -92,20 +90,20 @@ class FrgTrailers : Fragment(), TrailerAdapter.OnViewClicked {
                     .appendQueryParameter("v", videoKey)
                     .build()
         }
+    }
 
-        fun buildVideoUrl(videoKey: String): URL? {
 
-            val builtUri = buildVideoUri(videoKey)
+    override fun getLayoutId() = R.layout.frg_trailers
 
-            var videoUrl: URL? = null
+    override fun getViewModel(): TrailerViewModel {
+        trailersViewModel = ViewModelProviders.of(this,factory)
+                .get(TrailerViewModel::class.java)
+        return trailersViewModel
+    }
 
-            try {
-                videoUrl = URL(builtUri.toString())
-            } catch (e: MalformedURLException) {
-                e.printStackTrace()
-            }
+    override fun getBindingVariable() = BR.viewModel
 
-            return videoUrl
-        }
+    override fun showToast(message: String) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 }

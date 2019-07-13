@@ -44,19 +44,9 @@ class FrgSummary : BaseFragment<FrgSummaryBinding,SummaryViewModel>() {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-//    private var btnBookMark: ImageView? = null
-
-
-//    internal var mDb: AppDatabase
     internal var movieIsBookmarked = false
 
     private var movieResult: MovieResult? = null
-
-
-//    override fun onCreate(savedInstanceState: Bundle?) {
-//        super.onCreate(savedInstanceState)
-//        summaryViewModel.setNavigator(this)
-//    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -66,18 +56,7 @@ class FrgSummary : BaseFragment<FrgSummaryBinding,SummaryViewModel>() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = super.onCreateView(inflater, container, savedInstanceState)
-        /*
-        val view = inflater.inflate(R.layout.frg_summary, container, false)
 
-        val imgPoster = view.findViewById<ImageView>(R.id.img_view_detail_activity)
-        val tvTitle = view.findViewById<TextView>(R.id.tv_title)
-        val tvRate = view.findViewById<TextView>(R.id.tv_rate)
-        val tvLauchDate = view.findViewById<TextView>(R.id.tv_lauch_date)
-        val tvOverView = view.findViewById<TextView>(R.id.tv_over_view)
-        btnBookMark = view.findViewById(R.id.btn_bookmark)
-
-//        mDb = AppDatabase.getInstance(activity!!.applicationContext)
-*/
         val intent = activity!!.intent
 
         if (intent.hasExtra(MovieResult::class.java.simpleName)) {
@@ -89,41 +68,10 @@ class FrgSummary : BaseFragment<FrgSummaryBinding,SummaryViewModel>() {
 
             checkIfMovieIsAlreadyBookmarked(movieResult!!.id!!)
 
-//            val posterUrl = AppApiHelper.getInstance()
-//                    .generatePosterPath(movieResult!!.posterPath)
-//
-//            Picasso.get().load(posterUrl.toString()).into(imgPoster)
-            /*
-            tvTitle.text = movieResult!!.originalTitle
-            tvRate.text = movieResult!!.voteAverage.toString()
-            tvLauchDate.text = movieResult!!.releaseDate
-            tvOverView.text = movieResult!!.overview
-            */
-
             summaryViewModel.movieIsBookmarked.observe(this, Observer {
                 updateBookmarkedState(it)
             })
         }
-
-        /*btnBookMark!!.setOnClickListener {
-            if (movieResult != null) {
-
-                AppExecutors.getInstance().diskIO().execute {
-                    if (!movieIsBookmarked) {
-                        mDb.movieDao().insertMovie(movieResult!!)
-                        movieIsBookmarked = true
-                    } else {
-                        mDb.movieDao().deleteMovie(movieResult!!)
-                        movieIsBookmarked = false
-
-                    }
-                    updateBookmarkedState(movieIsBookmarked)
-                }
-
-            } else {
-                Log.d(TAG, "btnbookMark onClick movieResult == null")
-            }
-        }*/
         return view
     }
 
@@ -139,7 +87,6 @@ class FrgSummary : BaseFragment<FrgSummaryBinding,SummaryViewModel>() {
 
                     summaryViewModel.movieIsBookmarked.value = movieIsBookmarked
 
-//                    updateBookmarkedState(movieIsBookmarked)
             }
         })
     }
@@ -156,9 +103,7 @@ class FrgSummary : BaseFragment<FrgSummaryBinding,SummaryViewModel>() {
                     android.R.drawable.btn_star_big_off, null)
 
         }
-//        activity!!.runOnUiThread { btnBookMark!!.setImageDrawable(draw) }
         frgSummaryBinding.root.btn_bookmark.setImageDrawable(draw)
-//        activity!!.runOnUiThread { btnBookMark!!.setImageDrawable(draw) }
     }
     companion object {
 

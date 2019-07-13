@@ -4,6 +4,7 @@ import com.example.eccard.filmesfamosos.ui.main.MainActivity
 import com.example.eccard.filmesfamosos.ui.main.MainActivityProvider
 import com.example.eccard.filmesfamosos.ui.moviedetail.MovieDetailActivity
 import com.example.eccard.filmesfamosos.ui.moviedetail.summary.SummaryFragmentProvider
+import com.example.eccard.filmesfamosos.ui.moviedetail.trailers.TrailerFragmentProvider
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 
@@ -14,6 +15,6 @@ abstract class ActivityBuilder{
     abstract fun bindMainActivity(): MainActivity
 
 
-    @ContributesAndroidInjector(modules = [SummaryFragmentProvider::class])
+    @ContributesAndroidInjector(modules = [SummaryFragmentProvider::class, TrailerFragmentProvider::class])
     abstract fun bindMovieDetailActivity(): MovieDetailActivity
 }
