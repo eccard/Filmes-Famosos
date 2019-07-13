@@ -89,7 +89,7 @@ public class GetMoviesFragment extends Fragment {
 
 //            if (mCallbacks != null) {
 
-//                getMoviesViewModel.getMovies().observe(this, new Observer<List<MovieResult>>() {
+//                getMoviesViewModel.getApiMovies().observe(this, new Observer<List<MovieResult>>() {
 //                    @Override
 //                    public void onChanged(@Nullable List<MovieResult> movieResults) {
 //                        mCallbacks.onMoviesResult(movieResults);
@@ -139,8 +139,8 @@ public class GetMoviesFragment extends Fragment {
     }
 
 //    private void removeObservers() {
-//        if ( getMoviesViewModel != null && getMoviesViewModel.getMovies().hasObservers()){
-//            getMoviesViewModel.getMovies().removeObservers(this);
+//        if ( getMoviesViewModel != null && getMoviesViewModel.getApiMovies().hasObservers()){
+//            getMoviesViewModel.getApiMovies().removeObservers(this);
 //        }
 //    }
 }

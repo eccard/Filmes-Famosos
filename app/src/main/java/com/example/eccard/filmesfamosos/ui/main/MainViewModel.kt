@@ -25,9 +25,38 @@ class MainViewModel @Inject constructor(private var moviesDao: MovieDao, private
         private val TAG = MainViewModel::class.java.simpleName
     }
 
-    private var moviesDataRepo : MutableList<MovieResult> = mutableListOf()
 
-    private var moviesData : MutableLiveData<List<MovieResult>>
+    var mCurrentMovieOrderType: AppApiHelper.MovieOrderType = AppApiHelper.MovieOrderType.POPULAR
+        set(value) {
+            if (mCurrentMovieOrderType != value) {
+                moviesDataRepo.clear()
+
+                val listToAdapter =
+                        if (value == AppApiHelper.MovieOrderType.TOP_BOOKMARK){
+                            moviesFromDb.toMutableList()
+                        } else {
+                            moviesDataRepo
+
+                        }
+
+                moviesDataRepo = listToAdapter
+                moviesAdapter.setMovies(moviesDataRepo)
+            }
+            field = value
+        }
+
+    private var moviesDataRepo : MutableList<MovieResult> = mutableListOf()
+    var moviesFromDb : List<MovieResult> = listOf()
+        set(value){
+            if (mCurrentMovieOrderType == AppApiHelper.MovieOrderType.TOP_BOOKMARK) {
+                moviesDataRepo = value.toMutableList()
+                moviesAdapter.notifyDataSetChanged()
+            }
+            field = value
+        }
+
+    private var moviesDataApi : MutableLiveData<List<MovieResult>>
+    private var moviesLiveDataFromDb : LiveData<List<MovieResult>>
 
 
     private val _selected = MutableLiveData<Event<MovieResult>>()
@@ -39,15 +68,16 @@ class MainViewModel @Inject constructor(private var moviesDao: MovieDao, private
     var showEmpty: ObservableInt
     var loading: ObservableInt
 
-    fun getMovies():MutableLiveData<List<MovieResult>>  = moviesData
-
-    fun getSelectedMovie() = selected
+    fun getApiMovies():MutableLiveData<List<MovieResult>>  = moviesDataApi
+    fun getDataBaseMovies():LiveData<List<MovieResult>>  = moviesLiveDataFromDb
 
     init {
         moviesAdapter = MoviesAdapter(R.layout.movie_item_view_holder,this)
         showEmpty = ObservableInt(View.GONE)
         loading = ObservableInt(View.VISIBLE)
-        moviesData = MutableLiveData()
+        moviesDataApi = MutableLiveData()
+        moviesLiveDataFromDb = moviesDao.loadAllMovies()
+        moviesAdapter.setMovies(moviesDataRepo)
         getFirstPage()
     }
 
@@ -65,66 +95,39 @@ class MainViewModel @Inject constructor(private var moviesDao: MovieDao, private
     }
 
 
-    fun setMoviesInAdapter(movies: List<MovieResult>){
-
-        if (mCurrentMovieOrderType != AppApiHelper.MovieOrderType.TOP_BOOKMARK){
-            moviesDataRepo.addAll(movies)
-        }
-
-        this.moviesAdapter.setMovies(moviesDataRepo)
+    fun addMoviesFromApi(movies: List<MovieResult>){
+        moviesDataRepo.addAll(movies)
     }
 
     fun getAdapter(): MoviesAdapter = moviesAdapter
 
 
-    var mCurrentMovieOrderType: AppApiHelper.MovieOrderType = AppApiHelper.MovieOrderType.POPULAR
-        set(value) {
-            if (mCurrentMovieOrderType != value) {
-                moviesDataRepo.clear()
-                moviesAdapter.notifyDataSetChanged()
 
-            }
-            field = value
-        }
 
     fun getFirstPage() {
         getData(EndlessRecyclerViewScrollListener.STARTING_PAGE_INDEX)
     }
 
     fun getData(pageIndex: Int) {
-        loading.set(View.VISIBLE)
-
         val scope = CoroutineScope(Dispatchers.Main)
 
-            if (mCurrentMovieOrderType === AppApiHelper.MovieOrderType.TOP_BOOKMARK) {
-                scope.launch(context = Dispatchers.Main) {
+        if (mCurrentMovieOrderType !== AppApiHelper.MovieOrderType.TOP_BOOKMARK) {
 
-                    val response = withContext(context = Dispatchers.IO) {
-                        moviesDao.loadAllMovies()
-                    }
+            loading.set(View.VISIBLE)
 
-                    loading.set(View.INVISIBLE)
+            scope.launch(context = Dispatchers.Main) {
 
-                    moviesData.value = response
-                    moviesDataRepo = response.toMutableList()
-
+                val response = withContext(context = Dispatchers.IO) {
+                    apiHelper.doGetMoviesApiCall(mCurrentMovieOrderType, pageIndex)
                 }
-            } else {
 
-
-                scope.launch(context = Dispatchers.Main) {
-
-                    val response = withContext(context = Dispatchers.IO) {
-                        apiHelper.doGetMoviesApiCall(mCurrentMovieOrderType, pageIndex)
-                    }
-
-                    loading.set(View.INVISIBLE)
-                    if (response.isSuccessful){
-                            moviesData.value = (response.body() as MovieResponse).movieResults
-                    } else {
-                        showEmpty.set(View.VISIBLE)
-                    }
+                loading.set(View.INVISIBLE)
+                if (response.isSuccessful){
+                    moviesDataApi.value = (response.body() as MovieResponse).movieResults
+                } else {
+                    showEmpty.set(View.VISIBLE)
                 }
             }
+        }
     }
 }

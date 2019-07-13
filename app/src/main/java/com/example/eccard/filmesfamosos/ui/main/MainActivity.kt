@@ -3,6 +3,7 @@ package com.example.eccard.filmesfamosos.ui.main
 import android.content.Context
 import android.os.Bundle
 import android.util.DisplayMetrics
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -33,7 +34,7 @@ import kotlin.math.roundToInt
 
 class MainActivity : BaseActivity<ActivityMainBinding,MainViewModel>(), LifecycleOwner,MainNavigator {
 
-    private var moviesAdapter: MoviesAdapter? = null
+//    private var moviesAdapter: MoviesAdapter? = null
     private var scrollListener: EndlessRecyclerViewScrollListener? = null
 //    private var mCurrentMovieOrderType: AppApiHelper.MovieOrderType = AppApiHelper.MovieOrderType.POPULAR
 
@@ -92,13 +93,14 @@ class MainActivity : BaseActivity<ActivityMainBinding,MainViewModel>(), Lifecycl
 //        getViewDataBinding().rvMovies.addOnScrollListener(scrollListener)
 //        getViewDataBinding().rvMovies.addOnScrollListener(scrollListener!!)
 
-        mainViewModel.getMovies().observe(this, Observer<List<MovieResult>> { movies ->
+        mainViewModel.getApiMovies().observe(this, Observer<List<MovieResult>> { movies ->
             mainViewModel.loading.set(View.INVISIBLE)
             if (movies.isEmpty()) {
                 mainViewModel.showEmpty.set(View.VISIBLE)
             } else {
                 mainViewModel.showEmpty.set(View.GONE)
-                mainViewModel.setMoviesInAdapter(movies)
+                mainViewModel.addMoviesFromApi(movies)
+                mainViewModel.getAdapter().notifyDataSetChanged()
             }
         })
 
@@ -106,6 +108,12 @@ class MainActivity : BaseActivity<ActivityMainBinding,MainViewModel>(), Lifecycl
             it.getContentIfNotHandled()?.let {
                 onSelectedMovie(it)
             }
+        })
+
+        mainViewModel.getDataBaseMovies().observe(this, Observer {
+            mainViewModel.moviesFromDb = it
+            Log.d("MainActivity","update moview from db" + it.toString())
+//            mainViewModel.getAdapter().notifyDataSetChanged()
         })
 
     }
@@ -185,8 +193,8 @@ class MainActivity : BaseActivity<ActivityMainBinding,MainViewModel>(), Lifecycl
                     getViewDataBinding().rvMovies.post { getViewDataBinding().rvMovies.smoothScrollToPosition(0) }
 
                 } else {
-                    mainViewModel.mCurrentMovieOrderType = newOrderType
                     scrollListener!!.resetState()
+                    mainViewModel.mCurrentMovieOrderType = newOrderType
                     mainViewModel.getFirstPage()
 //                    getMoviePage(EndlessRecyclerViewScrollListener.STARTING_PAGE_INDEX)
 

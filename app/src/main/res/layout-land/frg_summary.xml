@@ -1,22 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ui.moviedetail.MovieDetailActivity"
-    android:orientation="horizontal"
-    android:layout_margin="8dp"
-    android:gravity="center_vertical">
+<layout
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:bind="http://schemas.android.com/apk/res-auto">
+    <data>
+        <variable name="viewModel" type="com.example.eccard.filmesfamosos.ui.moviedetail.summary.SummaryViewModel" />
+    </data>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".ui.moviedetail.MovieDetailActivity"
+        android:orientation="horizontal"
+        android:layout_margin="8dp"
+        android:gravity="center_vertical">
 
 
-    <ImageView
-        android:id="@+id/img_view_detail_activity"
-        android:layout_width="@dimen/img_view_movie_detail_land_width"
-        android:layout_height="@dimen/img_view_movie_detail_land_height"
-        tools:src="@mipmap/ic_launcher"
-        android:contentDescription="@string/detail_movie_poster_image"/>
+        <ImageView
+            android:id="@+id/img_view_detail_activity"
+            android:layout_width="@dimen/img_view_movie_detail_land_width"
+            android:layout_height="@dimen/img_view_movie_detail_land_height"
+            tools:src="@mipmap/ic_launcher"
+            android:contentDescription="@string/detail_movie_poster_image"
+            app:imageUrl="@{viewModel.movie.genereatePosterUrl()}"/>
 
 
-    <include layout="@layout/activivty_movie_details_cardview"/>
+        <include layout="@layout/activivty_movie_details_cardview"
+            bind:secondaryViewModel="@{viewModel}"/>
 
-</LinearLayout>
+    </LinearLayout>
+</layout>
