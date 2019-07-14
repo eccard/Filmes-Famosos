@@ -34,13 +34,7 @@ import kotlin.math.roundToInt
 
 class MainActivity : BaseActivity<ActivityMainBinding,MainViewModel>(), LifecycleOwner,MainNavigator {
 
-//    private var moviesAdapter: MoviesAdapter? = null
     private var scrollListener: EndlessRecyclerViewScrollListener? = null
-//    private var mCurrentMovieOrderType: AppApiHelper.MovieOrderType = AppApiHelper.MovieOrderType.POPULAR
-
-//    private var mGetMovieFrg: GetMoviesFragment? = null
-
-
     private lateinit var mActivityMainBinding: ActivityMainBinding
 
     @Inject
@@ -57,41 +51,11 @@ class MainActivity : BaseActivity<ActivityMainBinding,MainViewModel>(), Lifecycl
         setUpViews()
     }
 
-//    private fun getMoviePage(startingPageIndex: Int) {
-//        showLoading()
-////        mGetMovieFrg!!.getData(startingPageIndex, mCurrentMovieOrderType)
-//    }
-
     private fun setUpViews() {
 
         showLoading()
 
         setupRecyclerView()
-
-//        mainViewModel.loading.set(View.VISIBLE)
-
-//        btn_retry.setOnClickListener { getMoviePage(EndlessRecyclerViewScrollListener.STARTING_PAGE_INDEX) }
-
-//        val layoutManager: GridLayoutManager
-
-//        layoutManager = GridLayoutManager(this, calculateBestSpanCount())
-
-//        getViewDataBinding().rvMovies.layoutManager = layoutManager
-
-//        getViewDataBinding().rvMovies.setHasFixedSize(true)
-//        moviesAdapter = MoviesAdapter()
-//        moviesAdapter!!.setOnMovieClickListener(this)
-//        getViewDataBinding().rvMovies.adapter = moviesAdapter
-
-
-
-//        scrollListener = object : EndlessRecyclerViewScrollListener(layoutManager) {
-//            public override fun onLoadMore(page: Int, totalItemsCount: Int, view: RecyclerView) {
-//                getMoviePage(page)
-//            }
-//        }
-//        getViewDataBinding().rvMovies.addOnScrollListener(scrollListener)
-//        getViewDataBinding().rvMovies.addOnScrollListener(scrollListener!!)
 
         mainViewModel.getApiMovies().observe(this, Observer<List<MovieResult>> { movies ->
             mainViewModel.loading.set(View.INVISIBLE)
@@ -113,16 +77,13 @@ class MainActivity : BaseActivity<ActivityMainBinding,MainViewModel>(), Lifecycl
         mainViewModel.getDataBaseMovies().observe(this, Observer {
             mainViewModel.moviesFromDb = it
             Log.d("MainActivity","update moview from db" + it.toString())
-//            mainViewModel.getAdapter().notifyDataSetChanged()
         })
 
     }
 
     private fun setupRecyclerView(){
-
-
         val posterWidth = mActivityMainBinding.rvMovies.context.resources.getDimension(R.dimen.img_view_recycler_view_holder_width)
-        val windowManager = mActivityMainBinding.rvMovies.context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
+//        val windowManager = mActivityMainBinding.rvMovies.context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
         val display = windowManager.defaultDisplay
         val outMetrics = DisplayMetrics()
         display.getMetrics(outMetrics)
@@ -196,8 +157,6 @@ class MainActivity : BaseActivity<ActivityMainBinding,MainViewModel>(), Lifecycl
                     scrollListener!!.resetState()
                     mainViewModel.mCurrentMovieOrderType = newOrderType
                     mainViewModel.getFirstPage()
-//                    getMoviePage(EndlessRecyclerViewScrollListener.STARTING_PAGE_INDEX)
-
                 }
             }
             builderSingle.show()
