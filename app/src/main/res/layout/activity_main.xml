@@ -24,7 +24,6 @@
             <!--app:setAdapter="@{viewModel.getAdapter()}"-->
 
         <ProgressBar
-            android:id="@+id/pb_main"
             android:layout_width="@dimen/pb_width"
             android:layout_height="@dimen/pb_height"
             android:visibility="@{viewModel.loading}"

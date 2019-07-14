@@ -5,10 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.core.content.res.ResourcesCompat
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.example.eccard.filmesfamosos.BR
@@ -16,7 +13,6 @@ import com.example.eccard.filmesfamosos.R
 import com.example.eccard.filmesfamosos.data.network.model.MovieResult
 import com.example.eccard.filmesfamosos.databinding.FrgSummaryBinding
 import com.example.eccard.filmesfamosos.di.ViewModelProviderFactory
-import com.example.eccard.filmesfamosos.ui.main.MainViewModel
 import kotlinx.android.synthetic.main.activivty_movie_details_cardview.view.*
 import muxi.kotlin.walletfda.ui.base.BaseFragment
 import javax.inject.Inject
@@ -39,10 +35,6 @@ class FrgSummary : BaseFragment<FrgSummaryBinding,SummaryViewModel>() {
     }
 
     override fun getBindingVariable() : Int = BR.viewModel
-
-    override fun showToast(message: String) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
 
     internal var movieIsBookmarked = false
 

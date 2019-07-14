@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -15,9 +14,7 @@ import com.example.eccard.filmesfamosos.BR
 import com.example.eccard.filmesfamosos.R
 import com.example.eccard.filmesfamosos.data.network.model.MovieResult
 import com.example.eccard.filmesfamosos.databinding.FrgReviewsBinding
-import com.example.eccard.filmesfamosos.databinding.FrgTrailersBinding
 import com.example.eccard.filmesfamosos.di.ViewModelProviderFactory
-import com.example.eccard.filmesfamosos.ui.moviedetail.trailers.TrailerViewModel
 import com.example.eccard.filmesfamosos.utils.EndlessRecyclerViewScrollListener
 import muxi.kotlin.walletfda.ui.base.BaseFragment
 import javax.inject.Inject
@@ -68,7 +65,7 @@ class FrgReviews : BaseFragment<FrgReviewsBinding,ReviewsViewModel>() {
         frgReviewsBinding.rvReviews.addOnScrollListener(scrollListener)
 
         reviewViewModel.review.observe(this, Observer {
-            reviewViewModel.updateTralersList(it)
+            reviewViewModel.updateReviewList(it)
         })
     }
 

@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.annotation.LayoutRes
 import androidx.annotation.Nullable
 import androidx.appcompat.app.AppCompatActivity
@@ -76,5 +77,9 @@ abstract class BaseFragment<T: ViewDataBinding,V: BaseViewModel<*>>: Fragment(),
 
     fun getViewDataBinding(): T {
         return mViewDataBinding
+    }
+
+    override fun showToast(message: String) {
+        Toast.makeText(parentActivity,message,Toast.LENGTH_SHORT).show()
     }
 }

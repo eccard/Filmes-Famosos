@@ -1,6 +1,9 @@
 package com.example.eccard.filmesfamosos.ui.moviedetail.reviews
 
 import android.util.Log
+import android.view.View
+import androidx.databinding.ObservableField
+import androidx.databinding.ObservableInt
 import androidx.lifecycle.MutableLiveData
 import com.example.eccard.filmesfamosos.R
 import com.example.eccard.filmesfamosos.data.network.api.AppApiHelper
@@ -23,6 +26,10 @@ class ReviewsViewModel @Inject constructor(private var apiHelper: AppApiHelper):
 
 
     var movie = MutableLiveData<MovieResult>()
+    var loading = ObservableInt(View.VISIBLE)
+    var showError = ObservableInt(View.INVISIBLE)
+    var showEmpty = ObservableInt(View.INVISIBLE)
+
 
     var review = MutableLiveData<List<MovieReviewResult>>()
 
@@ -47,24 +54,34 @@ class ReviewsViewModel @Inject constructor(private var apiHelper: AppApiHelper):
     fun getReviews(page : Int){
 
         val scope = CoroutineScope(Dispatchers.Main)
-
+        loading.set(View.VISIBLE)
         scope.launch(context = Dispatchers.Main) {
 
             val response = withContext(context = Dispatchers.IO) {
                 apiHelper.doGetReviewsFromMovieApiCall(movie.value!!.id,page)
             }
-
+            loading.set(View.INVISIBLE)
             if (response.isSuccessful){
+                showError.set(View.INVISIBLE)
                 review.value = (response.body() as MovieReviewResponse).results
             } else {
                 Log.e(TAG,"Error loading reviews")
+                showError.set(View.VISIBLE)
+                showEmpty.set(View.INVISIBLE)
             }
         }
     }
 
 
-    fun updateTralersList(reviews: List<MovieReviewResult>) {
+    fun updateReviewList(reviews: List<MovieReviewResult>) {
         reviewDataRepo.addAll(reviews)
+
+        if (reviewDataRepo.size == 0){
+            showError.set(View.VISIBLE)
+            showEmpty.set(View.VISIBLE)
+        } else {
+            showError.set(View.INVISIBLE)
+        }
 
         reviewsAdapter.setReviews(reviewDataRepo)
         reviewsAdapter.notifyDataSetChanged()
