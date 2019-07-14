@@ -1,5 +1,11 @@
 apply plugin: 'com.android.application'
 
+apply plugin: 'kotlin-android'
+
+apply plugin: 'kotlin-android-extensions'
+
+apply plugin: 'kotlin-kapt'
+
 apply from: rootProject.file("dependencies.gradle")
 
 android {
@@ -53,13 +59,17 @@ dependencies {
             retrofit.values(),
             okhttp3.values(),
             rx.values(),
-            lifecycle.extensions
-
-
+            lifecycle.extensions,
+            lifecycle.runtime,
+            dagger2.core,
+            dagger2.dagger_android,
+            coroutines.values()
     )
 
-    annotationProcessor(
+    kapt (
             room.compiler,
             lifecycle.compiler,
+            dagger2.compiler,
+            dagger2.processor
     )
 }
