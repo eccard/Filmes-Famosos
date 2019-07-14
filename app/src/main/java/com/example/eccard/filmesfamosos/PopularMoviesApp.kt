@@ -10,13 +10,10 @@ import javax.inject.Inject
 class PopularMoviesApp : Application(), HasActivityInjector {
 
     @Inject
-    lateinit internal var dispatchingAndroidInjector: DispatchingAndroidInjector<Activity>
+    lateinit var dispatchingAndroidInjector: DispatchingAndroidInjector<Activity>
 
 
-    @Inject
-    lateinit internal var activityDispatchingAndroidInjector: DispatchingAndroidInjector<Activity>
-
-    override fun activityInjector() = activityDispatchingAndroidInjector
+    override fun activityInjector() = dispatchingAndroidInjector
 
     override fun onCreate() {
         super.onCreate()
