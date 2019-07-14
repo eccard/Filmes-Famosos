@@ -7,7 +7,7 @@ import androidx.lifecycle.MutableLiveData
 import com.example.eccard.filmesfamosos.R
 import com.example.eccard.filmesfamosos.data.network.api.AppApiHelper
 import com.example.eccard.filmesfamosos.data.network.database.MovieDao
-import com.example.eccard.filmesfamosos.data.network.model.MovieResponse
+import com.example.eccard.filmesfamosos.data.network.model.network.MovieResponse
 import com.example.eccard.filmesfamosos.data.network.model.MovieResult
 import com.example.eccard.filmesfamosos.utils.EndlessRecyclerViewScrollListener
 import com.example.eccard.filmesfamosos.utils.Event

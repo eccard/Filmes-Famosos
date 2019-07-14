@@ -1,6 +1,8 @@
-package com.example.eccard.filmesfamosos.data.network.model;
+package com.example.eccard.filmesfamosos.data.network.model.network;
 
 import java.util.List;
+
+import com.example.eccard.filmesfamosos.data.network.model.TrailerResult;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 

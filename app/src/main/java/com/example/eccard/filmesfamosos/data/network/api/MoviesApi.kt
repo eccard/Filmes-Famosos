@@ -1,8 +1,8 @@
 package com.example.eccard.filmesfamosos.data.network.api
 
-import com.example.eccard.filmesfamosos.data.network.model.MovieResponse
-import com.example.eccard.filmesfamosos.data.network.model.MovieReviewResponse
-import com.example.eccard.filmesfamosos.data.network.model.MovieTrailersReviewResponse
+import com.example.eccard.filmesfamosos.data.network.model.network.MovieResponse
+import com.example.eccard.filmesfamosos.data.network.model.network.MovieReviewResponse
+import com.example.eccard.filmesfamosos.data.network.model.network.MovieTrailersReviewResponse
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path

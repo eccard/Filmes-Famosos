@@ -1,6 +1,7 @@
-package com.example.eccard.filmesfamosos.data.network.model;
+package com.example.eccard.filmesfamosos.data.network.model.network;
 
 
+import com.example.eccard.filmesfamosos.data.network.model.MovieResult;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 

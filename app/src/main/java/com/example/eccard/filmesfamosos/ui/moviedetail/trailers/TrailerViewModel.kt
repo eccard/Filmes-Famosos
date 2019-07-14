@@ -6,7 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import com.example.eccard.filmesfamosos.R
 import com.example.eccard.filmesfamosos.data.network.api.AppApiHelper
 import com.example.eccard.filmesfamosos.data.network.model.MovieResult
-import com.example.eccard.filmesfamosos.data.network.model.MovieTrailersReviewResponse
+import com.example.eccard.filmesfamosos.data.network.model.network.MovieTrailersReviewResponse
 import com.example.eccard.filmesfamosos.data.network.model.TrailerResult
 import com.example.eccard.filmesfamosos.utils.Event
 import kotlinx.coroutines.CoroutineScope

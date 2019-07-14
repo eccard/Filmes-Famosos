@@ -2,13 +2,12 @@ package com.example.eccard.filmesfamosos.ui.moviedetail.reviews
 
 import android.util.Log
 import android.view.View
-import androidx.databinding.ObservableField
 import androidx.databinding.ObservableInt
 import androidx.lifecycle.MutableLiveData
 import com.example.eccard.filmesfamosos.R
 import com.example.eccard.filmesfamosos.data.network.api.AppApiHelper
 import com.example.eccard.filmesfamosos.data.network.model.MovieResult
-import com.example.eccard.filmesfamosos.data.network.model.MovieReviewResponse
+import com.example.eccard.filmesfamosos.data.network.model.network.MovieReviewResponse
 import com.example.eccard.filmesfamosos.data.network.model.MovieReviewResult
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

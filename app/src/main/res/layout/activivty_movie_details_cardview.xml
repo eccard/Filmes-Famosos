@@ -54,7 +54,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="8dp"
                         android:layout_marginStart="8dp"
-                        android:text="@{secondaryViewModel.movie.originalTitle}"/>
+                        android:text="@{secondaryViewModel.movie.original_title}"/>
 
                 </TableRow>
 
@@ -79,7 +79,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="8dp"
                         android:layout_marginStart="8dp"
-                        android:text="@{secondaryViewModel.movie.voteAverage.toString()}"/>
+                        android:text="@{String.valueOf(secondaryViewModel.movie.vote_average)}"/>
                 </TableRow>
 
                 <TableRow
@@ -102,7 +102,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="8dp"
                         android:layout_marginStart="8dp"
-                        android:text="@{secondaryViewModel.movie.releaseDate}"/>
+                        android:text="@{secondaryViewModel.movie.release_date}"/>
                 </TableRow>
 
 
