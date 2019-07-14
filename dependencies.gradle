@@ -15,7 +15,6 @@ ext {
     versions.retrofit = "2.4.0"
     versions.okhttp3 = "3.10.0"
     versions.picasso = "2.71828"
-    versions.butterknife = "10.1.0"
     versions.gson_version = "2.8.0"
     versions.legacy_support = "1.0.0"
 
@@ -70,8 +69,5 @@ ext {
     ]
 
 
-    butterknife = [
-            butterknife : "com.jakewharton:butterknife:$versions.butterknife",
-            compiler : "com.jakewharton:butterknife-compiler:$versions.butterknife"
     ]
 }
