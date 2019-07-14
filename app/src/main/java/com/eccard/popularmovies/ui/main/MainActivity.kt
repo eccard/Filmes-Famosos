@@ -22,6 +22,7 @@ import com.eccard.popularmovies.di.ViewModelProviderFactory
 import com.eccard.popularmovies.ui.moviedetail.MovieDetailActivity
 import com.eccard.popularmovies.utils.EndlessRecyclerViewScrollListener
 import com.eccard.popularmovies.utils.ItemOffsetDecoration
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import muxi.kotlin.walletfda.ui.base.BaseActivity
 import javax.inject.Inject
 import kotlin.math.roundToInt
@@ -53,6 +54,8 @@ class MainActivity : BaseActivity<ActivityMainBinding,MainViewModel>(), Lifecycl
 
         setupRecyclerView()
 
+        setupBottomNavigation()
+
         mainViewModel.getApiMovies().observe(this, Observer<List<MovieResult>> { movies ->
             mainViewModel.loading.set(View.INVISIBLE)
             if (movies.isEmpty()) {
@@ -75,6 +78,27 @@ class MainActivity : BaseActivity<ActivityMainBinding,MainViewModel>(), Lifecycl
             Log.d("MainActivity","update moview from db" + it.toString())
         })
 
+    }
+
+    private fun setupBottomNavigation() {
+        mActivityMainBinding.navigation.setOnNavigationItemSelectedListener { p0 ->
+            val newOrderType: AppApiHelper.MovieOrderType = when (p0.itemId){
+                R.id.nav_most_popular -> AppApiHelper.MovieOrderType.POPULAR
+                R.id.nav_top_rated -> AppApiHelper.MovieOrderType.TOP_RATED
+                else -> AppApiHelper.MovieOrderType.TOP_BOOKMARK
+            }
+
+            if (mainViewModel.mCurrentMovieOrderType === newOrderType) {
+                getViewDataBinding().rvMovies.post {
+                    getViewDataBinding().rvMovies.smoothScrollToPosition(0)
+                }
+            } else {
+                scrollListener!!.resetState()
+                mainViewModel.mCurrentMovieOrderType = newOrderType
+                mainViewModel.getFirstPage()
+            }
+            true
+        }
     }
 
     private fun setupRecyclerView(){
@@ -117,54 +141,6 @@ class MainActivity : BaseActivity<ActivityMainBinding,MainViewModel>(), Lifecycl
         mainViewModel.loading.set(View.INVISIBLE)
         mainViewModel.showEmpty.set(View.VISIBLE)
     }
-
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.main, menu)
-        return super.onCreateOptionsMenu(menu)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == R.id.action_filter) {
-
-            val builderSingle = AlertDialog.Builder(this@MainActivity)
-            builderSingle.setTitle(getString(R.string.select_filter))
-
-
-            val arrayAdapter = ArrayAdapter.createFromResource(this@MainActivity,
-                    R.array.order_array,
-                    android.R.layout.simple_list_item_1)
-
-            builderSingle.setNegativeButton(android.R.string.cancel) { dialog, _ -> dialog.dismiss() }
-
-            builderSingle.setAdapter(arrayAdapter) { dialog, which ->
-                val newOrderType: AppApiHelper.MovieOrderType
-                if (which == 0) {
-                    newOrderType = AppApiHelper.MovieOrderType.POPULAR
-                } else if (which == 1) {
-                    newOrderType = AppApiHelper.MovieOrderType.TOP_RATED
-
-                } else {
-                    newOrderType = AppApiHelper.MovieOrderType.TOP_BOOKMARK
-                }
-
-                if (mainViewModel.mCurrentMovieOrderType === newOrderType) {
-
-                    getViewDataBinding().rvMovies.post { getViewDataBinding().rvMovies.smoothScrollToPosition(0) }
-
-                } else {
-                    scrollListener!!.resetState()
-                    mainViewModel.mCurrentMovieOrderType = newOrderType
-                    mainViewModel.getFirstPage()
-                }
-            }
-            builderSingle.show()
-
-            return true
-        } else {
-            return super.onOptionsItemSelected(item)
-        }
-    }
-
 
     override fun onMovieError(throwable: Throwable) {
         showLoadingError()
