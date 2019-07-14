@@ -124,10 +124,10 @@ class MainActivity : BaseActivity<ActivityMainBinding,MainViewModel>(), Lifecycl
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == R.id.action_order_by) {
+        if (item.itemId == R.id.action_filter) {
 
             val builderSingle = AlertDialog.Builder(this@MainActivity)
-            builderSingle.setTitle(getString(R.string.select_order))
+            builderSingle.setTitle(getString(R.string.select_filter))
 
 
             val arrayAdapter = ArrayAdapter.createFromResource(this@MainActivity,
