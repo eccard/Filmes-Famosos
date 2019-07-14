@@ -27,6 +27,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@{viewModel.getTrailerAt(position).name}"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             tools:text="TextView"
             android:padding="8dp"
             android:layout_gravity="center_vertical"/>
