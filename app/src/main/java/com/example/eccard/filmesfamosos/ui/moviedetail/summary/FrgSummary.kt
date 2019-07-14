@@ -58,7 +58,7 @@ class FrgSummary : BaseFragment<FrgSummaryBinding,SummaryViewModel>() {
 
             summaryViewModel.movie.value = movieResult
 
-            checkIfMovieIsAlreadyBookmarked(movieResult!!.id!!)
+            checkIfMovieIsAlreadyBookmarked(movieResult!!.id)
 
             summaryViewModel.movieIsBookmarked.observe(this, Observer {
                 updateBookmarkedState(it)

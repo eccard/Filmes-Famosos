@@ -1,9 +1,10 @@
 package com.example.eccard.filmesfamosos.data.network.model.network
 
-@Suppress("unused")
-data class ResponseModel(
+import com.example.eccard.filmesfamosos.data.network.model.MovieResult
+
+data class MovieResponse(
         val page: Int,
-        val results: Any,
+        val results: List<MovieResult>,
         val total_results: Int,
         val total_pages: Int
 )

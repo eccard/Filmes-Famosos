@@ -20,7 +20,7 @@
             android:layout_height="@dimen/img_view_movie_detail_height"
             android:layout_gravity="center_horizontal"
             tools:src="@mipmap/ic_launcher"
-            app:imageUrl="@{viewModel.movie.genereatePosterUrl()}"
+            app:imageUrl="@{viewModel.movie.generatePosterUrl()}"
             android:contentDescription="@string/detail_movie_poster_image"/>
 
         <include layout="@layout/activivty_movie_details_cardview"

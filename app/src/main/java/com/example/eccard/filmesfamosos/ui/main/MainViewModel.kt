@@ -123,7 +123,7 @@ class MainViewModel @Inject constructor(private var moviesDao: MovieDao, private
 
                 loading.set(View.INVISIBLE)
                 if (response.isSuccessful){
-                    moviesDataApi.value = (response.body() as MovieResponse).movieResults
+                    moviesDataApi.value = (response.body() as MovieResponse).results
                 } else {
                     showEmpty.set(View.VISIBLE)
                 }

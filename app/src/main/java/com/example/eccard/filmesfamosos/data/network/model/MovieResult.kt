@@ -23,7 +23,7 @@ data class MovieResult(
         val overview: String,
         val release_date: String
 ) : Parcelable {
-    fun genereatePosterUrl(): String? {
+    fun generatePosterUrl(): String? {
         val uri = Uri.parse(AppConstants.ENDPOINT_MOVIES_POSTER_BASE_URL + poster_path)
 
         var url: String?

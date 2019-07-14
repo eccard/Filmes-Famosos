@@ -79,7 +79,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="8dp"
                         android:layout_marginStart="8dp"
-                        android:text="@{String.valueOf(secondaryViewModel.movie.vote_average)}"/>
+                        android:text="@{Float.valueOf(secondaryViewModel.movie.vote_average).toString()}"/>
                 </TableRow>
 
                 <TableRow

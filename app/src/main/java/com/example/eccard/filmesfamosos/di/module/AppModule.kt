@@ -8,21 +8,15 @@ import com.example.eccard.filmesfamosos.BuildConfig
 import com.example.eccard.filmesfamosos.data.network.api.AppApiHelper
 import com.example.eccard.filmesfamosos.data.network.api.MoviesApi
 import com.example.eccard.filmesfamosos.data.network.database.AppDatabase
-import com.example.eccard.filmesfamosos.utils.Constants
 import com.google.gson.Gson
 import dagger.Module
 import dagger.Provides
-import io.reactivex.schedulers.Schedulers
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
-import okhttp3.Request
 import okhttp3.Response
-import okhttp3.internal.connection.ConnectInterceptor.intercept
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
-import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
-import java.io.IOException
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
@@ -73,7 +67,7 @@ class AppModule {
 
                 // Request customization: add request headers
                 val newUrl = originalUrl.newBuilder()
-                        .addQueryParameter(Constants.API_KEY, BuildConfig.THEMOVIEDB_API_KEY).build()
+                        .addQueryParameter("api_key", BuildConfig.THEMOVIEDB_API_KEY).build()
 
 
                 val newRequest = originalRequest.newBuilder()
