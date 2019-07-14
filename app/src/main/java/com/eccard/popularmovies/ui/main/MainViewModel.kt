@@ -50,7 +50,7 @@ class MainViewModel @Inject constructor(private var moviesDao: MovieDao, private
         set(value){
             if (mCurrentMovieOrderType == AppApiHelper.MovieOrderType.TOP_BOOKMARK) {
                 moviesDataRepo = value.toMutableList()
-                moviesAdapter.notifyDataSetChanged()
+                moviesAdapter.setMovies(moviesDataRepo)
             }
             field = value
         }
