@@ -27,7 +27,8 @@ ext {
             constraint : "androidx.constraintlayout:constraintlayout:$versions.constraint_layout",
             androidxcore : "androidx.core:core-ktx:$versions.core_ktx",
             material : "com.google.android.material:material:$versions.support",
-            v4 : "androidx.legacy:legacy-support-v4:$versions.legacy_support"
+            v4 : "androidx.legacy:legacy-support-v4:$versions.legacy_support",
+            pallete : "androidx.palette:palette:$versions.support"
     ]
 
 

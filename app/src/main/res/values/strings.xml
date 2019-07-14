@@ -15,7 +15,7 @@
     <string name="review">Reviews</string>
     <string name="author_img">Image of Author</string>
     <string name="no_reviews">No reviews for this movie</string>
-
+    <string name="movie_rating">%1$s rating</string>
     <string-array name="order_array">
         <item name="most_popular">Most popular</item>
         <item name="top_rated">Top rated</item>

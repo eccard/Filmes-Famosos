@@ -21,6 +21,7 @@ import com.eccard.popularmovies.databinding.ActivityMainBinding
 import com.eccard.popularmovies.di.ViewModelProviderFactory
 import com.eccard.popularmovies.ui.moviedetail.MovieDetailActivity
 import com.eccard.popularmovies.utils.EndlessRecyclerViewScrollListener
+import com.eccard.popularmovies.utils.ItemOffsetDecoration
 import muxi.kotlin.walletfda.ui.base.BaseActivity
 import javax.inject.Inject
 import kotlin.math.roundToInt
@@ -90,6 +91,9 @@ class MainActivity : BaseActivity<ActivityMainBinding,MainViewModel>(), Lifecycl
         mActivityMainBinding.rvMovies.setHasFixedSize(true)
         mActivityMainBinding.rvMovies.adapter =  mainViewModel.getAdapter()
 
+        val itemOffsetDecoration = ItemOffsetDecoration(this@MainActivity,
+                R.dimen.grid_spacing_small)
+        mActivityMainBinding.rvMovies.addItemDecoration(itemOffsetDecoration)
 
         scrollListener = object : EndlessRecyclerViewScrollListener(layoutManager) {
             public override fun onLoadMore(page: Int, totalItemsCount: Int, view: RecyclerView) {
