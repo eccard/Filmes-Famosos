@@ -1,8 +1,8 @@
 <resources>
     <string name="app_name">Popular Movies</string>
-    <string name="order_by">Order By</string>
+    <string name="filter">Filters</string>
     <string name="movie_item_poster">Movie poster</string>
-    <string name="select_order">Select order</string>
+    <string name="select_filter">Select filter</string>
     <string name="rate">Rate :</string>
     <string name="overview">Overview</string>
     <string name="launch_date">Launch date :</string>
