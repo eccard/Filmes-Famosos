@@ -1,11 +1,11 @@
-package com.eccard.filmesfamosos.di.builder
+package com.eccard.popularmovies.di.builder
 
-import com.eccard.filmesfamosos.ui.main.MainActivity
-import com.eccard.filmesfamosos.ui.main.MainActivityProvider
-import com.eccard.filmesfamosos.ui.moviedetail.MovieDetailActivity
-import com.eccard.filmesfamosos.ui.moviedetail.reviews.ReviewsFragmentProvider
-import com.eccard.filmesfamosos.ui.moviedetail.summary.SummaryFragmentProvider
-import com.eccard.filmesfamosos.ui.moviedetail.trailers.TrailerFragmentProvider
+import com.eccard.popularmovies.ui.main.MainActivity
+import com.eccard.popularmovies.ui.main.MainActivityProvider
+import com.eccard.popularmovies.ui.moviedetail.MovieDetailActivity
+import com.eccard.popularmovies.ui.moviedetail.reviews.ReviewsFragmentProvider
+import com.eccard.popularmovies.ui.moviedetail.summary.SummaryFragmentProvider
+import com.eccard.popularmovies.ui.moviedetail.trailers.TrailerFragmentProvider
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 

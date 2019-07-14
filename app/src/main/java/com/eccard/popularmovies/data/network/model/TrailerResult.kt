@@ -1,4 +1,4 @@
-package com.eccard.filmesfamosos.data.network.model
+package com.eccard.popularmovies.data.network.model
 
 data class TrailerResult(
         val id: String,

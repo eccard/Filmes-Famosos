@@ -1,16 +1,16 @@
-package com.eccard.filmesfamosos.ui.main
+package com.eccard.popularmovies.ui.main
 
 import android.view.View
 import androidx.databinding.ObservableInt
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.eccard.filmesfamosos.R
-import com.eccard.filmesfamosos.data.network.api.AppApiHelper
-import com.eccard.filmesfamosos.data.network.database.MovieDao
-import com.eccard.filmesfamosos.data.network.model.network.MovieResponse
-import com.eccard.filmesfamosos.data.network.model.MovieResult
-import com.eccard.filmesfamosos.utils.EndlessRecyclerViewScrollListener
-import com.eccard.filmesfamosos.utils.Event
+import com.eccard.popularmovies.R
+import com.eccard.popularmovies.data.network.api.AppApiHelper
+import com.eccard.popularmovies.data.network.database.MovieDao
+import com.eccard.popularmovies.data.network.model.network.MovieResponse
+import com.eccard.popularmovies.data.network.model.MovieResult
+import com.eccard.popularmovies.utils.EndlessRecyclerViewScrollListener
+import com.eccard.popularmovies.utils.Event
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

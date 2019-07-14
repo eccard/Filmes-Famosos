@@ -1,4 +1,4 @@
-package com.eccard.filmesfamosos.ui.moviedetail.summary
+package com.eccard.popularmovies.ui.moviedetail.summary
 
 import dagger.Module
 import dagger.android.ContributesAndroidInjector

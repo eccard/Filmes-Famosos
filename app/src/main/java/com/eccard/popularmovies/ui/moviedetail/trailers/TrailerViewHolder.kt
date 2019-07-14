@@ -1,8 +1,8 @@
-package com.eccard.filmesfamosos.ui.moviedetail.trailers
+package com.eccard.popularmovies.ui.moviedetail.trailers
 
 import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.RecyclerView
-import com.eccard.filmesfamosos.BR
+import com.eccard.popularmovies.BR
 
 class TrailerViewHolder  (val binding: ViewDataBinding) : RecyclerView.ViewHolder(binding.root) {
 

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
     <data>
-        <variable name="viewModel" type="com.example.eccard.filmesfamosos.ui.moviedetail.reviews.ReviewsViewModel" />
+        <variable name="viewModel" type="com.eccard.popularmovies.ui.moviedetail.reviews.ReviewsViewModel" />
     </data>
 
 

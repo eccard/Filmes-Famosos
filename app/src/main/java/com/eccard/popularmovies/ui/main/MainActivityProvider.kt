@@ -1,4 +1,4 @@
-package com.eccard.filmesfamosos.ui.main
+package com.eccard.popularmovies.ui.main
 
 import dagger.Module
 import dagger.android.ContributesAndroidInjector

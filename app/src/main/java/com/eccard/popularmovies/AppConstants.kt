@@ -1,4 +1,4 @@
-package com.eccard.filmesfamosos
+package com.eccard.popularmovies
 
 object AppConstants{
     internal val APP_DB_NAME = "popular_movies.db"

@@ -1,4 +1,4 @@
-package com.eccard.filmesfamosos.utils
+package com.eccard.popularmovies.utils
 
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager

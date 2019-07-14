@@ -1,6 +1,6 @@
-package com.eccard.filmesfamosos.data.network.model.network
+package com.eccard.popularmovies.data.network.model.network
 
-import com.eccard.filmesfamosos.data.network.model.MovieResult
+import com.eccard.popularmovies.data.network.model.MovieResult
 
 data class MovieResponse(
         val page: Int,

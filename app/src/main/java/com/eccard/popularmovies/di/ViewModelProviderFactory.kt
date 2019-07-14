@@ -1,13 +1,13 @@
-package com.eccard.filmesfamosos.di
+package com.eccard.popularmovies.di
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.eccard.filmesfamosos.data.network.api.AppApiHelper
-import com.eccard.filmesfamosos.data.network.database.MovieDao
-import com.eccard.filmesfamosos.ui.main.MainViewModel
-import com.eccard.filmesfamosos.ui.moviedetail.reviews.ReviewsViewModel
-import com.eccard.filmesfamosos.ui.moviedetail.summary.SummaryViewModel
-import com.eccard.filmesfamosos.ui.moviedetail.trailers.TrailerViewModel
+import com.eccard.popularmovies.data.network.api.AppApiHelper
+import com.eccard.popularmovies.data.network.database.MovieDao
+import com.eccard.popularmovies.ui.main.MainViewModel
+import com.eccard.popularmovies.ui.moviedetail.reviews.ReviewsViewModel
+import com.eccard.popularmovies.ui.moviedetail.summary.SummaryViewModel
+import com.eccard.popularmovies.ui.moviedetail.trailers.TrailerViewModel
 import java.lang.IllegalArgumentException
 import javax.inject.Inject
 import javax.inject.Singleton

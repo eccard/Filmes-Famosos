@@ -1,4 +1,4 @@
-package com.eccard.filmesfamosos.utils
+package com.eccard.popularmovies.utils
 
 /**
  * Used as a wrapper for data that is exposed via a LiveData that represents an event.

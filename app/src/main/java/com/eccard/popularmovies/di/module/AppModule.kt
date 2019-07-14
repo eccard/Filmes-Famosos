@@ -1,13 +1,13 @@
-package com.eccard.filmesfamosos.di.module
+package com.eccard.popularmovies.di.module
 
 import android.app.Application
 import android.content.Context
 import androidx.room.Room
-import com.eccard.filmesfamosos.AppConstants
-import com.eccard.filmesfamosos.BuildConfig
-import com.eccard.filmesfamosos.data.network.api.AppApiHelper
-import com.eccard.filmesfamosos.data.network.api.MoviesApi
-import com.eccard.filmesfamosos.data.network.database.AppDatabase
+import com.eccard.popularmovies.AppConstants
+import com.eccard.popularmovies.BuildConfig
+import com.eccard.popularmovies.data.network.api.AppApiHelper
+import com.eccard.popularmovies.data.network.api.MoviesApi
+import com.eccard.popularmovies.data.network.database.AppDatabase
 import com.google.gson.Gson
 import dagger.Module
 import dagger.Provides

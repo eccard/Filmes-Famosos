@@ -1,4 +1,4 @@
-package com.eccard.filmesfamosos.ui.moviedetail.trailers
+package com.eccard.popularmovies.ui.moviedetail.trailers
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -6,7 +6,7 @@ import androidx.annotation.LayoutRes
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.RecyclerView
-import com.eccard.filmesfamosos.data.network.model.TrailerResult
+import com.eccard.popularmovies.data.network.model.TrailerResult
 
 class TrailerAdapter (@param:LayoutRes private val layoutId: Int, private val viewModel: TrailerViewModel):
         RecyclerView.Adapter<TrailerViewHolder>(){

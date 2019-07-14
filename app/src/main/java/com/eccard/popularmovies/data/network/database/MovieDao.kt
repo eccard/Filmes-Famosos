@@ -1,11 +1,11 @@
-package com.eccard.filmesfamosos.data.network.database
+package com.eccard.popularmovies.data.network.database
 
 import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
-import com.eccard.filmesfamosos.data.network.model.MovieResult
+import com.eccard.popularmovies.data.network.model.MovieResult
 
 @Dao
 interface MovieDao {

@@ -1,8 +1,8 @@
-package com.eccard.filmesfamosos.ui.main
+package com.eccard.popularmovies.ui.main
 
 import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.RecyclerView
-import com.eccard.filmesfamosos.BR
+import com.eccard.popularmovies.BR
 
 class MovieViewHolder (val binding: ViewDataBinding) : RecyclerView.ViewHolder(binding.root){
 

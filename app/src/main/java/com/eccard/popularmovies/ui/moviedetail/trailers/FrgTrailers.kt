@@ -1,4 +1,4 @@
-package com.eccard.filmesfamosos.ui.moviedetail.trailers
+package com.eccard.popularmovies.ui.moviedetail.trailers
 
 import android.content.Intent
 import android.net.Uri
@@ -11,11 +11,11 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.eccard.filmesfamosos.BR
-import com.eccard.filmesfamosos.R
-import com.eccard.filmesfamosos.data.network.model.MovieResult
-import com.eccard.filmesfamosos.databinding.FrgTrailersBinding
-import com.eccard.filmesfamosos.di.ViewModelProviderFactory
+import com.eccard.popularmovies.BR
+import com.eccard.popularmovies.R
+import com.eccard.popularmovies.data.network.model.MovieResult
+import com.eccard.popularmovies.databinding.FrgTrailersBinding
+import com.eccard.popularmovies.di.ViewModelProviderFactory
 import muxi.kotlin.walletfda.ui.base.BaseFragment
 import javax.inject.Inject
 

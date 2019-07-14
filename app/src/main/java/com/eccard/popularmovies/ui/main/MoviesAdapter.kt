@@ -1,4 +1,4 @@
-package com.eccard.filmesfamosos.ui.main
+package com.eccard.popularmovies.ui.main
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -6,7 +6,7 @@ import androidx.annotation.LayoutRes
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.RecyclerView
-import com.eccard.filmesfamosos.data.network.model.MovieResult
+import com.eccard.popularmovies.data.network.model.MovieResult
 
 class MoviesAdapter (@param:LayoutRes private val layoutId: Int, private val viewModel: MainViewModel) :
         RecyclerView.Adapter<MovieViewHolder>(){

@@ -1,8 +1,8 @@
-package com.eccard.filmesfamosos
+package com.eccard.popularmovies
 
 import android.app.Activity
 import android.app.Application
-import com.eccard.filmesfamosos.di.component.DaggerAppComponent
+import com.eccard.popularmovies.di.component.DaggerAppComponent
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasActivityInjector
 import javax.inject.Inject

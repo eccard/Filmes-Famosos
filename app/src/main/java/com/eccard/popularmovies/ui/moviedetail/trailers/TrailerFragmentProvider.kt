@@ -1,4 +1,4 @@
-package com.eccard.filmesfamosos.ui.moviedetail.trailers
+package com.eccard.popularmovies.ui.moviedetail.trailers
 
 import dagger.Module
 import dagger.android.ContributesAndroidInjector

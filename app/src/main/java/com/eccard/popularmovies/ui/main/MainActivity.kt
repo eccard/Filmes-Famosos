@@ -1,4 +1,4 @@
-package com.eccard.filmesfamosos.ui.main
+package com.eccard.popularmovies.ui.main
 
 import android.os.Bundle
 import android.util.DisplayMetrics
@@ -13,14 +13,14 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.eccard.filmesfamosos.BR
-import com.eccard.filmesfamosos.R
-import com.eccard.filmesfamosos.data.network.api.AppApiHelper
-import com.eccard.filmesfamosos.data.network.model.MovieResult
-import com.eccard.filmesfamosos.databinding.ActivityMainBinding
-import com.eccard.filmesfamosos.di.ViewModelProviderFactory
-import com.eccard.filmesfamosos.ui.moviedetail.MovieDetailActivity
-import com.eccard.filmesfamosos.utils.EndlessRecyclerViewScrollListener
+import com.eccard.popularmovies.BR
+import com.eccard.popularmovies.R
+import com.eccard.popularmovies.data.network.api.AppApiHelper
+import com.eccard.popularmovies.data.network.model.MovieResult
+import com.eccard.popularmovies.databinding.ActivityMainBinding
+import com.eccard.popularmovies.di.ViewModelProviderFactory
+import com.eccard.popularmovies.ui.moviedetail.MovieDetailActivity
+import com.eccard.popularmovies.utils.EndlessRecyclerViewScrollListener
 import muxi.kotlin.walletfda.ui.base.BaseActivity
 import javax.inject.Inject
 import kotlin.math.roundToInt

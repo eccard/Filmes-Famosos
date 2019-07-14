@@ -1,4 +1,4 @@
-package com.eccard.filmesfamosos.ui.moviedetail.reviews
+package com.eccard.popularmovies.ui.moviedetail.reviews
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -6,7 +6,7 @@ import androidx.annotation.LayoutRes
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.RecyclerView
-import com.eccard.filmesfamosos.data.network.model.MovieReviewResult
+import com.eccard.popularmovies.data.network.model.MovieReviewResult
 
 class ReviewsAdapter (@param:LayoutRes private val layoutId: Int, private val viewModel: ReviewsViewModel):
         RecyclerView.Adapter<ReviewViewHolder>(){

@@ -1,4 +1,4 @@
-package com.eccard.filmesfamosos.ui.moviedetail.reviews
+package com.eccard.popularmovies.ui.moviedetail.reviews
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,12 +10,12 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.eccard.filmesfamosos.BR
-import com.eccard.filmesfamosos.R
-import com.eccard.filmesfamosos.data.network.model.MovieResult
-import com.eccard.filmesfamosos.databinding.FrgReviewsBinding
-import com.eccard.filmesfamosos.di.ViewModelProviderFactory
-import com.eccard.filmesfamosos.utils.EndlessRecyclerViewScrollListener
+import com.eccard.popularmovies.BR
+import com.eccard.popularmovies.R
+import com.eccard.popularmovies.data.network.model.MovieResult
+import com.eccard.popularmovies.databinding.FrgReviewsBinding
+import com.eccard.popularmovies.di.ViewModelProviderFactory
+import com.eccard.popularmovies.utils.EndlessRecyclerViewScrollListener
 import muxi.kotlin.walletfda.ui.base.BaseFragment
 import javax.inject.Inject
 

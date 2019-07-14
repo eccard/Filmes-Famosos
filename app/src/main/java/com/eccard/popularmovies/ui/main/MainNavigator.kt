@@ -1,6 +1,6 @@
-package com.eccard.filmesfamosos.ui.main
+package com.eccard.popularmovies.ui.main
 
-import com.eccard.filmesfamosos.data.network.model.MovieResult
+import com.eccard.popularmovies.data.network.model.MovieResult
 import muxi.kotlin.walletfda.ui.base.BaseView
 
 interface MainNavigator : BaseView {

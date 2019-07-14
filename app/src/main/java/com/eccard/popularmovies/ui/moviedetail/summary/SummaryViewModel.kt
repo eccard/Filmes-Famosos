@@ -1,9 +1,9 @@
-package com.eccard.filmesfamosos.ui.moviedetail.summary
+package com.eccard.popularmovies.ui.moviedetail.summary
 
 import androidx.lifecycle.MutableLiveData
-import com.eccard.filmesfamosos.data.network.api.AppApiHelper
-import com.eccard.filmesfamosos.data.network.database.MovieDao
-import com.eccard.filmesfamosos.data.network.model.MovieResult
+import com.eccard.popularmovies.data.network.api.AppApiHelper
+import com.eccard.popularmovies.data.network.database.MovieDao
+import com.eccard.popularmovies.data.network.model.MovieResult
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

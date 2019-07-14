@@ -1,8 +1,8 @@
-package com.eccard.filmesfamosos.data.network.api
+package com.eccard.popularmovies.data.network.api
 
-import com.eccard.filmesfamosos.data.network.model.network.MovieResponse
-import com.eccard.filmesfamosos.data.network.model.network.MovieReviewResponse
-import com.eccard.filmesfamosos.data.network.model.network.MovieTrailersReviewResponse
+import com.eccard.popularmovies.data.network.model.network.MovieResponse
+import com.eccard.popularmovies.data.network.model.network.MovieReviewResponse
+import com.eccard.popularmovies.data.network.model.network.MovieTrailersReviewResponse
 import retrofit2.Response
 import javax.inject.Inject
 

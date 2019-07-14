@@ -1,14 +1,14 @@
-package com.eccard.filmesfamosos.ui.moviedetail.trailers
+package com.eccard.popularmovies.ui.moviedetail.trailers
 
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.eccard.filmesfamosos.R
-import com.eccard.filmesfamosos.data.network.api.AppApiHelper
-import com.eccard.filmesfamosos.data.network.model.MovieResult
-import com.eccard.filmesfamosos.data.network.model.network.MovieTrailersReviewResponse
-import com.eccard.filmesfamosos.data.network.model.TrailerResult
-import com.eccard.filmesfamosos.utils.Event
+import com.eccard.popularmovies.R
+import com.eccard.popularmovies.data.network.api.AppApiHelper
+import com.eccard.popularmovies.data.network.model.MovieResult
+import com.eccard.popularmovies.data.network.model.network.MovieTrailersReviewResponse
+import com.eccard.popularmovies.data.network.model.TrailerResult
+import com.eccard.popularmovies.utils.Event
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

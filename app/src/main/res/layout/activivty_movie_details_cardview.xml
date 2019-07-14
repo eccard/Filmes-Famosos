@@ -3,7 +3,7 @@
     <data>
         <variable
             name="secondaryViewModel"
-            type="com.example.eccard.filmesfamosos.ui.moviedetail.summary.SummaryViewModel" />
+            type="com.eccard.popularmovies.ui.moviedetail.summary.SummaryViewModel" />
     </data>
 
     <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"

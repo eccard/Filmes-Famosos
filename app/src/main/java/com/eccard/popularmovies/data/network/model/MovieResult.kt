@@ -1,10 +1,10 @@
-package com.eccard.filmesfamosos.data.network.model
+package com.eccard.popularmovies.data.network.model
 
 import android.net.Uri
 import android.os.Parcel
 import android.os.Parcelable
 import androidx.room.Entity
-import com.eccard.filmesfamosos.AppConstants
+import com.eccard.popularmovies.AppConstants
 import java.net.MalformedURLException
 import java.net.URL
 

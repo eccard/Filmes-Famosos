@@ -10,7 +10,7 @@
             type="java.lang.Integer" />
         <variable
             name="viewModel"
-            type="com.example.eccard.filmesfamosos.ui.moviedetail.trailers.TrailerViewModel" />
+            type="com.eccard.popularmovies.ui.moviedetail.trailers.TrailerViewModel" />
     </data>
 
     <FrameLayout

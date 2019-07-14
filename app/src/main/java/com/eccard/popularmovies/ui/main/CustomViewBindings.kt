@@ -1,4 +1,4 @@
-package com.eccard.filmesfamosos.ui.main
+package com.eccard.popularmovies.ui.main
 
 import android.widget.ImageView
 import androidx.databinding.BindingAdapter

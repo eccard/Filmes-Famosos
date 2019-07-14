@@ -1,4 +1,4 @@
-package com.eccard.filmesfamosos.ui.moviedetail.summary
+package com.eccard.popularmovies.ui.moviedetail.summary
 
 import android.graphics.drawable.Drawable
 import android.os.Bundle
@@ -8,11 +8,11 @@ import android.view.ViewGroup
 import androidx.core.content.res.ResourcesCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import com.eccard.filmesfamosos.BR
-import com.eccard.filmesfamosos.R
-import com.eccard.filmesfamosos.data.network.model.MovieResult
-import com.eccard.filmesfamosos.databinding.FrgSummaryBinding
-import com.eccard.filmesfamosos.di.ViewModelProviderFactory
+import com.eccard.popularmovies.BR
+import com.eccard.popularmovies.R
+import com.eccard.popularmovies.data.network.model.MovieResult
+import com.eccard.popularmovies.databinding.FrgSummaryBinding
+import com.eccard.popularmovies.di.ViewModelProviderFactory
 import kotlinx.android.synthetic.main.activivty_movie_details_cardview.view.*
 import muxi.kotlin.walletfda.ui.base.BaseFragment
 import javax.inject.Inject

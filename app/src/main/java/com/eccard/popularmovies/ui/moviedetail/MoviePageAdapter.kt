@@ -1,13 +1,13 @@
-package com.eccard.filmesfamosos.ui.moviedetail
+package com.eccard.popularmovies.ui.moviedetail
 
 import android.content.Context
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentStatePagerAdapter
-import com.eccard.filmesfamosos.R
-import com.eccard.filmesfamosos.ui.moviedetail.reviews.FrgReviews
-import com.eccard.filmesfamosos.ui.moviedetail.summary.FrgSummary
-import com.eccard.filmesfamosos.ui.moviedetail.trailers.FrgTrailers
+import com.eccard.popularmovies.R
+import com.eccard.popularmovies.ui.moviedetail.reviews.FrgReviews
+import com.eccard.popularmovies.ui.moviedetail.summary.FrgSummary
+import com.eccard.popularmovies.ui.moviedetail.trailers.FrgTrailers
 
 internal class MoviePageAdapter(fm: FragmentManager, private val context: Context) : FragmentStatePagerAdapter(fm) {
 
