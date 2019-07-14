@@ -10,7 +10,7 @@
             type="java.lang.Integer" />
         <variable
             name="viewModel"
-            type="com.example.eccard.filmesfamosos.ui.moviedetail.reviews.ReviewsViewModel" />
+            type="com.eccard.popularmovies.ui.moviedetail.reviews.ReviewsViewModel" />
     </data>
 
 

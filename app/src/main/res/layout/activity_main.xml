@@ -6,7 +6,7 @@
     >
 
     <data>
-        <variable name="viewModel" type="com.example.eccard.filmesfamosos.ui.main.MainViewModel" />
+        <variable name="viewModel" type="com.eccard.popularmovies.ui.main.MainViewModel" />
     </data>
 
     <FrameLayout

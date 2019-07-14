@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:bind="http://schemas.android.com/apk/res-auto">
     <data>
-        <variable name="viewModel" type="com.example.eccard.filmesfamosos.ui.moviedetail.summary.SummaryViewModel" />
+        <variable name="viewModel" type="com.eccard.popularmovies.ui.moviedetail.summary.SummaryViewModel" />
     </data>
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"

@@ -9,7 +9,7 @@
             type="java.lang.Integer" />
         <variable
             name="viewModel"
-            type="com.example.eccard.filmesfamosos.ui.main.MainViewModel" />
+            type="com.eccard.popularmovies.ui.main.MainViewModel" />
     </data>
     <FrameLayout
         android:layout_height="wrap_content"
