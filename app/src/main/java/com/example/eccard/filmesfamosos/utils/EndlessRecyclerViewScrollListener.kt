@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 
 
-abstract class EndlessRecyclerViewScrollListener(layoutManager: GridLayoutManager) : RecyclerView.OnScrollListener() {
+abstract class EndlessRecyclerViewScrollListener(layoutManager: RecyclerView.LayoutManager) : RecyclerView.OnScrollListener() {
     // The minimum amount of items to have below your current scroll position
     // before loading more.
     private var visibleThreshold = 5
@@ -21,7 +21,7 @@ abstract class EndlessRecyclerViewScrollListener(layoutManager: GridLayoutManage
 
     init {
         this.mLayoutManager = layoutManager
-        visibleThreshold = visibleThreshold * layoutManager.spanCount
+//        visibleThreshold = visibleThreshold * layoutManager.spanCount
     }
 
     private fun getLastVisibleItem(lastVisibleItemPositions: IntArray): Int {

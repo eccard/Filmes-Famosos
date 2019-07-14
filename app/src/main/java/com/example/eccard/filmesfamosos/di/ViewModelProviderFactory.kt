@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.eccard.filmesfamosos.data.network.api.AppApiHelper
 import com.example.eccard.filmesfamosos.data.network.database.MovieDao
 import com.example.eccard.filmesfamosos.ui.main.MainViewModel
+import com.example.eccard.filmesfamosos.ui.moviedetail.reviews.ReviewsViewModel
 import com.example.eccard.filmesfamosos.ui.moviedetail.summary.SummaryViewModel
 import com.example.eccard.filmesfamosos.ui.moviedetail.trailers.TrailerViewModel
 import java.lang.IllegalArgumentException
@@ -23,6 +24,8 @@ class ViewModelProviderFactory @Inject constructor(private var moviewDao: MovieD
             return SummaryViewModel(moviewDao, apiHelper) as T
         } else if (modelClass.isAssignableFrom(TrailerViewModel::class.java)){
             return TrailerViewModel(apiHelper) as T
+        } else if (modelClass.isAssignableFrom(ReviewsViewModel::class.java)){
+            return ReviewsViewModel(apiHelper) as T
         }
 //        else {
 //            if(modelClass.isAssignableFrom(PaymentViewModel::class.java)) {

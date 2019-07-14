@@ -13,6 +13,7 @@
     <string name="summary">Summary</string>
     <string name="videos">Trailers</string>
     <string name="review">Reviews</string>
+    <string name="author_img">Image of Author</string>
 
     <string-array name="order_array">
         <item name="most_popular">Most popular</item>

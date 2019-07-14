@@ -20,7 +20,6 @@ class TrailerViewModel @Inject constructor(private var apiHelper: AppApiHelper):
     BaseViewModel<Any>(){
 
     companion object {
-
         val TAG = TrailerViewModel::class.java.simpleName
     }
 
@@ -43,15 +42,15 @@ class TrailerViewModel @Inject constructor(private var apiHelper: AppApiHelper):
 
 
     fun getTrailerAt(index:Int?):TrailerResult?{
-        return if (index != null && trailers.value!!.size > index){
-            trailers.value!![index]
+        return if (index != null && trailersDataRepo.size > index){
+            trailersDataRepo[index]
         } else null
     }
 
 
     private var trailerAdapter : TrailerAdapter
 
-    
+
     init {
         trailerAdapter = TrailerAdapter(R.layout.adapter_trailer,this)
         getMovieTrailers()

@@ -6,45 +6,73 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.eccard.filmesfamosos.BR
 import com.example.eccard.filmesfamosos.R
 import com.example.eccard.filmesfamosos.data.network.model.MovieResult
+import com.example.eccard.filmesfamosos.databinding.FrgReviewsBinding
+import com.example.eccard.filmesfamosos.databinding.FrgTrailersBinding
+import com.example.eccard.filmesfamosos.di.ViewModelProviderFactory
+import com.example.eccard.filmesfamosos.ui.moviedetail.trailers.TrailerViewModel
+import com.example.eccard.filmesfamosos.utils.EndlessRecyclerViewScrollListener
+import muxi.kotlin.walletfda.ui.base.BaseFragment
+import javax.inject.Inject
 
-class FrgReviews : Fragment() {
+class FrgReviews : BaseFragment<FrgReviewsBinding,ReviewsViewModel>() {
 
-    private var reviewAdapter: ReviewsAdapter? = null
+    private lateinit var reviewViewModel: ReviewsViewModel
+
+    @Inject
+    lateinit var factory: ViewModelProviderFactory
+
+    private lateinit var frgReviewsBinding: FrgReviewsBinding
+
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val view = inflater.inflate(R.layout.frg_trailers, container, false)
-
-
-        val recyclerView = view.findViewById<RecyclerView>(R.id.rv_trailers)
-        reviewAdapter = ReviewsAdapter(context)
-
-        val layoutManager = LinearLayoutManager(context)
-        recyclerView.layoutManager = layoutManager
-        recyclerView.adapter = reviewAdapter
-        val dividerItemDecoration = DividerItemDecoration(recyclerView.context,
-                DividerItemDecoration.VERTICAL)
-        dividerItemDecoration.setDrawable(ContextCompat.getDrawable(context!!, R.drawable.divider)!!)
-
-        recyclerView.addItemDecoration(dividerItemDecoration)
+        val view = super.onCreateView(inflater, container, savedInstanceState)
+        setUpRecyclerView()
 
         val intent = activity!!.intent
         if (intent.hasExtra(MovieResult::class.java.simpleName)) {
             val movieResult = intent.getParcelableExtra<MovieResult>(MovieResult::class.java.simpleName)
-
-
-            //            getMovieReviews(movieResult.getId(),1);
+            reviewViewModel.movie.value = movieResult
         }
 
         return view
     }
 
-    companion object {
+    private fun setUpRecyclerView(){
 
+        frgReviewsBinding = getViewDataBinding()
+
+        val layoutManager = LinearLayoutManager(context)
+        frgReviewsBinding.rvReviews.layoutManager = layoutManager
+        frgReviewsBinding.rvReviews.adapter = reviewViewModel.getAdapter()
+
+        val dividerItemDecoration = DividerItemDecoration(frgReviewsBinding.rvReviews.context,
+                DividerItemDecoration.VERTICAL)
+        dividerItemDecoration.setDrawable(ContextCompat.getDrawable(context!!, R.drawable.divider)!!)
+
+        frgReviewsBinding.rvReviews.addItemDecoration(dividerItemDecoration)
+
+        var scrollListener = object : EndlessRecyclerViewScrollListener(layoutManager) {
+            public override fun onLoadMore(page: Int, totalItemsCount: Int, view: RecyclerView) {
+                reviewViewModel.getReviews(page)
+            }
+        }
+
+        frgReviewsBinding.rvReviews.addOnScrollListener(scrollListener)
+
+        reviewViewModel.review.observe(this, Observer {
+            reviewViewModel.updateTralersList(it)
+        })
+    }
+
+    companion object {
         private val TAG = FrgReviews::class.java.simpleName
     }
 
@@ -72,4 +100,19 @@ class FrgReviews : Fragment() {
                 )
         );
     }*/
+
+    override fun getLayoutId() = R.layout.frg_reviews
+
+    override fun getViewModel(): ReviewsViewModel {
+        reviewViewModel = ViewModelProviders.of(this,factory)
+                .get(ReviewsViewModel::class.java)
+        return reviewViewModel
+    }
+
+    override fun getBindingVariable() = BR.viewModel
+
+    override fun showToast(message: String) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
 }
