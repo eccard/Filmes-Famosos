@@ -3,11 +3,7 @@ package com.eccard.popularmovies.ui.main
 import android.os.Bundle
 import android.util.DisplayMetrics
 import android.util.Log
-import android.view.Menu
-import android.view.MenuItem
 import android.view.View
-import android.widget.ArrayAdapter
-import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -22,11 +18,9 @@ import com.eccard.popularmovies.di.ViewModelProviderFactory
 import com.eccard.popularmovies.ui.moviedetail.MovieDetailActivity
 import com.eccard.popularmovies.utils.EndlessRecyclerViewScrollListener
 import com.eccard.popularmovies.utils.ItemOffsetDecoration
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import muxi.kotlin.walletfda.ui.base.BaseActivity
 import javax.inject.Inject
 import kotlin.math.roundToInt
-
 
 
 class MainActivity : BaseActivity<ActivityMainBinding,MainViewModel>(), LifecycleOwner,MainNavigator {
@@ -40,6 +34,7 @@ class MainActivity : BaseActivity<ActivityMainBinding,MainViewModel>(), Lifecycl
     private lateinit var mainViewModel: MainViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        setTheme(R.style.AppTheme)
         super.onCreate(savedInstanceState)
 
         mActivityMainBinding = getViewDataBinding()
