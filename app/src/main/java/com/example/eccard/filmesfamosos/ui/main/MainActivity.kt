@@ -1,13 +1,11 @@
 package com.example.eccard.filmesfamosos.ui.main
 
-import android.content.Context
 import android.os.Bundle
 import android.util.DisplayMetrics
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.view.WindowManager
 import android.widget.ArrayAdapter
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.LifecycleOwner
@@ -23,12 +21,9 @@ import com.example.eccard.filmesfamosos.databinding.ActivityMainBinding
 import com.example.eccard.filmesfamosos.di.ViewModelProviderFactory
 import com.example.eccard.filmesfamosos.ui.moviedetail.MovieDetailActivity
 import com.example.eccard.filmesfamosos.utils.EndlessRecyclerViewScrollListener
-//import kotlinx.android.synthetic.main.activity_main.*
 import muxi.kotlin.walletfda.ui.base.BaseActivity
 import javax.inject.Inject
 import kotlin.math.roundToInt
-
-//import android.R
 
 
 
