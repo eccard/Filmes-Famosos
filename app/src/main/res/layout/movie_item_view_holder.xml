@@ -17,13 +17,49 @@
         android:onClick="@{() -> viewModel.onItemClick(position)}"
         >
 
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/img_movie_item"
+        <LinearLayout
             android:layout_width="@dimen/img_view_recycler_view_holder_width"
-            android:layout_height="@dimen/img_view_recycler_view_holder_height"
-            app:imageUrl="@{viewModel.getMovieAt(position).generatePosterUrl()}"
-            android:contentDescription="@string/movie_item_poster"
-            />
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/img_movie_item"
+                android:layout_width="@dimen/img_view_recycler_view_holder_width"
+                android:layout_height="@dimen/img_view_recycler_view_holder_height"
+                android:contentDescription="@string/movie_item_poster"/>
+
+                <LinearLayout
+                    android:id="@+id/image_legend"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="16dp"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp"
+                    android:paddingBottom="16dp"
+                    android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_movie_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+                    android:fontFamily="sans-serif-regular"
+                    android:maxLines="1"
+                    android:ellipsize="end"
+                    android:text="@{viewModel.getMovieAt(position).title}"/>
+
+                <TextView
+                    android:id="@+id/tv_movie_rate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+                    android:fontFamily="sans-serif-regular"
+                    android:maxLines="1"
+                    android:ellipsize="end"
+                    android:text="@{@string/movie_rating(String.valueOf(viewModel.getMovieAt(position).vote_average))}"/>
+            </LinearLayout>
+
+        </LinearLayout>
 
     </FrameLayout>
 </layout>
