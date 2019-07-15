@@ -1,6 +1,8 @@
 package com.eccard.popularmovies.ui.moviedetail.trailers
 
 import android.util.Log
+import android.view.View
+import androidx.databinding.ObservableInt
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.eccard.popularmovies.R
@@ -40,6 +42,8 @@ class TrailerViewModel @Inject constructor(private var apiHelper: AppApiHelper):
     val selected : LiveData<Event<TrailerResult>>
         get() = _selected
 
+    var showEmpty = ObservableInt(View.GONE)
+    var loading = ObservableInt(View.VISIBLE)
 
     fun getTrailerAt(index:Int?):TrailerResult?{
         return if (index != null && trailersDataRepo.size > index){
@@ -62,14 +66,23 @@ class TrailerViewModel @Inject constructor(private var apiHelper: AppApiHelper):
 
         scope.launch(context = Dispatchers.Main) {
 
-            val response = withContext(context = Dispatchers.IO) {
-                apiHelper.doGetTrailersFromMovieApiCall(movie.value!!.id)
-            }
+            loading.set(View.VISIBLE)
+            showEmpty.set(View.INVISIBLE)
+            try {
+                val response = withContext(context = Dispatchers.IO) {
+                    apiHelper.doGetTrailersFromMovieApiCall(movie.value!!.id)
+                }
 
-            if (response.isSuccessful){
-                trailers.value = (response.body() as MovieTrailersReviewResponse).results
-            } else {
-                Log.e(TAG,"Error loading trailers")
+                if (response.isSuccessful) {
+                    trailers.value = (response.body() as MovieTrailersReviewResponse).results
+                } else {
+                    Log.e(TAG, "Error loading trailers")
+                }
+            } catch (e: Exception){
+                Log.e(TAG, "Error loading trailers")
+                showEmpty.set(View.VISIBLE)
+            } finally {
+                loading.set(View.INVISIBLE)
             }
 
         }

@@ -9,6 +9,7 @@ import com.eccard.popularmovies.data.network.api.AppApiHelper
 import com.eccard.popularmovies.data.network.model.MovieResult
 import com.eccard.popularmovies.data.network.model.network.MovieReviewResponse
 import com.eccard.popularmovies.data.network.model.MovieReviewResult
+import com.eccard.popularmovies.ui.moviedetail.trailers.TrailerViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -25,9 +26,11 @@ class ReviewsViewModel @Inject constructor(private var apiHelper: AppApiHelper):
 
 
     var movie = MutableLiveData<MovieResult>()
+
+    var showEmpty = ObservableInt(View.GONE)
     var loading = ObservableInt(View.VISIBLE)
     var showError = ObservableInt(View.INVISIBLE)
-    var showEmpty = ObservableInt(View.INVISIBLE)
+    var showErrorGeneric = ObservableInt(View.INVISIBLE)
 
 
     var review = MutableLiveData<List<MovieReviewResult>>()
@@ -56,17 +59,29 @@ class ReviewsViewModel @Inject constructor(private var apiHelper: AppApiHelper):
         loading.set(View.VISIBLE)
         scope.launch(context = Dispatchers.Main) {
 
-            val response = withContext(context = Dispatchers.IO) {
-                apiHelper.doGetReviewsFromMovieApiCall(movie.value!!.id,page)
-            }
-            loading.set(View.INVISIBLE)
-            if (response.isSuccessful){
-                showError.set(View.INVISIBLE)
-                review.value = (response.body() as MovieReviewResponse).results
-            } else {
-                Log.e(TAG,"Error loading reviews")
-                showError.set(View.VISIBLE)
-                showEmpty.set(View.INVISIBLE)
+            try {
+                val response = withContext(context = Dispatchers.IO) {
+                    apiHelper.doGetReviewsFromMovieApiCall(movie.value!!.id, page)
+                }
+                if (response.isSuccessful) {
+                    showError.set(View.INVISIBLE)
+                    review.value = (response.body() as MovieReviewResponse).results
+                } else {
+                    Log.e(TAG, "Error loading reviews")
+                    showError.set(View.VISIBLE)
+                }
+            } catch (e: Exception){
+                Log.e(TrailerViewModel.TAG, "Error loading reviews")
+                if(reviewDataRepo.size == 0){
+                    showError.set(View.VISIBLE)
+                    showErrorGeneric.set(View.VISIBLE)
+                    showEmpty.set(View.INVISIBLE)
+                } else {
+                    showError.set(View.INVISIBLE)
+                }
+
+            } finally {
+                loading.set(View.INVISIBLE)
             }
         }
     }
@@ -77,6 +92,7 @@ class ReviewsViewModel @Inject constructor(private var apiHelper: AppApiHelper):
 
         if (reviewDataRepo.size == 0){
             showError.set(View.VISIBLE)
+            showErrorGeneric.set(View.INVISIBLE)
             showEmpty.set(View.VISIBLE)
         } else {
             showError.set(View.INVISIBLE)
