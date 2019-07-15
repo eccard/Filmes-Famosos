@@ -117,15 +117,23 @@ class MainViewModel @Inject constructor(private var moviesDao: MovieDao, private
 
             scope.launch(context = Dispatchers.Main) {
 
-                val response = withContext(context = Dispatchers.IO) {
-                    apiHelper.doGetMoviesApiCall(mCurrentMovieOrderType, pageIndex)
-                }
+                try {
+                    val response = withContext(context = Dispatchers.IO) {
+                        apiHelper.doGetMoviesApiCall(mCurrentMovieOrderType, pageIndex)
+                    }
 
-                loading.set(View.INVISIBLE)
-                if (response.isSuccessful){
-                    moviesDataApi.value = (response.body() as MovieResponse).results
-                } else {
-                    showEmpty.set(View.VISIBLE)
+
+                    if (response.isSuccessful) {
+                        moviesDataApi.value = (response.body() as MovieResponse).results
+                    } else {
+                        showEmpty.set(View.VISIBLE)
+                    }
+                } catch (e: Exception){
+                    if(moviesDataRepo.size == 0){
+                        showEmpty.set(View.VISIBLE)
+                    }
+                } finally {
+                    loading.set(View.INVISIBLE)
                 }
             }
         }

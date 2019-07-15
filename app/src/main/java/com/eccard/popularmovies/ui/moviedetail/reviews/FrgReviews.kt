@@ -74,30 +74,6 @@ class FrgReviews : BaseFragment<FrgReviewsBinding,ReviewsViewModel>() {
     }
 
 
-    /*private void getMovieReviews(int movieId, int page){
-        CompositeDisposable compositeDisposable = new CompositeDisposable();
-        compositeDisposable.add(AppApiHelper.getInstance()
-                .doGetReviewsFromMovieApiCall(movieId,page)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<MovieReviewResponse>() {
-                               @Override
-                               public void accept(MovieReviewResponse movieResponse) throws Exception {
-                                   Log.d(TAG,movieResponse.toString());
-                                   reviewAdapter.setReviews(movieResponse.getResults());
-                                   reviewAdapter.notifyDataSetChanged();
-                               }
-                           },
-                        new Consumer<Throwable>() {
-                            @Override
-                            public void accept(Throwable throwable) throws Exception {
-                                Log.e(TAG,throwable.getLocalizedMessage());
-                            }
-                        }
-                )
-        );
-    }*/
-
     override fun getLayoutId() = R.layout.frg_reviews
 
     override fun getViewModel(): ReviewsViewModel {

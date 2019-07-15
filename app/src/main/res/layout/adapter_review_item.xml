@@ -29,7 +29,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_user"
             android:contentDescription="@string/author_img"
-            android:tint="@android:color/white "/>
+            android:tint="@android:color/white"/>
 
         <TextView
             android:id="@+id/textViewUser"
