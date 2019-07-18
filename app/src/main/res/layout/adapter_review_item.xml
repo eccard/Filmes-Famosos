@@ -29,7 +29,8 @@
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_user"
             android:contentDescription="@string/author_img"
-            android:tint="@android:color/white"/>
+            android:tint="@android:color/white"
+            />
 
         <TextView
             android:id="@+id/textViewUser"
@@ -51,17 +52,19 @@
         <TextView
 
             android:id="@+id/textReviewContent"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
             android:text="@{viewModel.getReviewAt(position).content}"
             android:textAppearance="@style/TextAppearance.AppCompat"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="@+id/textViewUser"
             app:layout_constraintTop_toBottomOf="@+id/textViewUser"
             app:layout_constraintVertical_bias="0.0"
-            tools:text="conteastaestas"/>
+            />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>
