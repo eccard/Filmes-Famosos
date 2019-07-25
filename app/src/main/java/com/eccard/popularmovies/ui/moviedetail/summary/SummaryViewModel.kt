@@ -26,6 +26,7 @@ class SummaryViewModel @Inject constructor(private var moviesDao: MovieDao, priv
         if ( movieIsBookmarked.value == false) {
             scope.launch(context = Dispatchers.Main) {
                 withContext(context = Dispatchers.IO) {
+                    movie.value?.bookmarked = true
                     moviesDao.insertMovie(movie.value!!)
                 }
                 movieIsBookmarked.value = true
@@ -35,7 +36,8 @@ class SummaryViewModel @Inject constructor(private var moviesDao: MovieDao, priv
 
             scope.launch(context = Dispatchers.Main) {
                 withContext(context = Dispatchers.IO) {
-                    moviesDao.deleteMovie(movie.value!!)
+                    movie.value?.bookmarked = false
+                    moviesDao.insertMovie(movie.value!!)
                 }
                 movieIsBookmarked.value = false
             }

@@ -75,7 +75,12 @@ class FrgSummary : BaseFragment<FrgSummaryBinding,SummaryViewModel>() {
         movieData.observe(this, object : Observer<MovieResult> {
                 override fun onChanged(movieResult: MovieResult?) {
                     movieData.removeObserver(this)
-                    movieIsBookmarked = movieResult != null
+                    movieIsBookmarked = false
+                    movieResult?.bookmarked?.let {
+                        if (it){
+                            movieIsBookmarked = true
+                        }
+                    }
 
                     summaryViewModel.movieIsBookmarked.value = movieIsBookmarked
 

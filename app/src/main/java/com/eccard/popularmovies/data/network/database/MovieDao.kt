@@ -18,7 +18,7 @@ abstract class MovieDao {
     abstract fun getMovieResult(movieId: Int): LiveData<MovieResult>
 
     // todo add a propertie to bookmarked movie
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     abstract fun insertMovie(movieResult: MovieResult)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
