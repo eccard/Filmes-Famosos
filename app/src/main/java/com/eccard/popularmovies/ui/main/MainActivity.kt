@@ -19,6 +19,7 @@ import com.eccard.popularmovies.di.ViewModelProviderFactory
 import com.eccard.popularmovies.ui.moviedetail.MovieDetailActivity
 import com.eccard.popularmovies.utils.EndlessRecyclerViewScrollListener
 import com.eccard.popularmovies.utils.ItemOffsetDecoration
+import com.google.android.material.snackbar.Snackbar
 import muxi.kotlin.walletfda.ui.base.BaseActivity
 import javax.inject.Inject
 import kotlin.math.roundToInt
@@ -137,6 +138,18 @@ class MainActivity : BaseActivity<ActivityMainBinding,MainViewModel>(), Lifecycl
         mainViewModel.results.observe(this, Observer { result ->
             if ( result.data != null){
                 moviesAdapter.setMovies(result.data!!.toMutableList())
+            }
+        })
+
+        mainViewModel.loadMoreStatus.observe(this, Observer { loadingMore ->
+            if (loadingMore == null) {
+                mActivityMainBinding.loadingMore = false
+            } else {
+                mActivityMainBinding.loadingMore = loadingMore.isRunning
+                val error = loadingMore.errorMessageIfNotHandled
+                if (error != null) {
+                    Snackbar.make(mActivityMainBinding.loadMoreBar, error, Snackbar.LENGTH_LONG).show()
+                }
             }
         })
 
