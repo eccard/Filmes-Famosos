@@ -63,12 +63,18 @@ class MovieRepository @Inject constructor(
             }
 
             override fun loadFromDb(): LiveData<List<MovieResult>> {
-                return Transformations.switchMap(db.movieDao().searchMovieResult(orderType.name))
-                {fetchData ->
-                    if (fetchData == null){
-                        AbsentLiveData.create()
-                    } else {
-                        db.movieDao().loadOrdered(fetchData.movieIds)
+
+                return if (orderType == AppApiHelper.MovieOrderType.TOP_BOOKMARK) {
+                    db.movieDao().loadAllMoviesWithBookmarked(true)
+                } else {
+
+                    Transformations.switchMap(db.movieDao().searchMovieResult(orderType.name))
+                    { fetchData ->
+                        if (fetchData == null) {
+                            AbsentLiveData.create()
+                        } else {
+                            db.movieDao().loadOrdered(fetchData.movieIds)
+                        }
                     }
                 }
             }
