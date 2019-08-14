@@ -113,9 +113,8 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(), Lifecyc
 
         mActivityMainBinding.rvMovies.addOnScrollListener(object : RecyclerView.OnScrollListener(){
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-//                super.onScrolled(recyclerView, dx, dy)
-                val layoutManager = recyclerView.layoutManager as GridLayoutManager
-                val lastPosition = layoutManager.findLastVisibleItemPosition()
+                val gridLayoutManager = recyclerView.layoutManager as GridLayoutManager
+                val lastPosition = gridLayoutManager.findLastVisibleItemPosition()
                 if (rvAdapter.itemCount > 0 ) {
                     if (lastPosition == rvAdapter.itemCount - 1) {
                         mainViewModel.loadNextPage()
