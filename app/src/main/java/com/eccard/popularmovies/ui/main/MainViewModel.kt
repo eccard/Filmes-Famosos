@@ -5,7 +5,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.Transformations
 import com.eccard.popularmovies.data.network.api.AppApiHelper
-import com.eccard.popularmovies.data.network.database.MovieDao
 import com.eccard.popularmovies.data.network.model.MovieResult
 import com.eccard.popularmovies.data.repository.MovieRepository
 import com.eccard.popularmovies.data.repository.Resource
@@ -13,8 +12,7 @@ import com.eccard.popularmovies.data.repository.Status
 import com.eccard.popularmovies.ui.base.BaseViewModel
 import javax.inject.Inject
 
-class MainViewModel @Inject constructor(private var moviesDao: MovieDao, private var apiHelper:
-AppApiHelper,movieRepository: MovieRepository):
+class MainViewModel @Inject constructor(private var movieRepository: MovieRepository):
         BaseViewModel<MainNavigator>(){
 
     companion object {

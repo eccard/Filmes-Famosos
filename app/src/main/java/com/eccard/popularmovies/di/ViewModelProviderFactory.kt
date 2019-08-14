@@ -21,7 +21,7 @@ class ViewModelProviderFactory @Inject constructor(private var moviewDao: MovieD
 
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         if(modelClass.isAssignableFrom(MainViewModel::class.java)) {
-            return MainViewModel(moviewDao,apiHelper,movieRepository) as T
+            return MainViewModel(movieRepository) as T
         } else if(modelClass.isAssignableFrom(SummaryViewModel::class.java)){
             return SummaryViewModel(moviewDao, apiHelper) as T
         } else if (modelClass.isAssignableFrom(TrailerViewModel::class.java)){
