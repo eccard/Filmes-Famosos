@@ -3,35 +3,36 @@ package com.eccard.popularmovies.ui.main
 import android.os.Bundle
 import android.util.DisplayMetrics
 import android.util.Log
-import android.view.View
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.eccard.popularmovies.AppExecutors
 import com.eccard.popularmovies.BR
 import com.eccard.popularmovies.R
 import com.eccard.popularmovies.data.network.api.AppApiHelper
 import com.eccard.popularmovies.data.network.model.MovieResult
 import com.eccard.popularmovies.databinding.ActivityMainBinding
 import com.eccard.popularmovies.di.ViewModelProviderFactory
+import com.eccard.popularmovies.utils.RetryCallback
 import com.eccard.popularmovies.ui.moviedetail.MovieDetailActivity
-import com.eccard.popularmovies.utils.EndlessRecyclerViewScrollListener
 import com.eccard.popularmovies.utils.ItemOffsetDecoration
 import com.google.android.material.snackbar.Snackbar
-import muxi.kotlin.walletfda.ui.base.BaseActivity
+import com.eccard.popularmovies.ui.base.BaseActivity
 import javax.inject.Inject
 import kotlin.math.roundToInt
 
+class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(), LifecycleOwner,MainNavigator {
 
-class MainActivity : BaseActivity<ActivityMainBinding,MainViewModel>(), LifecycleOwner,MainNavigator {
-
-    private var scrollListener: EndlessRecyclerViewScrollListener? = null
+    lateinit var adapter : MovieAdapter
     private lateinit var mActivityMainBinding: ActivityMainBinding
 
     @Inject
     lateinit var factory: ViewModelProviderFactory
+
+    @Inject
+    lateinit var appExecutors: AppExecutors
 
     private lateinit var mainViewModel: MainViewModel
 
@@ -40,40 +41,27 @@ class MainActivity : BaseActivity<ActivityMainBinding,MainViewModel>(), Lifecycl
         super.onCreate(savedInstanceState)
 
         mActivityMainBinding = getViewDataBinding()
+
+        mActivityMainBinding.searchResult = mainViewModel.results
+
         mainViewModel.setNavigator(this)
 
         setUpViews()
+
     }
 
     private fun setUpViews() {
-
-        showLoading()
 
         setupRecyclerView()
 
         setupBottomNavigation()
 
-        mainViewModel.getApiMovies().observe(this, Observer<List<MovieResult>> { movies ->
-            mainViewModel.loading.set(View.INVISIBLE)
-            if (movies.isEmpty()) {
-                mainViewModel.showEmpty.set(View.VISIBLE)
-            } else {
-                mainViewModel.showEmpty.set(View.GONE)
-                mainViewModel.addMoviesFromApi(movies)
-//                mainViewModel.getAdapter().notifyDataSetChanged()
-            }
-        })
-
-        mainViewModel.selected.observe(this, Observer {
-            it.getContentIfNotHandled()?.let {
-                onSelectedMovie(it)
-            }
-        })
-
         mainViewModel.getDataBaseMovies().observe(this, Observer {
             mainViewModel.moviesFromDb = it
             Log.d("MainActivity","update moview from db" + it.toString())
         })
+
+        mainViewModel.setNewOrder(AppApiHelper.MovieOrderType.POPULAR)
 
     }
 
@@ -114,10 +102,11 @@ class MainActivity : BaseActivity<ActivityMainBinding,MainViewModel>(), Lifecycl
         mActivityMainBinding.rvMovies.setHasFixedSize(true)
 
 
-        val moviesAdapter = MoviesAdapter(R.layout.movie_item_view_holder,mainViewModel)
-
-//        mActivityMainBinding.rvMovies.adapter =  mainViewModel.getAdapter()
-        mActivityMainBinding.rvMovies.adapter =  moviesAdapter
+        val rvAdapter = MovieAdapter(appExecutors = appExecutors){
+            movieResult ->  onSelectedMovie(movieResult)
+        }
+        mActivityMainBinding.rvMovies.adapter =  rvAdapter
+        adapter = rvAdapter
 
         val itemOffsetDecoration = ItemOffsetDecoration(this@MainActivity,
                 R.dimen.grid_spacing_small)
@@ -129,16 +118,15 @@ class MainActivity : BaseActivity<ActivityMainBinding,MainViewModel>(), Lifecycl
 //                super.onScrolled(recyclerView, dx, dy)
                 val layoutManager = recyclerView.layoutManager as GridLayoutManager
                 val lastPosition = layoutManager.findLastVisibleItemPosition()
-                if (lastPosition == moviesAdapter.itemCount - 1) {
+                if (lastPosition == rvAdapter.itemCount - 1) {
                     mainViewModel.loadNextPage()
                 }
             }
         })
 
         mainViewModel.results.observe(this, Observer { result ->
-            if ( result.data != null){
-                moviesAdapter.setMovies(result.data!!.toMutableList())
-            }
+            adapter.submitList(result?.data)
+            mActivityMainBinding.invalidateAll()
         })
 
         mainViewModel.loadMoreStatus.observe(this, Observer { loadingMore ->
@@ -153,32 +141,12 @@ class MainActivity : BaseActivity<ActivityMainBinding,MainViewModel>(), Lifecycl
             }
         })
 
-//        scrollListener = object : EndlessRecyclerViewScrollListener(layoutManager) {
-//            public override fun onLoadMore(page: Int, totalItemsCount: Int, view: RecyclerView) {
-//                mainViewModel.getData(page)
-//            }
-//        }
-//        mActivityMainBinding.rvMovies.addOnScrollListener(scrollListener!!)
 
-    }
-
-    private fun showMovies() {
-        mainViewModel.loading.set(View.INVISIBLE)
-        mainViewModel.showEmpty.set(View.INVISIBLE)
-    }
-
-    override fun showLoading() {
-        mainViewModel.loading.set(View.VISIBLE)
-        mainViewModel.showEmpty.set(View.INVISIBLE)
-    }
-
-    private fun showLoadingError() {
-        mainViewModel.loading.set(View.INVISIBLE)
-        mainViewModel.showEmpty.set(View.VISIBLE)
-    }
-
-    override fun onMovieError(throwable: Throwable) {
-        showLoadingError()
+        mActivityMainBinding.callback = object : RetryCallback {
+            override fun retry() {
+                mainViewModel.refresh()
+            }
+        }
     }
 
     override fun getLayoutId(): Int = R.layout.activity_main
