@@ -14,7 +14,7 @@ import com.eccard.popularmovies.data.network.model.MovieResult
 import com.eccard.popularmovies.databinding.FrgSummaryBinding
 import com.eccard.popularmovies.di.ViewModelProviderFactory
 import kotlinx.android.synthetic.main.activivty_movie_details_cardview.view.*
-import muxi.kotlin.walletfda.ui.base.BaseFragment
+import com.eccard.popularmovies.ui.base.BaseFragment
 import javax.inject.Inject
 
 class FrgSummary : BaseFragment<FrgSummaryBinding,SummaryViewModel>() {

@@ -1,4 +1,4 @@
-package muxi.kotlin.walletfda.ui.base
+package com.eccard.popularmovies.ui.base
 
 import android.os.Bundle
 import androidx.annotation.LayoutRes

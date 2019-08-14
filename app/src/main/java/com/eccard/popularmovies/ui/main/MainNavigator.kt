@@ -1,7 +1,7 @@
 package com.eccard.popularmovies.ui.main
 
 import com.eccard.popularmovies.data.network.model.MovieResult
-import muxi.kotlin.walletfda.ui.base.BaseView
+import com.eccard.popularmovies.ui.base.BaseView
 
 interface MainNavigator : BaseView {
     fun onSelectedMovie(movie: MovieResult)

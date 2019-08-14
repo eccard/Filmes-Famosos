@@ -16,7 +16,7 @@ import com.eccard.popularmovies.R
 import com.eccard.popularmovies.data.network.model.MovieResult
 import com.eccard.popularmovies.databinding.FrgTrailersBinding
 import com.eccard.popularmovies.di.ViewModelProviderFactory
-import muxi.kotlin.walletfda.ui.base.BaseFragment
+import com.eccard.popularmovies.ui.base.BaseFragment
 import javax.inject.Inject
 
 class FrgTrailers : BaseFragment<FrgTrailersBinding,TrailerViewModel>() {

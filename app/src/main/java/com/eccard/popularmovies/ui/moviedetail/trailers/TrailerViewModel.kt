@@ -15,7 +15,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import muxi.kotlin.walletfda.ui.base.BaseViewModel
+import com.eccard.popularmovies.ui.base.BaseViewModel
 import javax.inject.Inject
 
 class TrailerViewModel @Inject constructor(private var apiHelper: AppApiHelper):

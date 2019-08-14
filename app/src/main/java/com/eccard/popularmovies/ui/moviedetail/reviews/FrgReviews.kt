@@ -16,7 +16,7 @@ import com.eccard.popularmovies.data.network.model.MovieResult
 import com.eccard.popularmovies.databinding.FrgReviewsBinding
 import com.eccard.popularmovies.di.ViewModelProviderFactory
 import com.eccard.popularmovies.utils.EndlessRecyclerViewScrollListener
-import muxi.kotlin.walletfda.ui.base.BaseFragment
+import com.eccard.popularmovies.ui.base.BaseFragment
 import javax.inject.Inject
 
 class FrgReviews : BaseFragment<FrgReviewsBinding,ReviewsViewModel>() {

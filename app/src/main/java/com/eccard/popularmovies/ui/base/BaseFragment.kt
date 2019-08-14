@@ -1,4 +1,4 @@
-package muxi.kotlin.walletfda.ui.base
+package com.eccard.popularmovies.ui.base
 
 import android.content.Context
 import android.os.Bundle
