@@ -54,4 +54,7 @@ abstract class MovieDao {
 
     @Query("SELECT * FROM MovieFetchResult WHERE orderType = :orderType")
     abstract fun findSearchMoveiResult(orderType : String) : MovieFetchResult?
+
+    @Query("SELECT * FROM movie WHERE bookmarked = :bookMarked")
+    abstract fun loadAllMoviesWithBookmarked(bookMarked : Boolean): LiveData<List<MovieResult>>
 }
