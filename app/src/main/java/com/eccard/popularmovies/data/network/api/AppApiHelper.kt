@@ -18,9 +18,9 @@ class AppApiHelper @Inject constructor(private val moviesApi : MoviesApi) {
     suspend fun doGetMoviesApiCall(movieOrderType: MovieOrderType?, page: Int):
             Response<MovieResponse> {
         return if (movieOrderType == MovieOrderType.POPULAR) {
-            moviesApi.doGetPopularMovies(page)
+            moviesApi.doGetPopularMovies(page).execute()
         } else {
-            moviesApi.doGetTopRatedMovies(page)
+            moviesApi.doGetTopRatedMovies(page).execute()
         }
     }
 

@@ -21,7 +21,8 @@ data class MovieResult(
         val original_language: String,
         val original_title: String,
         val overview: String,
-        val release_date: String
+        val release_date: String,
+        var bookmarked: Boolean = false
 ) : Parcelable {
     fun generatePosterUrl(): String? {
         val uri = Uri.parse(AppConstants.ENDPOINT_MOVIES_POSTER_BASE_URL + poster_path)
@@ -39,17 +40,18 @@ data class MovieResult(
     }
 
     constructor(source: Parcel) : this(
-            source.readInt(),
-            source.readInt(),
-            1 == source.readInt(),
-            source.readFloat(),
-            source.readString(),
-            source.readFloat(),
-            source.readString(),
-            source.readString(),
-            source.readString(),
-            source.readString(),
-            source.readString()
+    source.readInt(),
+    source.readInt(),
+    1 == source.readInt(),
+    source.readFloat(),
+    source.readString(),
+    source.readFloat(),
+    source.readString(),
+    source.readString(),
+    source.readString(),
+    source.readString(),
+    source.readString(),
+    1 == source.readInt()
     )
 
     override fun describeContents() = 0
@@ -66,6 +68,7 @@ data class MovieResult(
         writeString(original_title)
         writeString(overview)
         writeString(release_date)
+        writeInt((if (bookmarked) 1 else 0))
     }
 
     companion object {

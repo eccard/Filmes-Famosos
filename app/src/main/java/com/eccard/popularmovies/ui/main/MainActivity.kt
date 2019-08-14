@@ -8,6 +8,7 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.eccard.popularmovies.BR
 import com.eccard.popularmovies.R
@@ -58,7 +59,7 @@ class MainActivity : BaseActivity<ActivityMainBinding,MainViewModel>(), Lifecycl
             } else {
                 mainViewModel.showEmpty.set(View.GONE)
                 mainViewModel.addMoviesFromApi(movies)
-                mainViewModel.getAdapter().notifyDataSetChanged()
+//                mainViewModel.getAdapter().notifyDataSetChanged()
             }
         })
 
@@ -88,9 +89,11 @@ class MainActivity : BaseActivity<ActivityMainBinding,MainViewModel>(), Lifecycl
                     getViewDataBinding().rvMovies.smoothScrollToPosition(0)
                 }
             } else {
-                scrollListener!!.resetState()
+//                scrollListener!!.resetState()
                 mainViewModel.mCurrentMovieOrderType = newOrderType
-                mainViewModel.getFirstPage()
+
+                mainViewModel.setNewOrder(newOrderType)
+//                mainViewModel.getFirstPage()
             }
             true
         }
@@ -108,18 +111,42 @@ class MainActivity : BaseActivity<ActivityMainBinding,MainViewModel>(), Lifecycl
         val layoutManager = GridLayoutManager(mActivityMainBinding.rvMovies.context,bestSpanCount)
         mActivityMainBinding.rvMovies.layoutManager = layoutManager
         mActivityMainBinding.rvMovies.setHasFixedSize(true)
-        mActivityMainBinding.rvMovies.adapter =  mainViewModel.getAdapter()
+
+
+        val moviesAdapter = MoviesAdapter(R.layout.movie_item_view_holder,mainViewModel)
+
+//        mActivityMainBinding.rvMovies.adapter =  mainViewModel.getAdapter()
+        mActivityMainBinding.rvMovies.adapter =  moviesAdapter
 
         val itemOffsetDecoration = ItemOffsetDecoration(this@MainActivity,
                 R.dimen.grid_spacing_small)
         mActivityMainBinding.rvMovies.addItemDecoration(itemOffsetDecoration)
 
-        scrollListener = object : EndlessRecyclerViewScrollListener(layoutManager) {
-            public override fun onLoadMore(page: Int, totalItemsCount: Int, view: RecyclerView) {
-                mainViewModel.getData(page)
+
+        mActivityMainBinding.rvMovies.addOnScrollListener(object : RecyclerView.OnScrollListener(){
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+//                super.onScrolled(recyclerView, dx, dy)
+                val layoutManager = recyclerView.layoutManager as GridLayoutManager
+                val lastPosition = layoutManager.findLastVisibleItemPosition()
+                if (lastPosition == moviesAdapter.itemCount - 1) {
+                    mainViewModel.loadNextPage()
+                }
             }
-        }
-        mActivityMainBinding.rvMovies.addOnScrollListener(scrollListener!!)
+        })
+
+        mainViewModel.results.observe(this, Observer { result ->
+            if ( result.data != null){
+                moviesAdapter.setMovies(result.data!!.toMutableList())
+            }
+        })
+
+//        scrollListener = object : EndlessRecyclerViewScrollListener(layoutManager) {
+//            public override fun onLoadMore(page: Int, totalItemsCount: Int, view: RecyclerView) {
+//                mainViewModel.getData(page)
+//            }
+//        }
+//        mActivityMainBinding.rvMovies.addOnScrollListener(scrollListener!!)
+
     }
 
     private fun showMovies() {

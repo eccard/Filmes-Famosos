@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.eccard.popularmovies.data.network.api.AppApiHelper
 import com.eccard.popularmovies.data.network.database.MovieDao
+import com.eccard.popularmovies.data.repository.MovieRepository
 import com.eccard.popularmovies.ui.main.MainViewModel
 import com.eccard.popularmovies.ui.moviedetail.reviews.ReviewsViewModel
 import com.eccard.popularmovies.ui.moviedetail.summary.SummaryViewModel
@@ -14,12 +15,13 @@ import javax.inject.Singleton
 
 @Singleton
 class ViewModelProviderFactory @Inject constructor(private var moviewDao: MovieDao,
-                                                   private var apiHelper: AppApiHelper):
+                                                   private var apiHelper: AppApiHelper,
+                                                   private var movieRepository: MovieRepository):
         ViewModelProvider.NewInstanceFactory() {
 
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         if(modelClass.isAssignableFrom(MainViewModel::class.java)) {
-            return MainViewModel(moviewDao,apiHelper) as T
+            return MainViewModel(moviewDao,apiHelper,movieRepository) as T
         } else if(modelClass.isAssignableFrom(SummaryViewModel::class.java)){
             return SummaryViewModel(moviewDao, apiHelper) as T
         } else if (modelClass.isAssignableFrom(TrailerViewModel::class.java)){
