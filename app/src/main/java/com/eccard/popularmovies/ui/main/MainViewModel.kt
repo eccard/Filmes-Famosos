@@ -10,11 +10,6 @@ import com.eccard.popularmovies.data.network.model.MovieResult
 import com.eccard.popularmovies.data.repository.MovieRepository
 import com.eccard.popularmovies.data.repository.Resource
 import com.eccard.popularmovies.data.repository.Status
-import com.eccard.popularmovies.utils.Event
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import com.eccard.popularmovies.ui.base.BaseViewModel
 import javax.inject.Inject
 
@@ -40,56 +35,9 @@ AppApiHelper,movieRepository: MovieRepository):
                     movieRepository.fetchMovies(fetched)
             }
 
-    var mCurrentMovieOrderType: AppApiHelper.MovieOrderType = AppApiHelper.MovieOrderType
-    .POPULAR
-        set(value) {
-            if (mCurrentMovieOrderType != value) {
-                moviesDataRepo.clear()
-
-                val listToAdapter =
-                        if (value == AppApiHelper.MovieOrderType.TOP_BOOKMARK){
-                            moviesFromDb.toMutableList()
-                        } else {
-                            moviesDataRepo
-
-                        }
-
-                moviesDataRepo = listToAdapter
-//                moviesAdapter.setMovies(moviesDataRepo)
-            }
-            field = value
-        }
-
-    private var moviesDataRepo : MutableList<MovieResult> = mutableListOf()
-    var moviesFromDb : List<MovieResult> = listOf()
-        set(value){
-            if (mCurrentMovieOrderType == AppApiHelper.MovieOrderType.TOP_BOOKMARK) {
-                moviesDataRepo = value.toMutableList()
-//                moviesAdapter.setMovies(moviesDataRepo)
-            }
-            field = value
-        }
-
-//    private var moviesDataApi : MutableLiveData<List<MovieResult>>
-    private var moviesLiveDataFromDb : LiveData<List<MovieResult>>
-
-
-//    fun getApiMovies():MutableLiveData<List<MovieResult>>  = moviesDataApi
-    fun getDataBaseMovies():LiveData<List<MovieResult>>  = moviesLiveDataFromDb
-
-    init {
-        moviesLiveDataFromDb = moviesDao.loadAllMovies()
-    }
-
-
-
-    fun addMoviesFromApi(movies: List<MovieResult>){
-        moviesDataRepo.addAll(movies)
-    }
-
 
     fun loadNextPage() {
-        nextPageHandler.queryNextPage(mCurrentMovieOrderType)
+        _orderType.value?.let { nextPageHandler.queryNextPage(it) }
     }
 
     fun refresh() {

@@ -54,11 +54,6 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(), Lifecyc
 
         setupBottomNavigation()
 
-        mainViewModel.getDataBaseMovies().observe(this, Observer {
-            mainViewModel.moviesFromDb = it
-            Log.d("MainActivity","update moview from db" + it.toString())
-        })
-
         mainViewModel.setNewOrder(AppApiHelper.MovieOrderType.POPULAR)
 
     }
@@ -71,13 +66,11 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(), Lifecyc
                 else -> AppApiHelper.MovieOrderType.TOP_BOOKMARK
             }
 
-            if (mainViewModel.mCurrentMovieOrderType === newOrderType) {
+            if (mainViewModel.orderType.value === newOrderType) {
                 getViewDataBinding().rvMovies.post {
                     getViewDataBinding().rvMovies.smoothScrollToPosition(0)
                 }
             } else {
-                mainViewModel.mCurrentMovieOrderType = newOrderType
-
                 mainViewModel.setNewOrder(newOrderType)
             }
             true
