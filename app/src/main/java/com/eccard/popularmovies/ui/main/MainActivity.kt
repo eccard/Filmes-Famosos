@@ -76,11 +76,9 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(), Lifecyc
                     getViewDataBinding().rvMovies.smoothScrollToPosition(0)
                 }
             } else {
-//                scrollListener!!.resetState()
                 mainViewModel.mCurrentMovieOrderType = newOrderType
 
                 mainViewModel.setNewOrder(newOrderType)
-//                mainViewModel.getFirstPage()
             }
             true
         }

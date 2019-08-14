@@ -80,10 +80,10 @@ class MovieRepository @Inject constructor(
             }
 
             override fun createCall(): LiveData<ApiResponse<MovieResponse>> {
-                if ( orderType == AppApiHelper.MovieOrderType.POPULAR){
-                    return moviApi.doGetPopularMoviesFirstPage(1)
+                return if ( orderType == AppApiHelper.MovieOrderType.POPULAR){
+                    moviApi.doGetPopularMoviesFirstPage(1)
                 } else {
-                    return moviApi.doGetTopRatedMoviesFirstPage(1)
+                    moviApi.doGetTopRatedMoviesFirstPage(1)
                 }
             }
 
