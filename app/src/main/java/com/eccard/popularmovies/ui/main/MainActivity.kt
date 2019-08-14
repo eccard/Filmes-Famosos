@@ -111,11 +111,13 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(), Lifecyc
 
         mActivityMainBinding.rvMovies.addOnScrollListener(object : RecyclerView.OnScrollListener(){
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                val gridLayoutManager = recyclerView.layoutManager as GridLayoutManager
-                val lastPosition = gridLayoutManager.findLastVisibleItemPosition()
-                if (rvAdapter.itemCount > 0 ) {
-                    if (lastPosition == rvAdapter.itemCount - 1) {
-                        mainViewModel.loadNextPage()
+                if (mainViewModel.orderType.value != AppApiHelper.MovieOrderType.TOP_BOOKMARK ){
+                    val gridLayoutManager = recyclerView.layoutManager as GridLayoutManager
+                    val lastPosition = gridLayoutManager.findLastVisibleItemPosition()
+                    if (rvAdapter.itemCount > 0 ) {
+                        if (lastPosition == rvAdapter.itemCount - 1) {
+                            mainViewModel.loadNextPage()
+                        }
                     }
                 }
             }
