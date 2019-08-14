@@ -7,16 +7,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.annotation.LayoutRes
-import androidx.annotation.Nullable
-import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 import dagger.android.support.AndroidSupportInjection
 
 
-
-abstract class BaseFragment<T: ViewDataBinding,V: BaseViewModel<*>>: Fragment(), BaseView {
+abstract class BaseFragment<T: ViewDataBinding,V: BaseViewModel<*>>: Fragment() {
 
     private var parentActivity: BaseActivity<*,*>? = null
     private var mRootView: View? = null
@@ -79,7 +76,7 @@ abstract class BaseFragment<T: ViewDataBinding,V: BaseViewModel<*>>: Fragment(),
         return mViewDataBinding
     }
 
-    override fun showToast(message: String) {
+    fun showToast(message: String) {
         Toast.makeText(parentActivity,message,Toast.LENGTH_SHORT).show()
     }
 }
