@@ -23,7 +23,7 @@ import com.eccard.popularmovies.ui.base.BaseActivity
 import javax.inject.Inject
 import kotlin.math.roundToInt
 
-class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(), LifecycleOwner,MainNavigator {
+class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(), LifecycleOwner {
 
     lateinit var adapter : MovieAdapter
     private lateinit var mActivityMainBinding: ActivityMainBinding
@@ -43,8 +43,6 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(), Lifecyc
         mActivityMainBinding = getViewDataBinding()
 
         mActivityMainBinding.searchResult = mainViewModel.results
-
-        mainViewModel.setNavigator(this)
 
         setUpViews()
 
@@ -160,18 +158,11 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(), Lifecyc
     override fun getBindingVariable(): Int = BR.viewModel
 
 
-    override fun onSelectedMovie(movie: MovieResult) {
+    private fun onSelectedMovie(movie: MovieResult) {
         val intent = MovieDetailActivity.newIntent(this@MainActivity)
         intent.putExtra(MovieResult::class.java.simpleName, movie)
 
         startActivity(intent)
     }
 
-    override fun hideLoading() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun showToast(message: String) {
-
-    }
 }
