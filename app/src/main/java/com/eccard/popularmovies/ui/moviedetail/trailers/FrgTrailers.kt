@@ -103,7 +103,4 @@ class FrgTrailers : BaseFragment<FrgTrailersBinding,TrailerViewModel>() {
 
     override fun getBindingVariable() = BR.viewModel
 
-    override fun showToast(message: String) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
 }
