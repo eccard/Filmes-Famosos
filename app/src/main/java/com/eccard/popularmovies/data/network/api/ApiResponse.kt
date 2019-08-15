@@ -1,6 +1,5 @@
 package com.eccard.popularmovies.data.network.api
 
-import android.util.Log
 import retrofit2.Response
 import java.util.regex.Pattern
 
@@ -55,12 +54,23 @@ data class ApiSuccessResponse<T>(
 
     val nextPage: Int? by lazy(LazyThreadSafetyMode.NONE) {
 //        links[NEXT_LINK]?.let { next ->
-            val matcher = PAGE_PATTERN.matcher(body.toString())
-            if (!matcher.find() || matcher.groupCount() != 1) {
+            val actualPageMatcher = PAGE_PATTERN.matcher(body.toString())
+            val totalPageMatcher = TOTAL_PAGE_PATTERN.matcher(body.toString())
+            if (!actualPageMatcher.find() || actualPageMatcher.groupCount() != 1) {
+                null
+            } else if (!totalPageMatcher.find() || totalPageMatcher.groupCount() != 1){
                 null
             } else {
                 try {
-                    Integer.parseInt(matcher.group(1)) + 1
+                    val actualPage = Integer.parseInt(actualPageMatcher.group(1))
+
+                    val totalPage = Integer.parseInt(totalPageMatcher.group(1))
+
+                    if (actualPage < totalPage){
+                        actualPage + 1
+                    } else {
+                        null
+                    }
                 } catch (ex: NumberFormatException) {
 //                    Log.w("ApiSuccessResponse","cannot parse next page from $next")
 //                    Timber.w("cannot parse next page from %s", next)
@@ -73,6 +83,7 @@ data class ApiSuccessResponse<T>(
     companion object {
         private val LINK_PATTERN = Pattern.compile("<([^>]*)>[\\s]*;[\\s]*rel=\"([a-zA-Z0-9]+)\"")
         private val PAGE_PATTERN = Pattern.compile("\\bpage=(\\d+)")
+        private val TOTAL_PAGE_PATTERN = Pattern.compile("\\btotal_pages=(\\d+)")
         private const val NEXT_LINK = "next"
 
         private fun String.extractLinks(): Map<String, String> {
