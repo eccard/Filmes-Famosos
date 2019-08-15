@@ -4,13 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-        <import type="android.view.View" />
         <variable
-            name="position"
-            type="java.lang.Integer" />
-        <variable
-            name="viewModel"
-            type="com.eccard.popularmovies.ui.moviedetail.reviews.ReviewsViewModel" />
+            name="movieReview"
+            type="com.eccard.popularmovies.data.network.model.MovieReviewResult" />
+
     </data>
 
 
@@ -46,7 +43,7 @@
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toEndOf="@+id/imageView"
             app:layout_constraintTop_toTopOf="parent"
-            android:text="@{viewModel.getReviewAt(position).author}"
+            android:text="@{movieReview.author}"
             tools:text="ttestest"/>
 
         <TextView
@@ -58,7 +55,7 @@
             android:layout_marginBottom="8dp"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
-            android:text="@{viewModel.getReviewAt(position).content}"
+            android:text="@{movieReview.content}"
             android:textAppearance="@style/TextAppearance.AppCompat"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="@+id/textViewUser"
