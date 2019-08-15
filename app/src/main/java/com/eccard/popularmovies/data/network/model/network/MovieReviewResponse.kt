@@ -8,4 +8,6 @@ data class MovieReviewResponse(
         val results: List<MovieReviewResult>,
         val total_pages: Int,
         val total_results: Int
-)
+){
+    var nextPage : Int? = null
+}
