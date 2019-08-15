@@ -9,6 +9,7 @@ import com.eccard.popularmovies.data.network.api.AppApiHelper
 import com.eccard.popularmovies.data.network.api.MoviesApi
 import com.eccard.popularmovies.data.network.database.AppDatabase
 import com.eccard.popularmovies.data.network.model.MovieResult
+import com.eccard.popularmovies.data.network.model.network.MovieFetchResult
 import com.eccard.popularmovies.data.network.model.network.MovieResponse
 import com.eccard.popularmovies.utils.AbsentLiveData
 import javax.inject.Inject
