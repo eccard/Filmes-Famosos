@@ -25,4 +25,21 @@ object MovieTypeConverters  {
     fun intListToString(ints: List<Int>?): String? {
         return ints?.joinToString(",")
     }
+
+
+    @TypeConverter
+    @JvmStatic
+    fun stringToStringList(data: String?): List<String>? {
+        return data?.let {
+            it.split(",").map {
+                it
+            }
+        }
+    }
+
+    @TypeConverter
+    @JvmStatic
+    fun stringListToString(ints: List<String>?): String? {
+        return ints?.joinToString(",")
+    }
 }
