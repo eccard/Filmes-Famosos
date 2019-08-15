@@ -88,7 +88,7 @@ class MovieAdapter(
                 .into(binding.root.img_movie_item, object : Callback {
                     override fun onSuccess() {
 
-                        val bitmap = (binding.root.img_movie_item.getDrawable() as BitmapDrawable).bitmap
+                        val bitmap = (binding.root.img_movie_item.drawable as BitmapDrawable).bitmap
 
                         Palette.from(bitmap).generate { palette ->
                             setUpInfoBackgroundColor(binding, palette!!)
@@ -103,21 +103,21 @@ class MovieAdapter(
 
     private fun setUpInfoBackgroundColor(binding: ViewDataBinding, palette: Palette) {
 
-        var swatch = palette.getVibrantSwatch()
+        var swatch = palette.vibrantSwatch
         //If there is no vibrant swatch, try getting dominant swatch
         if(swatch == null) {
-            swatch = palette.getDominantSwatch();
+            swatch = palette.dominantSwatch
         }
 
         // If there is no dominant swatch try getting muted swatch
         if(swatch == null) {
-            swatch = palette.getMutedSwatch();
+            swatch = palette.mutedSwatch
         }
         // If there is no dominant swatch try getting muted swatch
         swatch?.let {
-            binding.root.image_legend.setBackgroundColor(it.getRgb())
-            binding.root.tv_movie_title.setTextColor(it.getBodyTextColor());
-            binding.root.tv_movie_rate.setTextColor(it.getTitleTextColor())
+            binding.root.image_legend.setBackgroundColor(it.rgb)
+            binding.root.tv_movie_title.setTextColor(it.bodyTextColor)
+            binding.root.tv_movie_rate.setTextColor(it.titleTextColor)
         }
 
     }
