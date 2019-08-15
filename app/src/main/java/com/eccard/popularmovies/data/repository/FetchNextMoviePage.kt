@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.eccard.popularmovies.data.network.api.*
 import com.eccard.popularmovies.data.network.database.AppDatabase
+import com.eccard.popularmovies.data.network.model.network.MovieFetchResult
 import java.io.IOException
 
 class FetchNextMoviePage constructor(private val orderType : AppApiHelper.MovieOrderType,

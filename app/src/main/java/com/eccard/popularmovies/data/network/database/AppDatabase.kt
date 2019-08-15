@@ -3,7 +3,7 @@ package com.eccard.popularmovies.data.network.database
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import com.eccard.popularmovies.data.network.model.MovieResult
-import com.eccard.popularmovies.data.repository.MovieFetchResult
+import com.eccard.popularmovies.data.network.model.network.MovieFetchResult
 
 @Database(entities = [
     MovieResult::class,

@@ -5,7 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
 import androidx.room.*
 import com.eccard.popularmovies.data.network.model.MovieResult
-import com.eccard.popularmovies.data.repository.MovieFetchResult
+import com.eccard.popularmovies.data.network.model.network.MovieFetchResult
 import java.util.*
 
 @Dao

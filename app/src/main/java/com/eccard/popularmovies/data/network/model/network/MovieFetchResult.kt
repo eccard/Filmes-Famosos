@@ -1,4 +1,4 @@
-package com.eccard.popularmovies.data.repository
+package com.eccard.popularmovies.data.network.model.network
 
 import androidx.room.Entity
 import androidx.room.TypeConverters
