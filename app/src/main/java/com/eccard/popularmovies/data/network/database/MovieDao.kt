@@ -5,7 +5,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
 import androidx.room.*
 import com.eccard.popularmovies.data.network.model.MovieResult
+import com.eccard.popularmovies.data.network.model.MovieReviewResult
 import com.eccard.popularmovies.data.network.model.network.MovieFetchResult
+import com.eccard.popularmovies.data.network.model.network.MovieReviewFetchResult
 import java.util.*
 
 @Dao
@@ -57,4 +59,22 @@ abstract class MovieDao {
 
     @Query("SELECT * FROM movie WHERE bookmarked = :bookMarked")
     abstract fun loadAllMoviesWithBookmarked(bookMarked : Boolean): LiveData<List<MovieResult>>
+
+
+
+    @Query("SELECT * FROM MovieReviewFetchResult WHERE movieId = :movieId")
+    abstract fun searchMovieReviewResult(movieId : Int) : LiveData<MovieReviewFetchResult>
+
+    @Query("SELECT * FROM MovieReviewFetchResult WHERE movieId = :movieId")
+    abstract fun findSearchMovieReviewResult(movieId : Int) : MovieReviewFetchResult?
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    abstract fun insertMovieReviewFetch(movieReviewFetchResult: MovieReviewFetchResult)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    abstract fun insertMovieReviews(movieReviewResults: List<MovieReviewResult>)
+
+    @Query("SELECT * FROM movieReview WHERE id in (:movieReviewIds)")
+    abstract fun loadMovieReviews(movieReviewIds: List<String>) : LiveData<List<MovieReviewResult>>
+
 }
