@@ -20,9 +20,7 @@ import javax.inject.Singleton
 class MovieRepository @Inject constructor(
         private val appExecutors: AppExecutors,
         private val db : AppDatabase,
-        private val moviApi : MoviesApi
-){
-
+        private val moviApi : MoviesApi){
 
     fun fetchNextPage(orderType : AppApiHelper.MovieOrderType)
     : LiveData<Resource<Boolean>>{
