@@ -1,8 +1,7 @@
 package com.eccard.popularmovies.data.network.api
 
 import com.eccard.popularmovies.data.network.model.network.MovieResponse
-import com.eccard.popularmovies.data.network.model.network.MovieReviewResponse
-import com.eccard.popularmovies.data.network.model.network.MovieTrailersReviewResponse
+import com.eccard.popularmovies.data.network.model.network.MovieTrailersResponse
 import retrofit2.Response
 import javax.inject.Inject
 
@@ -24,7 +23,7 @@ class AppApiHelper @Inject constructor(private val moviesApi : MoviesApi) {
         }
     }
 
-    suspend fun doGetTrailersFromMovieApiCall(movieId: Int): Response<MovieTrailersReviewResponse> {
+    suspend fun doGetTrailersFromMovieApiCall(movieId: Int): Response<MovieTrailersResponse> {
         return moviesApi.doGetTrailersFromMovieApiCall(movieId)
     }
 }

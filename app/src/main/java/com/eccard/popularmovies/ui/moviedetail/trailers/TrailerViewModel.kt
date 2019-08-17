@@ -8,7 +8,7 @@ import androidx.lifecycle.MutableLiveData
 import com.eccard.popularmovies.R
 import com.eccard.popularmovies.data.network.api.AppApiHelper
 import com.eccard.popularmovies.data.network.model.MovieResult
-import com.eccard.popularmovies.data.network.model.network.MovieTrailersReviewResponse
+import com.eccard.popularmovies.data.network.model.network.MovieTrailersResponse
 import com.eccard.popularmovies.data.network.model.TrailerResult
 import com.eccard.popularmovies.utils.Event
 import kotlinx.coroutines.CoroutineScope
@@ -74,7 +74,7 @@ class TrailerViewModel @Inject constructor(private var apiHelper: AppApiHelper):
                 }
 
                 if (response.isSuccessful) {
-                    trailers.value = (response.body() as MovieTrailersReviewResponse).results
+                    trailers.value = (response.body() as MovieTrailersResponse).results
                 } else {
                     Log.e(TAG, "Error loading trailers")
                 }

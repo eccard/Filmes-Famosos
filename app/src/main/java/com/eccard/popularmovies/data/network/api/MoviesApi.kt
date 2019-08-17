@@ -3,7 +3,7 @@ package com.eccard.popularmovies.data.network.api
 import androidx.lifecycle.LiveData
 import com.eccard.popularmovies.data.network.model.network.MovieResponse
 import com.eccard.popularmovies.data.network.model.network.MovieReviewResponse
-import com.eccard.popularmovies.data.network.model.network.MovieTrailersReviewResponse
+import com.eccard.popularmovies.data.network.model.network.MovieTrailersResponse
 import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.GET
@@ -30,7 +30,7 @@ interface MoviesApi {
 
 
     @GET("movie/{movie_id}/videos")
-    suspend fun doGetTrailersFromMovieApiCall(@Path("movie_id") movieId: Int): Response<MovieTrailersReviewResponse>
+    suspend fun doGetTrailersFromMovieApiCall(@Path("movie_id") movieId: Int): Response<MovieTrailersResponse>
 
 
 

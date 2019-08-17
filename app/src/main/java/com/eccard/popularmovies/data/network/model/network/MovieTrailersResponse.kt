@@ -2,7 +2,7 @@ package com.eccard.popularmovies.data.network.model.network
 
 import com.eccard.popularmovies.data.network.model.TrailerResult
 
-data class MovieTrailersReviewResponse(
+data class MovieTrailersResponse(
         val id: Int,
         val page: Int,
         val results: List<TrailerResult>,
