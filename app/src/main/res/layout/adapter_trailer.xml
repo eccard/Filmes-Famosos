@@ -6,7 +6,7 @@
     <data>
         <variable
             name="movieTrailer"
-            type="com.eccard.popularmovies.data.network.model.TrailerResult" />
+            type="com.eccard.popularmovies.data.network.model.MovieTrailer" />
     </data>
 
     <FrameLayout

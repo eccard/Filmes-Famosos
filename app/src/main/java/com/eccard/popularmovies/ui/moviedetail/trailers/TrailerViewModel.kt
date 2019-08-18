@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.Transformations
-import com.eccard.popularmovies.data.network.model.TrailerResult
+import com.eccard.popularmovies.data.network.model.MovieTrailer
 import com.eccard.popularmovies.data.repository.MovieTrailerRepository
 import com.eccard.popularmovies.data.repository.Resource
 import com.eccard.popularmovies.data.repository.Status
@@ -25,7 +25,7 @@ class TrailerViewModel @Inject constructor(private var movieTrailerRepository: M
         _movieId.value = movieId
     }
 
-    val results: LiveData<Resource<List<TrailerResult>>> = Transformations
+    val results: LiveData<Resource<List<MovieTrailer>>> = Transformations
             .switchMap(_movieId) { fetched ->
                 movieTrailerRepository.fetchMovieTrailer(fetched)
             }

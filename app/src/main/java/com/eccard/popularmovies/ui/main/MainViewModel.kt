@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.Transformations
 import com.eccard.popularmovies.data.network.model.MovieOrderType
-import com.eccard.popularmovies.data.network.model.MovieResult
+import com.eccard.popularmovies.data.network.model.Movie
 import com.eccard.popularmovies.data.repository.MovieRepository
 import com.eccard.popularmovies.data.repository.Resource
 import com.eccard.popularmovies.data.repository.Status
@@ -28,7 +28,7 @@ class MainViewModel @Inject constructor(private var movieRepository: MovieReposi
         _orderType.value = orderType
     }
 
-    val results: LiveData<Resource<List<MovieResult>>> = Transformations
+    val results: LiveData<Resource<List<Movie>>> = Transformations
             .switchMap(_orderType) { fetched ->
                     movieRepository.fetchMovies(fetched)
             }

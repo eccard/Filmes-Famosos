@@ -22,22 +22,22 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.DiffUtil
 import com.eccard.popularmovies.utils.AppExecutors
 import com.eccard.popularmovies.R
-import com.eccard.popularmovies.data.network.model.TrailerResult
+import com.eccard.popularmovies.data.network.model.MovieTrailer
 import com.eccard.popularmovies.databinding.AdapterTrailerBinding
 import com.eccard.popularmovies.utils.rv.DataBoundListAdapter
 
 class MovieTrailerAdapter (
 //        private val dataBindingComponent: DataBindingComponent,
         appExecutors: AppExecutors,
-        private val repoClickCallback: ((TrailerResult) -> Unit)?
-) : DataBoundListAdapter<TrailerResult, AdapterTrailerBinding>(
+        private val repoClickCallback: ((MovieTrailer) -> Unit)?
+) : DataBoundListAdapter<MovieTrailer, AdapterTrailerBinding>(
         appExecutors = appExecutors,
-        diffCallback = object : DiffUtil.ItemCallback<TrailerResult>() {
-            override fun areItemsTheSame(oldItem: TrailerResult, newItem: TrailerResult): Boolean {
+        diffCallback = object : DiffUtil.ItemCallback<MovieTrailer>() {
+            override fun areItemsTheSame(oldItem: MovieTrailer, newItem: MovieTrailer): Boolean {
                 return oldItem.id == newItem.id
             }
 
-            override fun areContentsTheSame(oldItem: TrailerResult, newItem: TrailerResult): Boolean {
+            override fun areContentsTheSame(oldItem: MovieTrailer, newItem: MovieTrailer): Boolean {
                 return oldItem.key == newItem.key
                         && oldItem.name == newItem.name
             }
@@ -60,7 +60,7 @@ class MovieTrailerAdapter (
         return binding
     }
 
-    override fun bind(binding: AdapterTrailerBinding, item: TrailerResult) {
+    override fun bind(binding: AdapterTrailerBinding, item: MovieTrailer) {
         binding.movieTrailer = item
     }
 }

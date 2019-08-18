@@ -8,7 +8,7 @@ import com.eccard.popularmovies.data.network.api.ApiSuccessResponse
 import com.eccard.popularmovies.data.network.api.MoviesApi
 import com.eccard.popularmovies.data.network.database.AppDatabase
 import com.eccard.popularmovies.data.network.model.MovieOrderType
-import com.eccard.popularmovies.data.network.model.MovieResult
+import com.eccard.popularmovies.data.network.model.Movie
 import com.eccard.popularmovies.data.network.model.network.MovieFetchResult
 import com.eccard.popularmovies.data.network.model.network.MovieResponse
 import com.eccard.popularmovies.utils.AbsentLiveData
@@ -37,9 +37,9 @@ class MovieRepository @Inject constructor(
 
 
     fun fetchMovies(orderType : MovieOrderType)
-            : LiveData<Resource<List<MovieResult>>> {
+            : LiveData<Resource<List<Movie>>> {
 
-        return object : NetworkBoundResource<List<MovieResult>, MovieResponse>(appExecutors){
+        return object : NetworkBoundResource<List<Movie>, MovieResponse>(appExecutors){
             override fun saveCallResult(item: MovieResponse) {
                 var movieIds = item.results.map {it.id}
 
@@ -57,11 +57,11 @@ class MovieRepository @Inject constructor(
 
             }
 
-            override fun shouldFetch(data: List<MovieResult>?): Boolean {
+            override fun shouldFetch(data: List<Movie>?): Boolean {
                 return data == null
             }
 
-            override fun loadFromDb(): LiveData<List<MovieResult>> {
+            override fun loadFromDb(): LiveData<List<Movie>> {
 
                 return if (orderType == MovieOrderType.TOP_BOOKMARK) {
                     db.movieDao().loadAllMoviesWithBookmarked(true)

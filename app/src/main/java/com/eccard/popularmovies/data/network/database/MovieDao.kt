@@ -4,9 +4,9 @@ import android.util.SparseIntArray
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
 import androidx.room.*
-import com.eccard.popularmovies.data.network.model.MovieResult
-import com.eccard.popularmovies.data.network.model.MovieReviewResult
-import com.eccard.popularmovies.data.network.model.TrailerResult
+import com.eccard.popularmovies.data.network.model.Movie
+import com.eccard.popularmovies.data.network.model.MovieReview
+import com.eccard.popularmovies.data.network.model.MovieTrailer
 import com.eccard.popularmovies.data.network.model.network.MovieFetchResult
 import com.eccard.popularmovies.data.network.model.network.MovieReviewFetchResult
 import com.eccard.popularmovies.data.network.model.network.MovieTrailerFetchResult
@@ -16,25 +16,25 @@ import java.util.*
 abstract class MovieDao {
 
     @Query("SELECT * FROM movie")
-    abstract fun loadAllMovies(): LiveData<List<MovieResult>>
+    abstract fun loadAllMovies(): LiveData<List<Movie>>
 
     @Query("SELECT * FROM movie WHERE id = :movieId")
-    abstract fun getMovieResult(movieId: Int): LiveData<MovieResult>
+    abstract fun getMovieResult(movieId: Int): LiveData<Movie>
 
     // todo add a propertie to bookmarked movie
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    abstract fun insertMovie(movieResult: MovieResult)
+    abstract fun insertMovie(movie: Movie)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    abstract fun insertMovies(movieResults: List<MovieResult>)
+    abstract fun insertMovies(movies: List<Movie>)
 
     @Delete
-    abstract fun deleteMovie(movieResult: MovieResult)
+    abstract fun deleteMovie(movie: Movie)
 
     @Query("SELECT * FROM movie WHERE id in (:movieIds)")
-    abstract fun loadById(movieIds: List<Int>) : LiveData<List<MovieResult>>
+    abstract fun loadById(movieIds: List<Int>) : LiveData<List<Movie>>
 
-    fun loadOrdered(repoIds: List<Int>): LiveData<List<MovieResult>> {
+    fun loadOrdered(repoIds: List<Int>): LiveData<List<Movie>> {
         val order = SparseIntArray()
         repoIds.withIndex().forEach {
             order.put(it.value, it.index)
@@ -60,7 +60,7 @@ abstract class MovieDao {
     abstract fun findSearchMoveiResult(orderType : String) : MovieFetchResult?
 
     @Query("SELECT * FROM movie WHERE bookmarked = :bookMarked")
-    abstract fun loadAllMoviesWithBookmarked(bookMarked : Boolean): LiveData<List<MovieResult>>
+    abstract fun loadAllMoviesWithBookmarked(bookMarked : Boolean): LiveData<List<Movie>>
 
 
 
@@ -74,10 +74,10 @@ abstract class MovieDao {
     abstract fun insertMovieReviewFetch(movieReviewFetchResult: MovieReviewFetchResult)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    abstract fun insertMovieReviews(movieReviewResults: List<MovieReviewResult>)
+    abstract fun insertMovieReviews(movieReviews: List<MovieReview>)
 
     @Query("SELECT * FROM movieReview WHERE id in (:movieReviewIds)")
-    abstract fun loadMovieReviews(movieReviewIds: List<String>) : LiveData<List<MovieReviewResult>>
+    abstract fun loadMovieReviews(movieReviewIds: List<String>) : LiveData<List<MovieReview>>
 
 
 
@@ -91,9 +91,9 @@ abstract class MovieDao {
     abstract fun insertMovieTrailerFetch(movieTrailerFetchResult: MovieTrailerFetchResult)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    abstract fun insertMovieTrailer(movieReviewResults: List<TrailerResult>)
+    abstract fun insertMovieTrailer(movieReviews: List<MovieTrailer>)
 
     @Query("SELECT * FROM movieTrailer WHERE id in (:movieTrailerIds)")
-    abstract fun loadMovieTrailers(movieTrailerIds: List<String>) : LiveData<List<TrailerResult>>
+    abstract fun loadMovieTrailers(movieTrailerIds: List<String>) : LiveData<List<MovieTrailer>>
 
 }

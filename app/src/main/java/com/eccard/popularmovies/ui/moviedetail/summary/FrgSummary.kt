@@ -10,7 +10,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.eccard.popularmovies.BR
 import com.eccard.popularmovies.R
-import com.eccard.popularmovies.data.network.model.MovieResult
+import com.eccard.popularmovies.data.network.model.Movie
 import com.eccard.popularmovies.databinding.FrgSummaryBinding
 import com.eccard.popularmovies.di.ViewModelProviderFactory
 import kotlinx.android.synthetic.main.activivty_movie_details_cardview.view.*
@@ -38,7 +38,7 @@ class FrgSummary : BaseFragment<FrgSummaryBinding,SummaryViewModel>() {
 
     internal var movieIsBookmarked = false
 
-    private var movieResult: MovieResult? = null
+    private var movie: Movie? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -51,14 +51,14 @@ class FrgSummary : BaseFragment<FrgSummaryBinding,SummaryViewModel>() {
 
         val intent = activity!!.intent
 
-        if (intent.hasExtra(MovieResult::class.java.simpleName)) {
-            movieResult = intent.getParcelableExtra(MovieResult::class.java.simpleName)
+        if (intent.hasExtra(Movie::class.java.simpleName)) {
+            movie = intent.getParcelableExtra(Movie::class.java.simpleName)
 
-            activity!!.title = movieResult!!.title
+            activity!!.title = movie!!.title
 
-            summaryViewModel.movie.value = movieResult
+            summaryViewModel.movie.value = movie
 
-            checkIfMovieIsAlreadyBookmarked(movieResult!!.id)
+            checkIfMovieIsAlreadyBookmarked(movie!!.id)
 
             summaryViewModel.movieIsBookmarked.observe(this, Observer {
                 updateBookmarkedState(it)
@@ -72,11 +72,11 @@ class FrgSummary : BaseFragment<FrgSummaryBinding,SummaryViewModel>() {
 
         val movieData = summaryViewModel.getMovieFromDb(movieId)
 
-        movieData.observe(this, object : Observer<MovieResult> {
-                override fun onChanged(movieResult: MovieResult?) {
+        movieData.observe(this, object : Observer<Movie> {
+                override fun onChanged(movie: Movie?) {
                     movieData.removeObserver(this)
                     movieIsBookmarked = false
-                    movieResult?.bookmarked?.let {
+                    movie?.bookmarked?.let {
                         if (it){
                             movieIsBookmarked = true
                         }

@@ -28,7 +28,7 @@ import androidx.databinding.ViewDataBinding
 import androidx.palette.graphics.Palette
 import com.eccard.popularmovies.utils.AppExecutors
 import com.eccard.popularmovies.R
-import com.eccard.popularmovies.data.network.model.MovieResult
+import com.eccard.popularmovies.data.network.model.Movie
 import com.eccard.popularmovies.databinding.MovieItemBinding
 import com.eccard.popularmovies.utils.rv.DataBoundListAdapter
 import com.squareup.picasso.Callback
@@ -37,20 +37,20 @@ import kotlinx.android.synthetic.main.movie_item.view.*
 
 
 /**
- * A RecyclerView adapter for [MovieResult] class.
+ * A RecyclerView adapter for [Movie] class.
  */
 class MovieAdapter(
 //        private val dataBindingComponent: DataBindingComponent,
         appExecutors: AppExecutors,
-        private val repoClickCallback: ((MovieResult) -> Unit)?
-) : DataBoundListAdapter<MovieResult, MovieItemBinding>(
+        private val repoClickCallback: ((Movie) -> Unit)?
+) : DataBoundListAdapter<Movie, MovieItemBinding>(
         appExecutors = appExecutors,
-        diffCallback = object : DiffUtil.ItemCallback<MovieResult>() {
-            override fun areItemsTheSame(oldItem: MovieResult, newItem: MovieResult): Boolean {
+        diffCallback = object : DiffUtil.ItemCallback<Movie>() {
+            override fun areItemsTheSame(oldItem: Movie, newItem: Movie): Boolean {
                 return oldItem.id == newItem.id
             }
 
-            override fun areContentsTheSame(oldItem: MovieResult, newItem: MovieResult): Boolean {
+            override fun areContentsTheSame(oldItem: Movie, newItem: Movie): Boolean {
                 return oldItem.title == newItem.title
                         && oldItem.original_title == newItem.original_title
             }
@@ -73,13 +73,13 @@ class MovieAdapter(
         return binding
     }
 
-    override fun bind(binding: MovieItemBinding, item: MovieResult) {
+    override fun bind(binding: MovieItemBinding, item: Movie) {
         binding.movie = item
 
         setupImg(item, binding)
     }
 
-    private fun setupImg(item: MovieResult, binding: MovieItemBinding) {
+    private fun setupImg(item: Movie, binding: MovieItemBinding) {
         val picasso: Picasso = Picasso.get()
         picasso.setIndicatorsEnabled(true)
         picasso.load(item.generatePosterUrl())

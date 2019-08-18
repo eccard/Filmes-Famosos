@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools">
     <data>
 
-        <import type="com.eccard.popularmovies.data.network.model.MovieReviewResult" />
+        <import type="com.eccard.popularmovies.data.network.model.MovieReview" />
 
         <import type="java.util.List" />
 
@@ -19,7 +19,7 @@
 
         <variable
             name="searchResult"
-            type="LiveData&lt;Resource&lt;List&lt;MovieReviewResult>>>" />
+            type="LiveData&lt;Resource&lt;List&lt;MovieReview>>>" />
 
         <variable
             name="callback"

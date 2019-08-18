@@ -11,7 +11,7 @@ import com.eccard.popularmovies.utils.AppExecutors
 import com.eccard.popularmovies.BR
 import com.eccard.popularmovies.R
 import com.eccard.popularmovies.data.network.model.MovieOrderType
-import com.eccard.popularmovies.data.network.model.MovieResult
+import com.eccard.popularmovies.data.network.model.Movie
 import com.eccard.popularmovies.databinding.ActivityMainBinding
 import com.eccard.popularmovies.di.ViewModelProviderFactory
 import com.eccard.popularmovies.utils.RetryCallback
@@ -151,9 +151,9 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(), Lifecyc
     override fun getBindingVariable(): Int = BR.viewModel
 
 
-    private fun onSelectedMovie(movie: MovieResult) {
+    private fun onSelectedMovie(movie: Movie) {
         val intent = MovieDetailActivity.newIntent(this@MainActivity)
-        intent.putExtra(MovieResult::class.java.simpleName, movie)
+        intent.putExtra(Movie::class.java.simpleName, movie)
 
         startActivity(intent)
     }

@@ -2,7 +2,7 @@ package com.eccard.popularmovies.ui.moviedetail.summary
 
 import androidx.lifecycle.MutableLiveData
 import com.eccard.popularmovies.data.network.database.MovieDao
-import com.eccard.popularmovies.data.network.model.MovieResult
+import com.eccard.popularmovies.data.network.model.Movie
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -13,7 +13,7 @@ import javax.inject.Inject
 class SummaryViewModel @Inject constructor(private var moviesDao: MovieDao):
         BaseViewModel<Any>(){
 
-    var movie = MutableLiveData<MovieResult>()
+    var movie = MutableLiveData<Movie>()
     var movieIsBookmarked = MutableLiveData<Boolean>().apply { value = false }
 
     fun getMovieFromDb(id :Int) = moviesDao.getMovieResult(id)

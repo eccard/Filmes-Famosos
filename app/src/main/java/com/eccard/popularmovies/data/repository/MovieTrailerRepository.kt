@@ -7,7 +7,7 @@ import com.eccard.popularmovies.data.network.api.ApiResponse
 import com.eccard.popularmovies.data.network.api.ApiSuccessResponse
 import com.eccard.popularmovies.data.network.api.MoviesApi
 import com.eccard.popularmovies.data.network.database.AppDatabase
-import com.eccard.popularmovies.data.network.model.TrailerResult
+import com.eccard.popularmovies.data.network.model.MovieTrailer
 import com.eccard.popularmovies.data.network.model.network.MovieTrailerFetchResult
 import com.eccard.popularmovies.data.network.model.network.MovieTrailersResponse
 import com.eccard.popularmovies.utils.AbsentLiveData
@@ -33,9 +33,9 @@ class MovieTrailerRepository @Inject constructor(
     }
 
     fun fetchMovieTrailer(movieId : Int)
-            :LiveData<Resource<List<TrailerResult>>> {
+            :LiveData<Resource<List<MovieTrailer>>> {
 
-        return object : NetworkBoundResource<List<TrailerResult>, MovieTrailersResponse>(appExecutors){
+        return object : NetworkBoundResource<List<MovieTrailer>, MovieTrailersResponse>(appExecutors){
             override fun saveCallResult(item: MovieTrailersResponse) {
                 val movieTrailerIds = item.results.map {it.id}
                 val movieTrailerFetchResult = MovieTrailerFetchResult(movieId,
@@ -47,11 +47,11 @@ class MovieTrailerRepository @Inject constructor(
                 }
             }
 
-            override fun shouldFetch(data: List<TrailerResult>?): Boolean {
+            override fun shouldFetch(data: List<MovieTrailer>?): Boolean {
                 return data == null
             }
 
-            override fun loadFromDb(): LiveData<List<TrailerResult>> {
+            override fun loadFromDb(): LiveData<List<MovieTrailer>> {
                 return Transformations.switchMap(
                         db.movieDao().searchMovieTrailerFetchResult(movieId)){
                     fetchData ->

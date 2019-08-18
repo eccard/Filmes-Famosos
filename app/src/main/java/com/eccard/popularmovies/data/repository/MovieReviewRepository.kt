@@ -7,7 +7,7 @@ import com.eccard.popularmovies.data.network.api.ApiResponse
 import com.eccard.popularmovies.data.network.api.ApiSuccessResponse
 import com.eccard.popularmovies.data.network.api.MoviesApi
 import com.eccard.popularmovies.data.network.database.AppDatabase
-import com.eccard.popularmovies.data.network.model.MovieReviewResult
+import com.eccard.popularmovies.data.network.model.MovieReview
 import com.eccard.popularmovies.data.network.model.network.MovieReviewFetchResult
 import com.eccard.popularmovies.data.network.model.network.MovieReviewResponse
 import com.eccard.popularmovies.utils.AbsentLiveData
@@ -35,9 +35,9 @@ class MovieReviewRepository @Inject constructor(
 
 
     fun fetchMovieReviews(movieId : Int)
-            : LiveData<Resource<List<MovieReviewResult>>> {
+            : LiveData<Resource<List<MovieReview>>> {
 
-        return object : NetworkBoundResource<List<MovieReviewResult>, MovieReviewResponse>(appExecutors){
+        return object : NetworkBoundResource<List<MovieReview>, MovieReviewResponse>(appExecutors){
             override fun saveCallResult(item: MovieReviewResponse) {
                 var movieReviewIds = item.results.map {it.id}
                 val movieReviewFetchResult = MovieReviewFetchResult(movieId,
@@ -52,11 +52,11 @@ class MovieReviewRepository @Inject constructor(
 
             }
 
-            override fun shouldFetch(data: List<MovieReviewResult>?): Boolean {
+            override fun shouldFetch(data: List<MovieReview>?): Boolean {
                 return data == null
             }
 
-            override fun loadFromDb(): LiveData<List<MovieReviewResult>> {
+            override fun loadFromDb(): LiveData<List<MovieReview>> {
 
                 return Transformations.switchMap(db.movieDao().searchMovieReviewResult(movieId)){
                     fetchData ->

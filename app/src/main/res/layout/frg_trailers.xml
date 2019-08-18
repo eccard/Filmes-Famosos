@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools">
     <data>
 
-        <import type="com.eccard.popularmovies.data.network.model.TrailerResult" />
+        <import type="com.eccard.popularmovies.data.network.model.MovieTrailer" />
 
         <import type="java.util.List" />
 
@@ -19,7 +19,7 @@
 
         <variable
             name="searchResult"
-            type="LiveData&lt;Resource&lt;List&lt;TrailerResult>>>" />
+            type="LiveData&lt;Resource&lt;List&lt;MovieTrailer>>>" />
 
         <variable
             name="callback"

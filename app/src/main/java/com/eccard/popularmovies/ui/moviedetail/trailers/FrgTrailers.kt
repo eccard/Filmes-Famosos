@@ -15,7 +15,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.eccard.popularmovies.utils.AppExecutors
 import com.eccard.popularmovies.BR
 import com.eccard.popularmovies.R
-import com.eccard.popularmovies.data.network.model.MovieResult
+import com.eccard.popularmovies.data.network.model.Movie
 import com.eccard.popularmovies.databinding.FrgTrailersBinding
 import com.eccard.popularmovies.di.ViewModelProviderFactory
 import com.eccard.popularmovies.ui.base.BaseFragment
@@ -108,8 +108,8 @@ class FrgTrailers : BaseFragment<FrgTrailersBinding,TrailerViewModel>() {
 
 
         val intent = activity!!.intent
-        if (intent.hasExtra(MovieResult::class.java.simpleName)) {
-            val movieResult = intent.getParcelableExtra<MovieResult>(MovieResult::class.java.simpleName)
+        if (intent.hasExtra(Movie::class.java.simpleName)) {
+            val movieResult = intent.getParcelableExtra<Movie>(Movie::class.java.simpleName)
 
             trailersViewModel.setMovieId(movieResult.id)
         }

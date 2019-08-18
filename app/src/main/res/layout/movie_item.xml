@@ -5,7 +5,7 @@
     <data>
         <variable
             name="movie"
-            type="com.eccard.popularmovies.data.network.model.MovieResult" />
+            type="com.eccard.popularmovies.data.network.model.Movie" />
     </data>
     <FrameLayout
         android:layout_height="wrap_content"

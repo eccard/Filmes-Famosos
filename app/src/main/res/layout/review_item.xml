@@ -6,7 +6,7 @@
     <data>
         <variable
             name="movieReview"
-            type="com.eccard.popularmovies.data.network.model.MovieReviewResult" />
+            type="com.eccard.popularmovies.data.network.model.MovieReview" />
 
     </data>
 

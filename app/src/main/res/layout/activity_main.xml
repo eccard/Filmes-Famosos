@@ -5,7 +5,7 @@
 
     <data>
 
-        <import type="com.eccard.popularmovies.data.network.model.MovieResult" />
+        <import type="com.eccard.popularmovies.data.network.model.Movie" />
 
         <import type="java.util.List" />
 
@@ -21,7 +21,7 @@
 
         <variable
             name="searchResult"
-            type="LiveData&lt;Resource&lt;List&lt;MovieResult>>>" />
+            type="LiveData&lt;Resource&lt;List&lt;Movie>>>" />
 
         <variable
             name="callback"
