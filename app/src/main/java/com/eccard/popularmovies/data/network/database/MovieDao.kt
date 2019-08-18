@@ -6,8 +6,10 @@ import androidx.lifecycle.Transformations
 import androidx.room.*
 import com.eccard.popularmovies.data.network.model.MovieResult
 import com.eccard.popularmovies.data.network.model.MovieReviewResult
+import com.eccard.popularmovies.data.network.model.TrailerResult
 import com.eccard.popularmovies.data.network.model.network.MovieFetchResult
 import com.eccard.popularmovies.data.network.model.network.MovieReviewFetchResult
+import com.eccard.popularmovies.data.network.model.network.MovieTrailerFetchResult
 import java.util.*
 
 @Dao
@@ -76,5 +78,22 @@ abstract class MovieDao {
 
     @Query("SELECT * FROM movieReview WHERE id in (:movieReviewIds)")
     abstract fun loadMovieReviews(movieReviewIds: List<String>) : LiveData<List<MovieReviewResult>>
+
+
+
+    @Query("SELECT * FROM MovieTrailerFetchResult WHERE movieId = :movieId")
+    abstract fun searchMovieTrailerFetchResult(movieId : Int) : LiveData<MovieTrailerFetchResult>
+
+    @Query("SELECT * FROM MovieTrailerFetchResult WHERE movieId = :movieId")
+    abstract fun findSearchMovieTrailerFetched(movieId : Int) : MovieTrailerFetchResult?
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    abstract fun insertMovieTrailerFetch(movieTrailerFetchResult: MovieTrailerFetchResult)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    abstract fun insertMovieTrailer(movieReviewResults: List<TrailerResult>)
+
+    @Query("SELECT * FROM movieTrailer WHERE id in (:movieTrailerIds)")
+    abstract fun loadMovieTrailers(movieTrailerIds: List<String>) : LiveData<List<TrailerResult>>
 
 }
