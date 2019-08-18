@@ -22,37 +22,43 @@ import javax.inject.Singleton
 
 
 @Module
-class AppModule {
-    @Provides
-    @Singleton
-    internal fun provideContext(application: Application): Context = application
+object AppModule {
 
+    @JvmStatic
     @Provides
     @Singleton
-    internal fun provideAppDatabase(context: Context): AppDatabase =
+    fun provideContext(application: Application): Context = application
+
+    @JvmStatic
+    @Provides
+    @Singleton
+    fun provideAppDatabase(context: Context): AppDatabase =
             Room.databaseBuilder(context, AppDatabase::class.java, AppConstants.APP_DB_NAME).build()
 
+    @JvmStatic
     @Provides
     @Singleton
-    internal fun provideMovieDao(appDatabase: AppDatabase) = appDatabase.movieDao()
+    fun provideMovieDao(appDatabase: AppDatabase) = appDatabase.movieDao()
 
-
+    @JvmStatic
     @Provides
     @Singleton
-    internal fun provideMovies(retrofit: Retrofit): MoviesApi {
+    fun provideMovies(retrofit: Retrofit): MoviesApi {
         return retrofit.create(MoviesApi::class.java)
     }
 
+
+    @JvmStatic
     @Provides
     @Singleton
-    internal fun provideRetrofitInterface(): Retrofit {
+    fun provideRetrofitInterface(): Retrofit {
 
         val loggingInterceptor = HttpLoggingInterceptor()
 
         loggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
 
 
-        var headerIntercept = object : Interceptor {
+        val headerIntercept = object : Interceptor {
             override fun intercept(chain: Interceptor.Chain): Response {
                 val originalRequest = chain.request()
                 val originalUrl = originalRequest.url
