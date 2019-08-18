@@ -2,13 +2,12 @@ package com.eccard.popularmovies.ui.main
 
 import android.os.Bundle
 import android.util.DisplayMetrics
-import android.util.Log
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.eccard.popularmovies.AppExecutors
+import com.eccard.popularmovies.utils.AppExecutors
 import com.eccard.popularmovies.BR
 import com.eccard.popularmovies.R
 import com.eccard.popularmovies.data.network.api.AppApiHelper

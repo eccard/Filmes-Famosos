@@ -4,7 +4,7 @@ import androidx.annotation.MainThread
 import androidx.annotation.WorkerThread
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
-import com.eccard.popularmovies.AppExecutors
+import com.eccard.popularmovies.utils.AppExecutors
 import com.eccard.popularmovies.data.network.api.ApiEmptyResponse
 import com.eccard.popularmovies.data.network.api.ApiErrorResponse
 import com.eccard.popularmovies.data.network.api.ApiResponse

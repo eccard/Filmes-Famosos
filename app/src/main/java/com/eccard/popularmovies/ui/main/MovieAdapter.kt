@@ -26,7 +26,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.ViewDataBinding
 import androidx.palette.graphics.Palette
-import com.eccard.popularmovies.AppExecutors
+import com.eccard.popularmovies.utils.AppExecutors
 import com.eccard.popularmovies.R
 import com.eccard.popularmovies.data.network.model.MovieResult
 import com.eccard.popularmovies.databinding.MovieItemBinding

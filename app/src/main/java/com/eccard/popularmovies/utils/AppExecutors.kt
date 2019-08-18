@@ -1,4 +1,4 @@
-package com.eccard.popularmovies
+package com.eccard.popularmovies.utils
 
 /*
  * Copyright (C) 2017 The Android Open Source Project

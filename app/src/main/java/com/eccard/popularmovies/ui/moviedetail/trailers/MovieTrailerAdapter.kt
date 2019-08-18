@@ -20,12 +20,10 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.DiffUtil
-import com.eccard.popularmovies.AppExecutors
+import com.eccard.popularmovies.utils.AppExecutors
 import com.eccard.popularmovies.R
-import com.eccard.popularmovies.data.network.model.MovieResult
 import com.eccard.popularmovies.data.network.model.TrailerResult
 import com.eccard.popularmovies.databinding.AdapterTrailerBinding
-import com.eccard.popularmovies.databinding.MovieItemBinding
 import com.eccard.popularmovies.utils.rv.DataBoundListAdapter
 
 class MovieTrailerAdapter (

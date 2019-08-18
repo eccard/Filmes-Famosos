@@ -12,7 +12,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.eccard.popularmovies.AppExecutors
+import com.eccard.popularmovies.utils.AppExecutors
 import com.eccard.popularmovies.BR
 import com.eccard.popularmovies.R
 import com.eccard.popularmovies.data.network.model.MovieResult

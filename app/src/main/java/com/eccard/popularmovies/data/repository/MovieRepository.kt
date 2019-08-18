@@ -2,7 +2,7 @@ package com.eccard.popularmovies.data.repository
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
-import com.eccard.popularmovies.AppExecutors
+import com.eccard.popularmovies.utils.AppExecutors
 import com.eccard.popularmovies.data.network.api.ApiResponse
 import com.eccard.popularmovies.data.network.api.ApiSuccessResponse
 import com.eccard.popularmovies.data.network.api.AppApiHelper
