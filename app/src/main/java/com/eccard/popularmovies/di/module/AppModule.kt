@@ -37,14 +37,6 @@ class AppModule {
     internal fun provideMovieDao(appDatabase: AppDatabase) = appDatabase.movieDao()
 
 
-
-//    @Provides
-//    @Singleton
-//    internal fun provideApiHelper(retrofit: Retrofit): AppApiHelper {
-//        return AppApiHelper(retrofit.create(MoviesApi::class.java))
-//    }
-
-
     @Provides
     @Singleton
     internal fun provideMovies(retrofit: Retrofit): MoviesApi {
@@ -91,13 +83,5 @@ class AppModule {
                 .client(okhttp)
                 .build()
     }
-
-
-//    @Provides
-//    @Singleton
-//    internal fun providesMovieRepository(){
-//
-//        return MovieRepository()
-//    }
 
 }
