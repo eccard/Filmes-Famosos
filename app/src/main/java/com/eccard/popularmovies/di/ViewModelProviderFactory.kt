@@ -6,6 +6,7 @@ import com.eccard.popularmovies.data.network.api.AppApiHelper
 import com.eccard.popularmovies.data.network.database.MovieDao
 import com.eccard.popularmovies.data.repository.MovieRepository
 import com.eccard.popularmovies.data.repository.MovieReviewRepository
+import com.eccard.popularmovies.data.repository.MovieTrailerRepository
 import com.eccard.popularmovies.ui.main.MainViewModel
 import com.eccard.popularmovies.ui.moviedetail.reviews.ReviewsViewModel
 import com.eccard.popularmovies.ui.moviedetail.summary.SummaryViewModel
@@ -18,7 +19,8 @@ import javax.inject.Singleton
 class ViewModelProviderFactory @Inject constructor(private var moviewDao: MovieDao,
                                                    private var apiHelper: AppApiHelper,
                                                    private var movieRepository: MovieRepository,
-                                                   private var movieReviewRepository: MovieReviewRepository):
+                                                   private var movieReviewRepository: MovieReviewRepository,
+                                                   private var movieTrailerRepository: MovieTrailerRepository):
         ViewModelProvider.NewInstanceFactory() {
 
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
@@ -27,7 +29,7 @@ class ViewModelProviderFactory @Inject constructor(private var moviewDao: MovieD
         } else if(modelClass.isAssignableFrom(SummaryViewModel::class.java)){
             return SummaryViewModel(moviewDao, apiHelper) as T
         } else if (modelClass.isAssignableFrom(TrailerViewModel::class.java)){
-            return TrailerViewModel(apiHelper) as T
+            return TrailerViewModel(movieTrailerRepository) as T
         } else if (modelClass.isAssignableFrom(ReviewsViewModel::class.java)){
             return ReviewsViewModel(movieReviewRepository) as T
         }
