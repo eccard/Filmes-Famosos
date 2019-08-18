@@ -21,9 +21,7 @@ sealed class ApiResponse<T> {
                     ApiEmptyResponse()
                 } else {
                     ApiSuccessResponse(
-                            body = body,
-                            linkHeader = response.headers()?.get("link")
-                    )
+                            body = body)
                 }
             } else {
                 val msg = response.errorBody()?.string()
@@ -44,16 +42,10 @@ sealed class ApiResponse<T> {
 class ApiEmptyResponse<T> : ApiResponse<T>()
 
 data class ApiSuccessResponse<T>(
-        val body: T,
-        val links: Map<String, String>
+        val body: T
 ) : ApiResponse<T>() {
-    constructor(body: T, linkHeader: String?) : this(
-            body = body,
-            links = linkHeader?.extractLinks() ?: emptyMap()
-    )
 
     val nextPage: Int? by lazy(LazyThreadSafetyMode.NONE) {
-//        links[NEXT_LINK]?.let { next ->
             val actualPageMatcher = PAGE_PATTERN.matcher(body.toString())
             val totalPageMatcher = TOTAL_PAGE_PATTERN.matcher(body.toString())
             if (!actualPageMatcher.find() || actualPageMatcher.groupCount() != 1) {
@@ -77,28 +69,11 @@ data class ApiSuccessResponse<T>(
                     null
                 }
             }
-//        }
     }
 
     companion object {
-        private val LINK_PATTERN = Pattern.compile("<([^>]*)>[\\s]*;[\\s]*rel=\"([a-zA-Z0-9]+)\"")
         private val PAGE_PATTERN = Pattern.compile("\\bpage=(\\d+)")
         private val TOTAL_PAGE_PATTERN = Pattern.compile("\\btotal_pages=(\\d+)")
-        private const val NEXT_LINK = "next"
-
-        private fun String.extractLinks(): Map<String, String> {
-            val links = mutableMapOf<String, String>()
-            val matcher = LINK_PATTERN.matcher(this)
-
-            while (matcher.find()) {
-                val count = matcher.groupCount()
-                if (count == 2) {
-                    links[matcher.group(2)] = matcher.group(1)
-                }
-            }
-            return links
-        }
-
     }
 }
 
