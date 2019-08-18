@@ -23,7 +23,4 @@ class AppApiHelper @Inject constructor(private val moviesApi : MoviesApi) {
         }
     }
 
-    suspend fun doGetTrailersFromMovieApiCall(movieId: Int): Response<MovieTrailersResponse> {
-        return moviesApi.doGetTrailersFromMovieApiCall(movieId)
-    }
 }

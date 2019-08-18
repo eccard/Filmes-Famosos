@@ -30,7 +30,10 @@ interface MoviesApi {
 
 
     @GET("movie/{movie_id}/videos")
-    suspend fun doGetTrailersFromMovieApiCall(@Path("movie_id") movieId: Int): Response<MovieTrailersResponse>
+    fun doGetTrailersFromMovieApiCall(@Path("movie_id") movieId: Int, @Query("page") page: Int): Call<MovieTrailersResponse>
+
+    @GET("movie/{movie_id}/videos")
+    fun doGetTrailersFromMovieApiCall(@Path("movie_id") movieId: Int): LiveData<ApiResponse<MovieTrailersResponse>>
 
 
 
