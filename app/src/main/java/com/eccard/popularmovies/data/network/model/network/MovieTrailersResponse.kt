@@ -1,11 +1,11 @@
 package com.eccard.popularmovies.data.network.model.network
 
-import com.eccard.popularmovies.data.network.model.MovieReview
+import com.eccard.popularmovies.data.network.model.MovieTrailer
 
-data class MovieReviewResponse(
+data class MovieTrailersResponse(
         val id: Int,
         val page: Int,
-        val results: List<MovieReview>,
+        val results: List<MovieTrailer>,
         val total_pages: Int,
         val total_results: Int
 ){

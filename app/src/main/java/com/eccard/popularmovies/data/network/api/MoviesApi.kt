@@ -1,8 +1,10 @@
 package com.eccard.popularmovies.data.network.api
 
+import androidx.lifecycle.LiveData
 import com.eccard.popularmovies.data.network.model.network.MovieResponse
 import com.eccard.popularmovies.data.network.model.network.MovieReviewResponse
-import com.eccard.popularmovies.data.network.model.network.MovieTrailersReviewResponse
+import com.eccard.popularmovies.data.network.model.network.MovieTrailersResponse
+import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -10,18 +12,35 @@ import retrofit2.http.Query
 
 interface MoviesApi {
 
+    // todo remove this
     @GET("movie/popular")
-    suspend fun doGetPopularMovies(@Query("page") page: Int): Response<MovieResponse>
+    fun doGetPopularMovies(@Query("page") page: Int): Call<MovieResponse>
+
+    @GET("movie/popular")
+    fun doGetPopularMoviesFirstPage(@Query("page") page: Int): LiveData<ApiResponse<MovieResponse>>
+
+
+
+    // todo remove this
+    @GET("movie/top_rated")
+    fun doGetTopRatedMovies(@Query("page") page: Int): Call<MovieResponse>
 
     @GET("movie/top_rated")
-    suspend fun doGetTopRatedMovies(@Query("page") page: Int): Response<MovieResponse>
+    fun doGetTopRatedMoviesFirstPage(@Query("page") page: Int): LiveData<ApiResponse<MovieResponse>>
 
 
     @GET("movie/{movie_id}/videos")
-    suspend fun doGetTrailersFromMovieApiCall(@Path("movie_id") movieId: Int): Response<MovieTrailersReviewResponse>
+    fun doGetTrailersFromMovieApiCall(@Path("movie_id") movieId: Int, @Query("page") page: Int): Call<MovieTrailersResponse>
+
+    @GET("movie/{movie_id}/videos")
+    fun doGetTrailersFromMovieApiCall(@Path("movie_id") movieId: Int): LiveData<ApiResponse<MovieTrailersResponse>>
+
 
 
     @GET("movie/{movie_id}/reviews")
-    suspend fun doGetReviewsFromMovieApiCall(@Path("movie_id") movieId: Int, @Query("page") page: Int): Response<MovieReviewResponse>
+    fun doGetReviewsFromMovieApiCall(@Path("movie_id") movieId: Int, @Query("page") page: Int): Call<MovieReviewResponse>
+
+    @GET("movie/{movie_id}/reviews")
+    fun doGetReviewsFromMovieApiCall(@Path("movie_id") movieId: Int): LiveData<ApiResponse<MovieReviewResponse>>
 
 }

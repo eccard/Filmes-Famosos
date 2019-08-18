@@ -1,20 +1,19 @@
 package com.eccard.popularmovies.ui.moviedetail.summary
 
 import androidx.lifecycle.MutableLiveData
-import com.eccard.popularmovies.data.network.api.AppApiHelper
 import com.eccard.popularmovies.data.network.database.MovieDao
-import com.eccard.popularmovies.data.network.model.MovieResult
+import com.eccard.popularmovies.data.network.model.Movie
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import muxi.kotlin.walletfda.ui.base.BaseViewModel
+import com.eccard.popularmovies.ui.base.BaseViewModel
 import javax.inject.Inject
 
-class SummaryViewModel @Inject constructor(private var moviesDao: MovieDao, private var apiHelper: AppApiHelper):
+class SummaryViewModel @Inject constructor(private var moviesDao: MovieDao):
         BaseViewModel<Any>(){
 
-    var movie = MutableLiveData<MovieResult>()
+    var movie = MutableLiveData<Movie>()
     var movieIsBookmarked = MutableLiveData<Boolean>().apply { value = false }
 
     fun getMovieFromDb(id :Int) = moviesDao.getMovieResult(id)
@@ -26,6 +25,7 @@ class SummaryViewModel @Inject constructor(private var moviesDao: MovieDao, priv
         if ( movieIsBookmarked.value == false) {
             scope.launch(context = Dispatchers.Main) {
                 withContext(context = Dispatchers.IO) {
+                    movie.value?.bookmarked = true
                     moviesDao.insertMovie(movie.value!!)
                 }
                 movieIsBookmarked.value = true
@@ -35,7 +35,8 @@ class SummaryViewModel @Inject constructor(private var moviesDao: MovieDao, priv
 
             scope.launch(context = Dispatchers.Main) {
                 withContext(context = Dispatchers.IO) {
-                    moviesDao.deleteMovie(movie.value!!)
+                    movie.value?.bookmarked = false
+                    moviesDao.insertMovie(movie.value!!)
                 }
                 movieIsBookmarked.value = false
             }

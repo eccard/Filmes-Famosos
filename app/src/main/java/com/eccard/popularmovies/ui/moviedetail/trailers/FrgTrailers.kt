@@ -11,60 +11,107 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.eccard.popularmovies.utils.AppExecutors
 import com.eccard.popularmovies.BR
 import com.eccard.popularmovies.R
-import com.eccard.popularmovies.data.network.model.MovieResult
+import com.eccard.popularmovies.data.network.model.Movie
 import com.eccard.popularmovies.databinding.FrgTrailersBinding
 import com.eccard.popularmovies.di.ViewModelProviderFactory
-import muxi.kotlin.walletfda.ui.base.BaseFragment
+import com.eccard.popularmovies.ui.base.BaseFragment
+import com.eccard.popularmovies.utils.RetryCallback
+import com.google.android.material.snackbar.Snackbar
 import javax.inject.Inject
 
 class FrgTrailers : BaseFragment<FrgTrailersBinding,TrailerViewModel>() {
 
+    lateinit var adapter : MovieTrailerAdapter
     private lateinit var trailersViewModel: TrailerViewModel
 
     @Inject
     lateinit var factory: ViewModelProviderFactory
 
+    @Inject
+    lateinit var appExecutors: AppExecutors
+
     private lateinit var frgTrailersBinding: FrgTrailersBinding
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = super.onCreateView(inflater, container, savedInstanceState)
+
+        frgTrailersBinding = getViewDataBinding()
+
+        frgTrailersBinding.searchResult = trailersViewModel.results
+
+
+        trailersViewModel.loadMoreStatus.observe(this, Observer { loadingMore ->
+            if (loadingMore == null) {
+                frgTrailersBinding.loadingMore = false
+            } else {
+                frgTrailersBinding.loadingMore = loadingMore.isRunning
+                val error = loadingMore.errorMessageIfNotHandled
+                if (error != null) {
+                    Snackbar.make(frgTrailersBinding.loadMoreBar, error, Snackbar.LENGTH_LONG).show()
+                }
+            }
+        })
+
+        frgTrailersBinding.callback = object : RetryCallback {
+            override fun retry() {
+                trailersViewModel.refresh()
+            }
+        }
+
         setupRecyclerView()
         return view
     }
 
 
     fun setupRecyclerView(){
-        frgTrailersBinding = getViewDataBinding()
 
-        val layoutManager = LinearLayoutManager(context)
-        frgTrailersBinding.rvTrailers.layoutManager = layoutManager
-        frgTrailersBinding.rvTrailers.adapter = trailersViewModel.getAdapter()
+
+
+        val rvAdapter = MovieTrailerAdapter(appExecutors = appExecutors){
+            movieTrailer ->  onSelectedTrailers(movieTrailer.key)
+        }
+        frgTrailersBinding.rvTrailers.adapter = rvAdapter
+        adapter = rvAdapter
+
         val dividerItemDecoration = DividerItemDecoration(frgTrailersBinding.rvTrailers.context,
                 DividerItemDecoration.VERTICAL)
         dividerItemDecoration.setDrawable(ContextCompat.getDrawable(context!!, R.drawable.divider)!!)
 
         frgTrailersBinding.rvTrailers.addItemDecoration(dividerItemDecoration)
 
+//        val itemOffsetDecoration = ItemOffsetDecoration(this@MainActivity,
+//                R.dimen.grid_spacing_small)
+//        mActivityMainBinding.rvMovies.addItemDecoration(itemOffsetDecoration)
 
+        frgTrailersBinding.rvTrailers.addOnScrollListener(object : RecyclerView.OnScrollListener(){
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                val linearLayoutManager = recyclerView.layoutManager as LinearLayoutManager
+                val lastPosition = linearLayoutManager.findLastVisibleItemPosition()
 
-        trailersViewModel.trailers.observe(this, Observer {
-            trailersViewModel.updateTralersList(it)
+                if (rvAdapter.itemCount > 0 ) {
+                    if (lastPosition == rvAdapter.itemCount - 1) {
+                        trailersViewModel.loadNextPage()
+                    }
+                }
+            }
         })
 
-        trailersViewModel.selected.observe(this, Observer {
-            onSelectedTrailers(it.peekContent().key)
-        })
 
+        trailersViewModel.results.observe(this, Observer { result ->
+            adapter.submitList(result?.data)
+            frgTrailersBinding.invalidateAll()
+        })
 
 
         val intent = activity!!.intent
-        if (intent.hasExtra(MovieResult::class.java.simpleName)) {
-            val movieResult = intent.getParcelableExtra<MovieResult>(MovieResult::class.java.simpleName)
+        if (intent.hasExtra(Movie::class.java.simpleName)) {
+            val movieResult = intent.getParcelableExtra<Movie>(Movie::class.java.simpleName)
 
-
-            trailersViewModel.movie.value = movieResult
+            trailersViewModel.setMovieId(movieResult.id)
         }
 
 
@@ -103,7 +150,4 @@ class FrgTrailers : BaseFragment<FrgTrailersBinding,TrailerViewModel>() {
 
     override fun getBindingVariable() = BR.viewModel
 
-    override fun showToast(message: String) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
 }

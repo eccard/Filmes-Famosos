@@ -1,5 +1,6 @@
 package com.eccard.popularmovies.ui.main
 
+import android.view.View
 import android.widget.ImageView
 import androidx.databinding.BindingAdapter
 import com.squareup.picasso.Picasso
@@ -19,5 +20,11 @@ object CustomViewBindings {
         } else {
             imageView?.setImageBitmap(null)
         }
+    }
+
+    @JvmStatic
+    @BindingAdapter("visibleGone")
+    fun showHide(view: View, show: Boolean) {
+        view.visibility = if (show) View.VISIBLE else View.GONE
     }
 }

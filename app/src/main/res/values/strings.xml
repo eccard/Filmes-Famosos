@@ -19,4 +19,6 @@
     <string name="top_rated">Top rated</string>
     <string name="top_bookmarked">Bookmarks</string>
 
+    <string name="unknown_error">Unknown Error</string>
+    <string name="empty_search_result">No results </string>
 </resources>

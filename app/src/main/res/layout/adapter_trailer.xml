@@ -4,29 +4,22 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-        <import type="android.view.View" />
         <variable
-            name="position"
-            type="java.lang.Integer" />
-        <variable
-            name="viewModel"
-            type="com.eccard.popularmovies.ui.moviedetail.trailers.TrailerViewModel" />
+            name="movieTrailer"
+            type="com.eccard.popularmovies.data.network.model.MovieTrailer" />
     </data>
 
     <FrameLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:background="?attr/selectableItemBackground"
-        android:onClick="@{() -> viewModel.onItemClick(position)}"
-        >
-
+        android:background="?attr/selectableItemBackground">
 
         <TextView
             android:id="@+id/tv_trailer_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@{viewModel.getTrailerAt(position).name}"
+            android:text="@{movieTrailer.name}"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             tools:text="TextView"
             android:padding="8dp"

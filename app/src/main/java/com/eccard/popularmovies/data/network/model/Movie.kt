@@ -10,7 +10,7 @@ import java.net.URL
 
 @Suppress("NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS", "unused")
 @Entity(tableName = "movie", primaryKeys = [("id")])
-data class MovieResult(
+data class Movie(
         val id: Int,
         val vote_count: Int,
         val video: Boolean,
@@ -21,7 +21,8 @@ data class MovieResult(
         val original_language: String,
         val original_title: String,
         val overview: String,
-        val release_date: String
+        val release_date: String,
+        var bookmarked: Boolean = false
 ) : Parcelable {
     fun generatePosterUrl(): String? {
         val uri = Uri.parse(AppConstants.ENDPOINT_MOVIES_POSTER_BASE_URL + poster_path)
@@ -39,17 +40,18 @@ data class MovieResult(
     }
 
     constructor(source: Parcel) : this(
-            source.readInt(),
-            source.readInt(),
-            1 == source.readInt(),
-            source.readFloat(),
-            source.readString(),
-            source.readFloat(),
-            source.readString(),
-            source.readString(),
-            source.readString(),
-            source.readString(),
-            source.readString()
+    source.readInt(),
+    source.readInt(),
+    1 == source.readInt(),
+    source.readFloat(),
+    source.readString(),
+    source.readFloat(),
+    source.readString(),
+    source.readString(),
+    source.readString(),
+    source.readString(),
+    source.readString(),
+    1 == source.readInt()
     )
 
     override fun describeContents() = 0
@@ -66,13 +68,14 @@ data class MovieResult(
         writeString(original_title)
         writeString(overview)
         writeString(release_date)
+        writeInt((if (bookmarked) 1 else 0))
     }
 
     companion object {
         @JvmField
-        val CREATOR: Parcelable.Creator<MovieResult> = object : Parcelable.Creator<MovieResult> {
-            override fun createFromParcel(source: Parcel): MovieResult = MovieResult(source)
-            override fun newArray(size: Int): Array<MovieResult?> = arrayOfNulls(size)
+        val CREATOR: Parcelable.Creator<Movie> = object : Parcelable.Creator<Movie> {
+            override fun createFromParcel(source: Parcel): Movie = Movie(source)
+            override fun newArray(size: Int): Array<Movie?> = arrayOfNulls(size)
         }
     }
 }

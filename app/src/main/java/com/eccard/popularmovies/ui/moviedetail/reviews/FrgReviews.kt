@@ -10,18 +10,24 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.eccard.popularmovies.utils.AppExecutors
 import com.eccard.popularmovies.BR
 import com.eccard.popularmovies.R
-import com.eccard.popularmovies.data.network.model.MovieResult
+import com.eccard.popularmovies.data.network.model.Movie
 import com.eccard.popularmovies.databinding.FrgReviewsBinding
 import com.eccard.popularmovies.di.ViewModelProviderFactory
-import com.eccard.popularmovies.utils.EndlessRecyclerViewScrollListener
-import muxi.kotlin.walletfda.ui.base.BaseFragment
+import com.eccard.popularmovies.ui.base.BaseFragment
+import com.eccard.popularmovies.utils.RetryCallback
+import com.google.android.material.snackbar.Snackbar
 import javax.inject.Inject
 
 class FrgReviews : BaseFragment<FrgReviewsBinding,ReviewsViewModel>() {
 
     private lateinit var reviewViewModel: ReviewsViewModel
+    lateinit var adapter : MovieReviewAdapter
+
+    @Inject
+    lateinit var appExecutors: AppExecutors
 
     @Inject
     lateinit var factory: ViewModelProviderFactory
@@ -34,9 +40,9 @@ class FrgReviews : BaseFragment<FrgReviewsBinding,ReviewsViewModel>() {
         setUpRecyclerView()
 
         val intent = activity!!.intent
-        if (intent.hasExtra(MovieResult::class.java.simpleName)) {
-            val movieResult = intent.getParcelableExtra<MovieResult>(MovieResult::class.java.simpleName)
-            reviewViewModel.movie.value = movieResult
+        if (intent.hasExtra(Movie::class.java.simpleName)) {
+            val movieResult = intent.getParcelableExtra<Movie>(Movie::class.java.simpleName)
+            reviewViewModel.setMovieId(movieResult.id)
         }
 
         return view
@@ -46,9 +52,9 @@ class FrgReviews : BaseFragment<FrgReviewsBinding,ReviewsViewModel>() {
 
         frgReviewsBinding = getViewDataBinding()
 
-        val layoutManager = LinearLayoutManager(context)
-        frgReviewsBinding.rvReviews.layoutManager = layoutManager
-        frgReviewsBinding.rvReviews.adapter = reviewViewModel.getAdapter()
+        val rvAdapter = MovieReviewAdapter(appExecutors = appExecutors)
+        frgReviewsBinding.rvReviews.adapter = rvAdapter
+        adapter = rvAdapter
 
         val dividerItemDecoration = DividerItemDecoration(frgReviewsBinding.rvReviews.context,
                 DividerItemDecoration.VERTICAL)
@@ -56,17 +62,41 @@ class FrgReviews : BaseFragment<FrgReviewsBinding,ReviewsViewModel>() {
 
         frgReviewsBinding.rvReviews.addItemDecoration(dividerItemDecoration)
 
-        var scrollListener = object : EndlessRecyclerViewScrollListener(layoutManager) {
-            public override fun onLoadMore(page: Int, totalItemsCount: Int, view: RecyclerView) {
-                reviewViewModel.getReviews(page)
+        frgReviewsBinding.rvReviews.addOnScrollListener(object : RecyclerView.OnScrollListener(){
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                val linearLayoutManager = recyclerView.layoutManager as LinearLayoutManager
+                val lastPosition = linearLayoutManager.findLastVisibleItemPosition()
+                if (rvAdapter.itemCount > 0 ) {
+                    if (lastPosition == rvAdapter.itemCount - 1) {
+                        reviewViewModel.loadNextPage()
+                    }
+                }
+            }
+        })
+
+        frgReviewsBinding.searchResult = reviewViewModel.results
+        reviewViewModel.results.observe(this, Observer { result ->
+            adapter.submitList(result?.data)
+            frgReviewsBinding.invalidateAll()
+        })
+
+        reviewViewModel.loadMoreStatus.observe(this, Observer { loadingMore ->
+            if (loadingMore == null) {
+                frgReviewsBinding.loadingMore = false
+            } else {
+                frgReviewsBinding.loadingMore = loadingMore.isRunning
+                val error = loadingMore.errorMessageIfNotHandled
+                if (error != null) {
+                    Snackbar.make(frgReviewsBinding.loadMoreBar, error, Snackbar.LENGTH_LONG).show()
+                }
+            }
+        })
+
+        frgReviewsBinding.callback = object : RetryCallback {
+            override fun retry() {
+                reviewViewModel.refresh()
             }
         }
-
-        frgReviewsBinding.rvReviews.addOnScrollListener(scrollListener)
-
-        reviewViewModel.review.observe(this, Observer {
-            reviewViewModel.updateReviewList(it)
-        })
     }
 
     companion object {
@@ -84,8 +114,5 @@ class FrgReviews : BaseFragment<FrgReviewsBinding,ReviewsViewModel>() {
 
     override fun getBindingVariable() = BR.viewModel
 
-    override fun showToast(message: String) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
 
 }

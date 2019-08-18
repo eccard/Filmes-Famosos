@@ -1,104 +1,135 @@
 package com.eccard.popularmovies.ui.moviedetail.reviews
 
-import android.util.Log
-import android.view.View
-import androidx.databinding.ObservableInt
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.eccard.popularmovies.R
-import com.eccard.popularmovies.data.network.api.AppApiHelper
-import com.eccard.popularmovies.data.network.model.MovieResult
-import com.eccard.popularmovies.data.network.model.network.MovieReviewResponse
-import com.eccard.popularmovies.data.network.model.MovieReviewResult
-import com.eccard.popularmovies.ui.moviedetail.trailers.TrailerViewModel
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import muxi.kotlin.walletfda.ui.base.BaseViewModel
+import androidx.lifecycle.Observer
+import androidx.lifecycle.Transformations
+import com.eccard.popularmovies.data.network.model.MovieReview
+import com.eccard.popularmovies.data.repository.MovieReviewRepository
+import com.eccard.popularmovies.data.repository.Resource
+import com.eccard.popularmovies.data.repository.Status
+import com.eccard.popularmovies.ui.base.BaseViewModel
 import javax.inject.Inject
 
-class ReviewsViewModel @Inject constructor(private var apiHelper: AppApiHelper):
+class ReviewsViewModel @Inject constructor(private var movieReviewRepository: MovieReviewRepository):
         BaseViewModel<Any>() {
 
     companion object {
         val TAG = ReviewsViewModel::class.java.simpleName
     }
 
+    private val nextPageHandler = NextPageHandler(movieReviewRepository)
+    private val _movieId = MutableLiveData<Int>()
 
-    var movie = MutableLiveData<MovieResult>()
-
-    var showEmpty = ObservableInt(View.GONE)
-    var loading = ObservableInt(View.VISIBLE)
-    var showError = ObservableInt(View.INVISIBLE)
-    var showErrorGeneric = ObservableInt(View.INVISIBLE)
-
-
-    var review = MutableLiveData<List<MovieReviewResult>>()
-
-    private var reviewDataRepo: MutableList<MovieReviewResult> = mutableListOf()
-
-    fun getReviewAt(index: Int?): MovieReviewResult? {
-        return if (index != null && reviewDataRepo.size > index) {
-            reviewDataRepo[index]
-        } else null
+    fun setMovieId(movieId : Int){
+        _movieId.value = movieId
     }
 
-    private var reviewsAdapter: ReviewsAdapter
+    val results: LiveData<Resource<List<MovieReview>>> = Transformations
+            .switchMap(_movieId) { fetched ->
+                movieReviewRepository.fetchMovieReviews(fetched)
+            }
 
-    fun getAdapter() = reviewsAdapter
-
-    init {
-        reviewsAdapter = ReviewsAdapter(R.layout.adapter_review_item,this)
-        getReviews(1)
+    fun loadNextPage() {
+        _movieId.value?.let { nextPageHandler.queryNextPage(it) }
     }
 
+    fun refresh() {
+        _movieId.value?.let {
+            _movieId.value = it
+        }
+    }
 
-    fun getReviews(page : Int){
+    class LoadMoreState(val isRunning: Boolean, val errorMessage: String?) {
+        private var handledError = false
 
-        val scope = CoroutineScope(Dispatchers.Main)
-        loading.set(View.VISIBLE)
-        scope.launch(context = Dispatchers.Main) {
-
-            try {
-                val response = withContext(context = Dispatchers.IO) {
-                    apiHelper.doGetReviewsFromMovieApiCall(movie.value!!.id, page)
+        val errorMessageIfNotHandled: String?
+            get() {
+                if (handledError) {
+                    return null
                 }
-                if (response.isSuccessful) {
-                    showError.set(View.INVISIBLE)
-                    review.value = (response.body() as MovieReviewResponse).results
-                } else {
-                    Log.e(TAG, "Error loading reviews")
-                    showError.set(View.VISIBLE)
-                }
-            } catch (e: Exception){
-                Log.e(TrailerViewModel.TAG, "Error loading reviews")
-                if(reviewDataRepo.size == 0){
-                    showError.set(View.VISIBLE)
-                    showErrorGeneric.set(View.VISIBLE)
-                    showEmpty.set(View.INVISIBLE)
-                } else {
-                    showError.set(View.INVISIBLE)
-                }
+                handledError = true
+                return errorMessage
+            }
+    }
 
-            } finally {
-                loading.set(View.INVISIBLE)
+    val loadMoreStatus: LiveData<LoadMoreState>
+        get() = nextPageHandler.loadMoreState
+
+    class NextPageHandler(private val repository: MovieReviewRepository) : Observer<Resource<Boolean>> {
+        private var nextPageLiveData: LiveData<Resource<Boolean>>? = null
+        val loadMoreState = MutableLiveData<LoadMoreState>()
+        private var movieId: Int? = null
+        private var _hasMore: Boolean = false
+        val hasMore
+            get() = _hasMore
+
+        init {
+            reset()
+        }
+
+        fun queryNextPage( movieId: Int) {
+            if (this.movieId == movieId) {
+                return
+            }
+            unregister()
+            this.movieId = movieId
+            nextPageLiveData = repository.fetchNextPage(movieId)
+            loadMoreState.value = LoadMoreState(
+                    isRunning = true,
+                    errorMessage = null
+            )
+            nextPageLiveData?.observeForever(this)
+        }
+
+        override fun onChanged(result: Resource<Boolean>?) {
+            if (result == null) {
+                reset()
+            } else {
+                when (result.status) {
+                    Status.SUCCESS -> {
+                        _hasMore = result.data == true
+                        unregister()
+                        loadMoreState.setValue(
+                                LoadMoreState(
+                                        isRunning = false,
+                                        errorMessage = null
+                                )
+                        )
+                    }
+                    Status.ERROR -> {
+                        _hasMore = true
+                        unregister()
+                        loadMoreState.setValue(
+                                LoadMoreState(
+                                        isRunning = false,
+                                        errorMessage = result.message
+                                )
+                        )
+                    }
+                    Status.LOADING -> {
+                        // ignore
+                    }
+                }
             }
         }
-    }
 
-
-    fun updateReviewList(reviews: List<MovieReviewResult>) {
-        reviewDataRepo.addAll(reviews)
-
-        if (reviewDataRepo.size == 0){
-            showError.set(View.VISIBLE)
-            showErrorGeneric.set(View.INVISIBLE)
-            showEmpty.set(View.VISIBLE)
-        } else {
-            showError.set(View.INVISIBLE)
+        private fun unregister() {
+            nextPageLiveData?.removeObserver(this)
+            nextPageLiveData = null
+            if (_hasMore) {
+                movieId = null
+            }
         }
 
-        reviewsAdapter.setReviews(reviewDataRepo)
-        reviewsAdapter.notifyDataSetChanged()
+        fun reset() {
+            unregister()
+            _hasMore = true
+            loadMoreState.value = LoadMoreState(
+                    isRunning = false,
+                    errorMessage = null
+            )
+        }
     }
+
 }

@@ -3,18 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-        <import type="android.view.View" />
         <variable
-            name="position"
-            type="java.lang.Integer" />
-        <variable
-            name="viewModel"
-            type="com.eccard.popularmovies.ui.main.MainViewModel" />
+            name="movie"
+            type="com.eccard.popularmovies.data.network.model.Movie" />
     </data>
     <FrameLayout
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
-        android:onClick="@{() -> viewModel.onItemClick(position)}"
         >
 
         <LinearLayout
@@ -46,7 +41,7 @@
                     android:fontFamily="sans-serif-regular"
                     android:maxLines="1"
                     android:ellipsize="end"
-                    android:text="@{viewModel.getMovieAt(position).title}"/>
+                    android:text="@{movie.title}"/>
 
                 <TextView
                     android:id="@+id/tv_movie_rate"
@@ -56,7 +51,7 @@
                     android:fontFamily="sans-serif-regular"
                     android:maxLines="1"
                     android:ellipsize="end"
-                    android:text="@{@string/movie_rating(String.valueOf(viewModel.getMovieAt(position).vote_average))}"/>
+                    android:text="@{@string/movie_rating(String.valueOf(movie.vote_average))}"/>
             </LinearLayout>
 
         </LinearLayout>
