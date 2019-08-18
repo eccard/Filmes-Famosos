@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.Transformations
-import com.eccard.popularmovies.data.network.api.AppApiHelper
+import com.eccard.popularmovies.data.network.model.MovieOrderType
 import com.eccard.popularmovies.data.network.model.MovieResult
 import com.eccard.popularmovies.data.repository.MovieRepository
 import com.eccard.popularmovies.data.repository.Resource
@@ -20,11 +20,11 @@ class MainViewModel @Inject constructor(private var movieRepository: MovieReposi
     }
 
     private val nextPageHandler = NextPageHandler(movieRepository)
-    private val _orderType = MutableLiveData<AppApiHelper.MovieOrderType>()
+    private val _orderType = MutableLiveData<MovieOrderType>()
 
-    val orderType : LiveData<AppApiHelper.MovieOrderType> = _orderType
+    val orderType : LiveData<MovieOrderType> = _orderType
 
-    fun setNewOrder(orderType: AppApiHelper.MovieOrderType){
+    fun setNewOrder(orderType: MovieOrderType){
         _orderType.value = orderType
     }
 
@@ -63,7 +63,7 @@ class MainViewModel @Inject constructor(private var movieRepository: MovieReposi
     class NextPageHandler(private val repository: MovieRepository) : Observer<Resource<Boolean>> {
         private var nextPageLiveData: LiveData<Resource<Boolean>>? = null
         val loadMoreState = MutableLiveData<LoadMoreState>()
-        private var orderType: AppApiHelper.MovieOrderType? = null
+        private var orderType: MovieOrderType? = null
         private var _hasMore: Boolean = false
         val hasMore
             get() = _hasMore
@@ -72,7 +72,7 @@ class MainViewModel @Inject constructor(private var movieRepository: MovieReposi
             reset()
         }
 
-        fun queryNextPage( orderType: AppApiHelper.MovieOrderType) {
+        fun queryNextPage( orderType: MovieOrderType) {
             if (this.orderType == orderType) {
                 return
             }

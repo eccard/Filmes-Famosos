@@ -2,7 +2,6 @@ package com.eccard.popularmovies.di
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.eccard.popularmovies.data.network.api.AppApiHelper
 import com.eccard.popularmovies.data.network.database.MovieDao
 import com.eccard.popularmovies.data.repository.MovieRepository
 import com.eccard.popularmovies.data.repository.MovieReviewRepository
@@ -17,7 +16,6 @@ import javax.inject.Singleton
 
 @Singleton
 class ViewModelProviderFactory @Inject constructor(private var moviewDao: MovieDao,
-                                                   private var apiHelper: AppApiHelper,
                                                    private var movieRepository: MovieRepository,
                                                    private var movieReviewRepository: MovieReviewRepository,
                                                    private var movieTrailerRepository: MovieTrailerRepository):
@@ -27,7 +25,7 @@ class ViewModelProviderFactory @Inject constructor(private var moviewDao: MovieD
         if(modelClass.isAssignableFrom(MainViewModel::class.java)) {
             return MainViewModel(movieRepository) as T
         } else if(modelClass.isAssignableFrom(SummaryViewModel::class.java)){
-            return SummaryViewModel(moviewDao, apiHelper) as T
+            return SummaryViewModel(moviewDao) as T
         } else if (modelClass.isAssignableFrom(TrailerViewModel::class.java)){
             return TrailerViewModel(movieTrailerRepository) as T
         } else if (modelClass.isAssignableFrom(ReviewsViewModel::class.java)){

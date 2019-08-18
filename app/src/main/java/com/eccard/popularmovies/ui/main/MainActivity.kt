@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.eccard.popularmovies.utils.AppExecutors
 import com.eccard.popularmovies.BR
 import com.eccard.popularmovies.R
-import com.eccard.popularmovies.data.network.api.AppApiHelper
+import com.eccard.popularmovies.data.network.model.MovieOrderType
 import com.eccard.popularmovies.data.network.model.MovieResult
 import com.eccard.popularmovies.databinding.ActivityMainBinding
 import com.eccard.popularmovies.di.ViewModelProviderFactory
@@ -53,16 +53,16 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(), Lifecyc
 
         setupBottomNavigation()
 
-        mainViewModel.setNewOrder(AppApiHelper.MovieOrderType.POPULAR)
+        mainViewModel.setNewOrder(MovieOrderType.POPULAR)
 
     }
 
     private fun setupBottomNavigation() {
         mActivityMainBinding.navigation.setOnNavigationItemSelectedListener { p0 ->
-            val newOrderType: AppApiHelper.MovieOrderType = when (p0.itemId){
-                R.id.nav_most_popular -> AppApiHelper.MovieOrderType.POPULAR
-                R.id.nav_top_rated -> AppApiHelper.MovieOrderType.TOP_RATED
-                else -> AppApiHelper.MovieOrderType.TOP_BOOKMARK
+            val newOrderType: MovieOrderType = when (p0.itemId){
+                R.id.nav_most_popular -> MovieOrderType.POPULAR
+                R.id.nav_top_rated -> MovieOrderType.TOP_RATED
+                else -> MovieOrderType.TOP_BOOKMARK
             }
 
             if (mainViewModel.orderType.value === newOrderType) {
@@ -103,7 +103,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(), Lifecyc
 
         mActivityMainBinding.rvMovies.addOnScrollListener(object : RecyclerView.OnScrollListener(){
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                if (mainViewModel.orderType.value != AppApiHelper.MovieOrderType.TOP_BOOKMARK ){
+                if (mainViewModel.orderType.value != MovieOrderType.TOP_BOOKMARK ){
                     val gridLayoutManager = recyclerView.layoutManager as GridLayoutManager
                     val lastPosition = gridLayoutManager.findLastVisibleItemPosition()
                     if (rvAdapter.itemCount > 0 ) {

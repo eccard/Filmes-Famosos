@@ -4,11 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.Transformations
-import com.eccard.popularmovies.R
-import com.eccard.popularmovies.data.network.api.AppApiHelper
-import com.eccard.popularmovies.data.network.model.MovieResult
 import com.eccard.popularmovies.data.network.model.MovieReviewResult
-import com.eccard.popularmovies.data.repository.MovieRepository
 import com.eccard.popularmovies.data.repository.MovieReviewRepository
 import com.eccard.popularmovies.data.repository.Resource
 import com.eccard.popularmovies.data.repository.Status

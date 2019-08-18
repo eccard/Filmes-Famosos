@@ -5,9 +5,9 @@ import androidx.lifecycle.Transformations
 import com.eccard.popularmovies.utils.AppExecutors
 import com.eccard.popularmovies.data.network.api.ApiResponse
 import com.eccard.popularmovies.data.network.api.ApiSuccessResponse
-import com.eccard.popularmovies.data.network.api.AppApiHelper
 import com.eccard.popularmovies.data.network.api.MoviesApi
 import com.eccard.popularmovies.data.network.database.AppDatabase
+import com.eccard.popularmovies.data.network.model.MovieOrderType
 import com.eccard.popularmovies.data.network.model.MovieResult
 import com.eccard.popularmovies.data.network.model.network.MovieFetchResult
 import com.eccard.popularmovies.data.network.model.network.MovieResponse
@@ -22,7 +22,7 @@ class MovieRepository @Inject constructor(
         private val db : AppDatabase,
         private val moviApi : MoviesApi){
 
-    fun fetchNextPage(orderType : AppApiHelper.MovieOrderType)
+    fun fetchNextPage(orderType : MovieOrderType)
     : LiveData<Resource<Boolean>>{
         val fetchNextMoviePage = FetchNextMoviePage(
                 orderType,
@@ -36,7 +36,7 @@ class MovieRepository @Inject constructor(
     }
 
 
-    fun fetchMovies(orderType : AppApiHelper.MovieOrderType)
+    fun fetchMovies(orderType : MovieOrderType)
             : LiveData<Resource<List<MovieResult>>> {
 
         return object : NetworkBoundResource<List<MovieResult>, MovieResponse>(appExecutors){
@@ -63,7 +63,7 @@ class MovieRepository @Inject constructor(
 
             override fun loadFromDb(): LiveData<List<MovieResult>> {
 
-                return if (orderType == AppApiHelper.MovieOrderType.TOP_BOOKMARK) {
+                return if (orderType == MovieOrderType.TOP_BOOKMARK) {
                     db.movieDao().loadAllMoviesWithBookmarked(true)
                 } else {
 
@@ -79,7 +79,7 @@ class MovieRepository @Inject constructor(
             }
 
             override fun createCall(): LiveData<ApiResponse<MovieResponse>> {
-                return if ( orderType == AppApiHelper.MovieOrderType.POPULAR){
+                return if ( orderType == MovieOrderType.POPULAR){
                     moviApi.doGetPopularMoviesFirstPage(1)
                 } else {
                     moviApi.doGetTopRatedMoviesFirstPage(1)

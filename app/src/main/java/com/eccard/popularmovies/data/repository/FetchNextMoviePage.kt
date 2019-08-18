@@ -4,10 +4,11 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.eccard.popularmovies.data.network.api.*
 import com.eccard.popularmovies.data.network.database.AppDatabase
+import com.eccard.popularmovies.data.network.model.MovieOrderType
 import com.eccard.popularmovies.data.network.model.network.MovieFetchResult
 import java.io.IOException
 
-class FetchNextMoviePage constructor(private val orderType : AppApiHelper.MovieOrderType,
+class FetchNextMoviePage constructor(private val orderType : MovieOrderType,
                                      private val moviesApi: MoviesApi,
                                      private val db: AppDatabase) : Runnable {
     private val _liveData = MutableLiveData<Resource<Boolean>>()
@@ -29,7 +30,7 @@ class FetchNextMoviePage constructor(private val orderType : AppApiHelper.MovieO
 
         val newValue = try{
 
-            val response = if (orderType == AppApiHelper.MovieOrderType.POPULAR){
+            val response = if (orderType == MovieOrderType.POPULAR){
                 moviesApi.doGetPopularMovies(nextPage).execute()
             } else {
 //         todo fazer apenas para popular e top rated
