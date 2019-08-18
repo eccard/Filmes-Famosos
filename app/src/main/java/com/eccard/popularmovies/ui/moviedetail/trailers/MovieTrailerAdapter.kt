@@ -23,14 +23,14 @@ import androidx.recyclerview.widget.DiffUtil
 import com.eccard.popularmovies.utils.AppExecutors
 import com.eccard.popularmovies.R
 import com.eccard.popularmovies.data.network.model.MovieTrailer
-import com.eccard.popularmovies.databinding.AdapterTrailerBinding
+import com.eccard.popularmovies.databinding.AdapterTrailerItemBinding
 import com.eccard.popularmovies.utils.rv.DataBoundListAdapter
 
 class MovieTrailerAdapter (
 //        private val dataBindingComponent: DataBindingComponent,
         appExecutors: AppExecutors,
         private val repoClickCallback: ((MovieTrailer) -> Unit)?
-) : DataBoundListAdapter<MovieTrailer, AdapterTrailerBinding>(
+) : DataBoundListAdapter<MovieTrailer, AdapterTrailerItemBinding>(
         appExecutors = appExecutors,
         diffCallback = object : DiffUtil.ItemCallback<MovieTrailer>() {
             override fun areItemsTheSame(oldItem: MovieTrailer, newItem: MovieTrailer): Boolean {
@@ -43,10 +43,10 @@ class MovieTrailerAdapter (
             }
         }
 ) {
-    override fun createBinding(parent: ViewGroup): AdapterTrailerBinding {
-        val binding = DataBindingUtil.inflate<AdapterTrailerBinding>(
+    override fun createBinding(parent: ViewGroup): AdapterTrailerItemBinding {
+        val binding = DataBindingUtil.inflate<AdapterTrailerItemBinding>(
                 LayoutInflater.from(parent.context),
-                R.layout.adapter_trailer,
+                R.layout.adapter_trailer_item,
                 parent,
                 false
 //                ,dataBindingComponent
@@ -60,7 +60,7 @@ class MovieTrailerAdapter (
         return binding
     }
 
-    override fun bind(binding: AdapterTrailerBinding, item: MovieTrailer) {
+    override fun bind(binding: AdapterTrailerItemBinding, item: MovieTrailer) {
         binding.movieTrailer = item
     }
 }

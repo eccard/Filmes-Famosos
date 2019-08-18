@@ -7,12 +7,12 @@ import androidx.recyclerview.widget.DiffUtil
 import com.eccard.popularmovies.utils.AppExecutors
 import com.eccard.popularmovies.R
 import com.eccard.popularmovies.data.network.model.MovieReview
-import com.eccard.popularmovies.databinding.ReviewItemBinding
+import com.eccard.popularmovies.databinding.AdapterReviewItemBinding
 import com.eccard.popularmovies.utils.rv.DataBoundListAdapter
 
 class MovieReviewAdapter(//        private val dataBindingComponent: DataBindingComponent,
         appExecutors: AppExecutors
-) : DataBoundListAdapter<MovieReview, ReviewItemBinding>(
+) : DataBoundListAdapter<MovieReview, AdapterReviewItemBinding>(
         appExecutors = appExecutors,
         diffCallback = object : DiffUtil.ItemCallback<MovieReview>(){
             override fun areItemsTheSame(oldItem: MovieReview, newItem: MovieReview): Boolean {
@@ -26,10 +26,10 @@ class MovieReviewAdapter(//        private val dataBindingComponent: DataBinding
         }
 ){
 
-    override fun createBinding(parent: ViewGroup): ReviewItemBinding {
-        val binding = DataBindingUtil.inflate<ReviewItemBinding>(
+    override fun createBinding(parent: ViewGroup): AdapterReviewItemBinding {
+        val binding = DataBindingUtil.inflate<AdapterReviewItemBinding>(
                 LayoutInflater.from(parent.context),
-                R.layout.review_item,
+                R.layout.adapter_review_item,
                 parent,
                 false
 //                ,dataBindingComponent
@@ -38,7 +38,7 @@ class MovieReviewAdapter(//        private val dataBindingComponent: DataBinding
         return binding
     }
 
-    override fun bind(binding: ReviewItemBinding, item: MovieReview) {
+    override fun bind(binding: AdapterReviewItemBinding, item: MovieReview) {
         binding.movieReview = item
     }
 }

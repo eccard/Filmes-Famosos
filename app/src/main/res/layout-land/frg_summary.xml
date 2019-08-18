@@ -25,7 +25,7 @@
             app:imageUrl="@{viewModel.movie.generatePosterUrl()}"/>
 
 
-        <include layout="@layout/activivty_movie_details_cardview"
+        <include layout="@layout/movie_details"
             bind:secondaryViewModel="@{viewModel}"/>
 
     </LinearLayout>

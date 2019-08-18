@@ -13,7 +13,7 @@ import com.eccard.popularmovies.R
 import com.eccard.popularmovies.data.network.model.Movie
 import com.eccard.popularmovies.databinding.FrgSummaryBinding
 import com.eccard.popularmovies.di.ViewModelProviderFactory
-import kotlinx.android.synthetic.main.activivty_movie_details_cardview.view.*
+import kotlinx.android.synthetic.main.movie_details.view.*
 import com.eccard.popularmovies.ui.base.BaseFragment
 import javax.inject.Inject
 
