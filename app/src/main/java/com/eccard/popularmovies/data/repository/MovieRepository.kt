@@ -88,7 +88,6 @@ class MovieRepository @Inject constructor(
 
             override fun processResponse(response: ApiSuccessResponse<MovieResponse>): MovieResponse {
                 val body = response.body
-//                body.nextPage = response.body.nextPage
                 body.nextPage = response.nextPage
                 return body
             }
