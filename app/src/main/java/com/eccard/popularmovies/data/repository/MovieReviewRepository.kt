@@ -39,7 +39,7 @@ class MovieReviewRepository @Inject constructor(
 
         return object : NetworkBoundResource<List<MovieReview>, MovieReviewResponse>(appExecutors){
             override fun saveCallResult(item: MovieReviewResponse) {
-                var movieReviewIds = item.results.map {it.id}
+                val movieReviewIds = item.results.map {it.id}
                 val movieReviewFetchResult = MovieReviewFetchResult(movieId,
                         movieReviewIds,
                         item.total_results,
