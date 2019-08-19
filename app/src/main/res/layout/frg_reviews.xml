@@ -41,7 +41,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layoutManager="LinearLayoutManager"
-            tools:listitem="@layout/review_item"
+            tools:listitem="@layout/adapter_review_item"
             />
 
 

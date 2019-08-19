@@ -29,11 +29,11 @@ import androidx.palette.graphics.Palette
 import com.eccard.popularmovies.utils.AppExecutors
 import com.eccard.popularmovies.R
 import com.eccard.popularmovies.data.network.model.Movie
-import com.eccard.popularmovies.databinding.MovieItemBinding
+import com.eccard.popularmovies.databinding.AdapterMovieItemBinding
 import com.eccard.popularmovies.utils.rv.DataBoundListAdapter
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.movie_item.view.*
+import kotlinx.android.synthetic.main.adapter_movie_item.view.*
 
 
 /**
@@ -43,7 +43,7 @@ class MovieAdapter(
 //        private val dataBindingComponent: DataBindingComponent,
         appExecutors: AppExecutors,
         private val repoClickCallback: ((Movie) -> Unit)?
-) : DataBoundListAdapter<Movie, MovieItemBinding>(
+) : DataBoundListAdapter<Movie, AdapterMovieItemBinding>(
         appExecutors = appExecutors,
         diffCallback = object : DiffUtil.ItemCallback<Movie>() {
             override fun areItemsTheSame(oldItem: Movie, newItem: Movie): Boolean {
@@ -57,10 +57,10 @@ class MovieAdapter(
         }
 ) {
 
-    override fun createBinding(parent: ViewGroup): MovieItemBinding {
-        val binding = DataBindingUtil.inflate<MovieItemBinding>(
+    override fun createBinding(parent: ViewGroup): AdapterMovieItemBinding {
+        val binding = DataBindingUtil.inflate<AdapterMovieItemBinding>(
                 LayoutInflater.from(parent.context),
-                R.layout.movie_item,
+                R.layout.adapter_movie_item,
                 parent,
                 false
 //                ,dataBindingComponent
@@ -73,13 +73,13 @@ class MovieAdapter(
         return binding
     }
 
-    override fun bind(binding: MovieItemBinding, item: Movie) {
+    override fun bind(binding: AdapterMovieItemBinding, item: Movie) {
         binding.movie = item
 
         setupImg(item, binding)
     }
 
-    private fun setupImg(item: Movie, binding: MovieItemBinding) {
+    private fun setupImg(item: Movie, binding: AdapterMovieItemBinding) {
         val picasso: Picasso = Picasso.get()
         picasso.setIndicatorsEnabled(true)
         picasso.load(item.generatePosterUrl())

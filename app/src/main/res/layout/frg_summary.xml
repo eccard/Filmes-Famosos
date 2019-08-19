@@ -23,7 +23,7 @@
             app:imageUrl="@{viewModel.movie.generatePosterUrl()}"
             android:contentDescription="@string/detail_movie_poster_image"/>
 
-        <include layout="@layout/activivty_movie_details_cardview"
+        <include layout="@layout/movie_details"
             bind:secondaryViewModel="@{viewModel}"/>
 
     </LinearLayout>

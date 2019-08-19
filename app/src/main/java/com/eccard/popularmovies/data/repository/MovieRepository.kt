@@ -41,7 +41,7 @@ class MovieRepository @Inject constructor(
 
         return object : NetworkBoundResource<List<Movie>, MovieResponse>(appExecutors){
             override fun saveCallResult(item: MovieResponse) {
-                var movieIds = item.results.map {it.id}
+                val movieIds = item.results.map {it.id}
 
                 val movieFetchResult = MovieFetchResult(
                         orderType.name,
@@ -88,7 +88,6 @@ class MovieRepository @Inject constructor(
 
             override fun processResponse(response: ApiSuccessResponse<MovieResponse>): MovieResponse {
                 val body = response.body
-//                body.nextPage = response.body.nextPage
                 body.nextPage = response.nextPage
                 return body
             }

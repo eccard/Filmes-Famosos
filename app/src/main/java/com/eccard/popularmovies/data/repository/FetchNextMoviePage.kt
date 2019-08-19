@@ -1,76 +1,55 @@
 package com.eccard.popularmovies.data.repository
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import com.eccard.popularmovies.data.network.api.*
+import com.eccard.popularmovies.data.network.api.MoviesApi
 import com.eccard.popularmovies.data.network.database.AppDatabase
 import com.eccard.popularmovies.data.network.model.MovieOrderType
 import com.eccard.popularmovies.data.network.model.network.MovieFetchResult
-import java.io.IOException
+import com.eccard.popularmovies.data.network.model.network.MovieResponse
+import retrofit2.Call
 
 class FetchNextMoviePage constructor(private val orderType : MovieOrderType,
                                      private val moviesApi: MoviesApi,
-                                     private val db: AppDatabase) : Runnable {
-    private val _liveData = MutableLiveData<Resource<Boolean>>()
-    val liveData: LiveData<Resource<Boolean>> = _liveData
+                                     private val db: AppDatabase) :
+        BaseFetchNextPage<MovieFetchResult, MovieResponse>() {
 
-    override fun run() {
+    override fun findFetchInDb(): MovieFetchResult? {
+        return db.movieDao().findSearchMoveiResult(orderType.name)
+    }
 
-        val current = db.movieDao().findSearchMoveiResult(orderType.name)
-        if ( current == null){
-            _liveData.postValue(null)
-            return
+    override fun getNextPage(): Int? {
+        if ( mFetch != null) {
+            mFetch?.next?.let {
+                return it
+            }
         }
+        return null
+    }
 
-        val nextPage = current.next
-        if ( nextPage == null){
-            _liveData.postValue(Resource.success(false))
-            return
-        }
-
-        val newValue = try{
-
-            val response = if (orderType == MovieOrderType.POPULAR){
-                moviesApi.doGetPopularMovies(nextPage).execute()
+    override fun createApi(): Call<MovieResponse>? {
+        getNextPage()?.let {
+            return if (orderType == MovieOrderType.POPULAR){
+                moviesApi.doGetPopularMovies(it)
             } else {
-//         todo fazer apenas para popular e top rated
-                moviesApi.doGetTopRatedMovies(nextPage).execute()
+                moviesApi.doGetTopRatedMovies(it)
             }
-            val apiResponse = ApiResponse.create(response)
-
-            when(apiResponse){
-
-                is ApiSuccessResponse -> {
-                    val ids = arrayListOf<Int>()
-                    ids.addAll(current.movieIds)
-
-                    ids.addAll(apiResponse.body.results.map {it.id})
-
-                    val merged = MovieFetchResult(orderType.name,
-                            ids,apiResponse.body.total_results,
-                            apiResponse.nextPage)
-                    db.runInTransaction{
-                        db.movieDao().insert(merged)
-                        db.movieDao().insertMovies(apiResponse.body.results)
-                    }
-
-                    Resource.success(apiResponse.nextPage != null)
-
-
-                }
-
-                is ApiEmptyResponse -> {
-                    Resource.success(false)
-                }
-
-                is ApiErrorResponse -> {
-                    Resource.error(apiResponse.errorMessage,true)
-                }
-            }
-
-        } catch (e : IOException){
-            Resource.error(e.message!!,true)
         }
-        _liveData.postValue(newValue)
+
+        return null
+    }
+
+    override fun onSuccessApiRequest(netResult: MovieResponse, apiNextPage: Int?) {
+        val ids = arrayListOf<Int>()
+        ids.addAll(mFetch!!.movieIds)
+
+        ids.addAll(netResult.results.map {it.id})
+
+        val merged = MovieFetchResult(orderType.name,
+                ids,netResult.total_results,
+                apiNextPage)
+        db.runInTransaction{
+            db.movieDao().insert(merged)
+            db.movieDao().insertMovies(netResult.results)
+        }
+
     }
 }
