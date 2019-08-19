@@ -1,73 +1,49 @@
 package com.eccard.popularmovies.data.repository
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import com.eccard.popularmovies.data.network.api.*
+import com.eccard.popularmovies.data.network.api.MoviesApi
 import com.eccard.popularmovies.data.network.database.AppDatabase
 import com.eccard.popularmovies.data.network.model.network.MovieTrailerFetchResult
-import java.io.IOException
+import com.eccard.popularmovies.data.network.model.network.MovieTrailersResponse
+import retrofit2.Call
 
 class FetchNextTrailerPage constructor(private val movieId : Int,
                                        private val moviesApi: MoviesApi,
-                                       private val db: AppDatabase) : Runnable {
-    private val _liveData = MutableLiveData<Resource<Boolean>>()
-    val liveData: LiveData<Resource<Boolean>> = _liveData
+                                       private val db: AppDatabase) :
+    BaseFetchNextPage<MovieTrailerFetchResult, MovieTrailersResponse>() {
 
-    override fun run() {
+    override fun findFetchInDb(): MovieTrailerFetchResult? {
+        return db.movieDao().findSearchMovieTrailerFetched(movieId)
+    }
 
-        val current = db.movieDao().findSearchMovieTrailerFetched(movieId)
-        if ( current == null){
-            _liveData.postValue(null)
-            return
-        }
-
-        val nextPage = current.next
-        if ( nextPage == null){
-            _liveData.postValue(Resource.success(false))
-            return
-        }
-
-
-        val newValue = try{
-
-            val response = moviesApi.doGetTrailersFromMovieApiCall(movieId,nextPage).execute()
-
-            val apiResponse = ApiResponse.create(response)
-
-            when(apiResponse){
-
-                is ApiSuccessResponse -> {
-                    val ids = arrayListOf<String>()
-                    ids.addAll(current.trailerIds)
-
-                    ids.addAll(apiResponse.body.results.map {it.id})
-
-                    val merged = MovieTrailerFetchResult(movieId,
-                            ids,apiResponse.body.total_results,
-                            apiResponse.nextPage)
-                    db.runInTransaction{
-                        db.movieDao().insertMovieTrailerFetch(merged)
-                        db.movieDao().insertMovieTrailer(apiResponse.body.results)
-                    }
-
-                    Resource.success(apiResponse.nextPage != null)
-
-
-                }
-
-                is ApiEmptyResponse -> {
-                    Resource.success(false)
-                }
-
-                is ApiErrorResponse -> {
-                    Resource.error(apiResponse.errorMessage,true)
-                }
+    override fun getNextPage(): Int? {
+        if ( mFetch != null) {
+            mFetch?.next?.let {
+                return it
             }
-
-        } catch (e : IOException){
-            Resource.error(e.message!!,true)
         }
-        _liveData.postValue(newValue)
+        return null
+    }
 
+    override fun createApi(): Call<MovieTrailersResponse>? {
+        getNextPage()?.let {
+            return moviesApi.doGetTrailersFromMovieApiCall(movieId,it)
+        }
+
+        return null
+    }
+
+    override fun onSuccessApiRequest(netResult: MovieTrailersResponse, apiNextPage: Int?) {
+        val ids = arrayListOf<String>()
+        ids.addAll(mFetch!!.trailerIds)
+
+        ids.addAll(netResult.results.map {it.id})
+
+        val merged = MovieTrailerFetchResult(movieId,
+                ids,netResult.total_results,
+                apiNextPage)
+        db.runInTransaction{
+            db.movieDao().insertMovieTrailerFetch(merged)
+            db.movieDao().insertMovieTrailer(netResult.results)
+        }
     }
 }
