@@ -22,7 +22,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".ui.moviedetail.MovieDetailActivity"
-            android:parentActivityName=".ui.main.MainActivity" >
+            android:parentActivityName=".ui.main.MainActivity"
+            android:theme="@style/AppThemeNoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.main.MainActivity" />
