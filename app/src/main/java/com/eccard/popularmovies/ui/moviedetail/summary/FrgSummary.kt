@@ -31,6 +31,7 @@ class FrgSummary : BaseFragment<FrgSummaryBinding>() {
 
     override fun getLayoutId() = R.layout.frg_summary
 
+//    override fun getBindingVariable() : Int = BR.viewModelSummary
     internal var movieIsBookmarked = false
 
     private var movie: Movie? = null
