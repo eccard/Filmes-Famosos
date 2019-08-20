@@ -16,6 +16,7 @@ data class Movie(
         val video: Boolean,
         val vote_average: Float,
         val title: String,
+        val backdrop_path: String?,
         val popularity: Float,
         val poster_path: String?,
         val original_language: String,
@@ -39,11 +40,16 @@ data class Movie(
         return url
     }
 
+    fun getBackdropPath(): String {
+        return AppConstants.BASE_BACKDROP_PATH + backdrop_path
+    }
+
     constructor(source: Parcel) : this(
     source.readInt(),
     source.readInt(),
     1 == source.readInt(),
     source.readFloat(),
+    source.readString(),
     source.readString(),
     source.readFloat(),
     source.readString(),
@@ -62,6 +68,7 @@ data class Movie(
         writeInt((if (video) 1 else 0))
         writeFloat(vote_average)
         writeString(title)
+        writeString(backdrop_path)
         writeFloat(popularity)
         writeString(poster_path)
         writeString(original_language)
