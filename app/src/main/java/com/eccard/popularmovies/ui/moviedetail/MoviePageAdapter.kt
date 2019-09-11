@@ -11,7 +11,7 @@ import com.eccard.popularmovies.ui.moviedetail.trailers.FrgTrailers
 
 internal class MoviePageAdapter(fm: FragmentManager, private val context: Context) : FragmentStatePagerAdapter(fm) {
 
-    override fun getItem(position: Int): Fragment? {
+    override fun getItem(position: Int): Fragment {
         var frg: Fragment? = null
 
         when (position) {
@@ -22,7 +22,7 @@ internal class MoviePageAdapter(fm: FragmentManager, private val context: Contex
             }
         }
 
-        return frg
+        return frg!!
     }
 
     override fun getCount(): Int {

@@ -7,6 +7,7 @@ import com.eccard.popularmovies.AppConstants
 import com.eccard.popularmovies.BuildConfig
 import com.eccard.popularmovies.data.network.api.MoviesApi
 import com.eccard.popularmovies.data.network.database.AppDatabase
+import com.eccard.popularmovies.di.ViewModelModule
 import com.eccard.popularmovies.utils.LiveDataCallAdapterFactory
 import com.google.gson.Gson
 import dagger.Module
@@ -21,7 +22,7 @@ import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
 
-@Module
+@Module(includes = [ViewModelModule::class])
 object AppModule {
 
     @JvmStatic

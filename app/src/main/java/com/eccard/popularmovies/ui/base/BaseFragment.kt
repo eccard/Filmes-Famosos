@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.annotation.LayoutRes
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
@@ -13,17 +12,15 @@ import androidx.fragment.app.Fragment
 import dagger.android.support.AndroidSupportInjection
 
 
-abstract class BaseFragment<T: ViewDataBinding,V: BaseViewModel<*>>: Fragment() {
+abstract class BaseFragment<T: ViewDataBinding>: Fragment() {
 
-    private var parentActivity: BaseActivity<*,*>? = null
+    private var parentActivity: BaseActivity<*>? = null
     private var mRootView: View? = null
     private lateinit var mViewDataBinding: T
-    private var mViewModel: V? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         performDI()
         super.onCreate(savedInstanceState)
-        mViewModel = getViewModel()
         setHasOptionsMenu(true)
     }
 
@@ -35,15 +32,14 @@ abstract class BaseFragment<T: ViewDataBinding,V: BaseViewModel<*>>: Fragment() 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        mViewDataBinding.setVariable(getBindingVariable(),mViewModel)
         mViewDataBinding.lifecycleOwner = this
         mViewDataBinding.executePendingBindings()
     }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        if (context is BaseActivity<*,*>) {
-            val activity = context as BaseActivity<*,*>?
+        if (context is BaseActivity<*>) {
+            val activity = context as BaseActivity<*>?
             this.parentActivity = activity
             activity?.onFragmentAttached()
         }
@@ -64,11 +60,8 @@ abstract class BaseFragment<T: ViewDataBinding,V: BaseViewModel<*>>: Fragment() 
     @LayoutRes
     abstract fun getLayoutId(): Int
 
-    abstract fun getViewModel(): V
 
-    abstract fun getBindingVariable(): Int
-
-    fun getBaseActivity(): BaseActivity<*, *>? {
+    fun getBaseActivity(): BaseActivity<*>? {
         return parentActivity
     }
 
@@ -76,7 +69,4 @@ abstract class BaseFragment<T: ViewDataBinding,V: BaseViewModel<*>>: Fragment() 
         return mViewDataBinding
     }
 
-    fun showToast(message: String) {
-        Toast.makeText(parentActivity,message,Toast.LENGTH_SHORT).show()
-    }
 }

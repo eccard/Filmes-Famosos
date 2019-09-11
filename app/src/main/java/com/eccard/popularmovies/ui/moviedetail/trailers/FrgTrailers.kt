@@ -7,29 +7,31 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.eccard.popularmovies.utils.AppExecutors
-import com.eccard.popularmovies.BR
 import com.eccard.popularmovies.R
 import com.eccard.popularmovies.data.network.model.Movie
 import com.eccard.popularmovies.databinding.FrgTrailersBinding
-import com.eccard.popularmovies.di.ViewModelProviderFactory
 import com.eccard.popularmovies.ui.base.BaseFragment
+import com.eccard.popularmovies.utils.AppExecutors
 import com.eccard.popularmovies.utils.RetryCallback
 import com.google.android.material.snackbar.Snackbar
 import javax.inject.Inject
 
-class FrgTrailers : BaseFragment<FrgTrailersBinding,TrailerViewModel>() {
+class FrgTrailers : BaseFragment<FrgTrailersBinding>() {
 
     lateinit var adapter : MovieTrailerAdapter
-    private lateinit var trailersViewModel: TrailerViewModel
 
     @Inject
-    lateinit var factory: ViewModelProviderFactory
+    lateinit var viewModelFactory: ViewModelProvider.Factory
+
+    val trailersViewModel: TrailerViewModel by viewModels {
+        viewModelFactory
+    }
 
     @Inject
     lateinit var appExecutors: AppExecutors
@@ -67,7 +69,7 @@ class FrgTrailers : BaseFragment<FrgTrailersBinding,TrailerViewModel>() {
     }
 
 
-    fun setupRecyclerView(){
+    private fun setupRecyclerView(){
 
 
 
@@ -141,13 +143,5 @@ class FrgTrailers : BaseFragment<FrgTrailersBinding,TrailerViewModel>() {
 
 
     override fun getLayoutId() = R.layout.frg_trailers
-
-    override fun getViewModel(): TrailerViewModel {
-        trailersViewModel = ViewModelProviders.of(this,factory)
-                .get(TrailerViewModel::class.java)
-        return trailersViewModel
-    }
-
-    override fun getBindingVariable() = BR.viewModel
 
 }
