@@ -5,32 +5,34 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.eccard.popularmovies.utils.AppExecutors
-import com.eccard.popularmovies.BR
 import com.eccard.popularmovies.R
 import com.eccard.popularmovies.data.network.model.Movie
 import com.eccard.popularmovies.databinding.FrgReviewsBinding
-import com.eccard.popularmovies.di.ViewModelProviderFactory
 import com.eccard.popularmovies.ui.base.BaseFragment
+import com.eccard.popularmovies.utils.AppExecutors
 import com.eccard.popularmovies.utils.RetryCallback
 import com.google.android.material.snackbar.Snackbar
 import javax.inject.Inject
 
-class FrgReviews : BaseFragment<FrgReviewsBinding,ReviewsViewModel>() {
+class FrgReviews : BaseFragment<FrgReviewsBinding>() {
 
-    private lateinit var reviewViewModel: ReviewsViewModel
     lateinit var adapter : MovieReviewAdapter
 
     @Inject
     lateinit var appExecutors: AppExecutors
 
     @Inject
-    lateinit var factory: ViewModelProviderFactory
+    lateinit var viewModelFactory: ViewModelProvider.Factory
+
+    val reviewViewModel: ReviewsViewModel by viewModels {
+        viewModelFactory
+    }
 
     private lateinit var frgReviewsBinding: FrgReviewsBinding
 
@@ -106,13 +108,13 @@ class FrgReviews : BaseFragment<FrgReviewsBinding,ReviewsViewModel>() {
 
     override fun getLayoutId() = R.layout.frg_reviews
 
-    override fun getViewModel(): ReviewsViewModel {
-        reviewViewModel = ViewModelProviders.of(this,factory)
-                .get(ReviewsViewModel::class.java)
-        return reviewViewModel
-    }
+//    override fun getViewModel(): ReviewsViewModel {
+//        reviewViewModel = ViewModelProviders.of(this,factory)
+//                .get(ReviewsViewModel::class.java)
+//        return reviewViewModel
+//    }
 
-    override fun getBindingVariable() = BR.viewModel
+//    override fun getBindingVariable() = BR.viewModel
 
 
 }

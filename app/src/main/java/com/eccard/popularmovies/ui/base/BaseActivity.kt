@@ -7,9 +7,8 @@ import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import dagger.android.AndroidInjection
 
-abstract class BaseActivity<T: ViewDataBinding,V: BaseViewModel<*>> : AppCompatActivity(), BaseFragment.CallBack {
+abstract class BaseActivity<T: ViewDataBinding> : AppCompatActivity(), BaseFragment.CallBack {
 
-    private var mViewModel: V? = null
     private lateinit var mViewDataBinding: T
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -20,15 +19,12 @@ abstract class BaseActivity<T: ViewDataBinding,V: BaseViewModel<*>> : AppCompatA
 
     private fun performDataBinding() {
         mViewDataBinding = DataBindingUtil.setContentView(this, getLayoutId())
-        mViewModel = mViewModel ?: getViewModel()
-        mViewDataBinding.setVariable(getBindingVariable(), mViewModel)
         mViewDataBinding.executePendingBindings()
     }
 
     @LayoutRes
     abstract fun getLayoutId(): Int
 
-    abstract fun getViewModel(): V
 
     abstract fun getBindingVariable(): Int
 

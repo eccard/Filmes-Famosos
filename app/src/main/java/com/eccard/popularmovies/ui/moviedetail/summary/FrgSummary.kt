@@ -6,35 +6,30 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.res.ResourcesCompat
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import com.eccard.popularmovies.BR
 import com.eccard.popularmovies.R
 import com.eccard.popularmovies.data.network.model.Movie
 import com.eccard.popularmovies.databinding.FrgSummaryBinding
-import com.eccard.popularmovies.di.ViewModelProviderFactory
-import kotlinx.android.synthetic.main.movie_details.view.*
 import com.eccard.popularmovies.ui.base.BaseFragment
+import kotlinx.android.synthetic.main.movie_details.view.*
 import javax.inject.Inject
 
-class FrgSummary : BaseFragment<FrgSummaryBinding,SummaryViewModel>() {
+class FrgSummary : BaseFragment<FrgSummaryBinding>() {
 
-    private lateinit var summaryViewModel: SummaryViewModel
 
     @Inject
-    lateinit var factory: ViewModelProviderFactory
+    lateinit var viewModelFactory: ViewModelProvider.Factory
+
+    val summaryViewModel: SummaryViewModel by viewModels {
+        viewModelFactory
+    }
 
     private lateinit var frgSummaryBinding :FrgSummaryBinding
 
     override fun getLayoutId() = R.layout.frg_summary
-
-    override fun getViewModel(): SummaryViewModel {
-        summaryViewModel = ViewModelProviders.of(this,factory)
-                .get(SummaryViewModel::class.java)
-        return summaryViewModel
-    }
-
-    override fun getBindingVariable() : Int = BR.viewModel
 
     internal var movieIsBookmarked = false
 
@@ -44,6 +39,11 @@ class FrgSummary : BaseFragment<FrgSummaryBinding,SummaryViewModel>() {
         super.onViewCreated(view, savedInstanceState)
 
         frgSummaryBinding = getViewDataBinding()
+
+        frgSummaryBinding.setVariable(BR.viewModel,summaryViewModel)
+        frgSummaryBinding.executePendingBindings()
+
+
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {

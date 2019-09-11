@@ -2,38 +2,47 @@ package com.eccard.popularmovies.ui.main
 
 import android.os.Bundle
 import android.util.DisplayMetrics
+import androidx.activity.viewModels
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.eccard.popularmovies.utils.AppExecutors
 import com.eccard.popularmovies.BR
 import com.eccard.popularmovies.R
-import com.eccard.popularmovies.data.network.model.MovieOrderType
 import com.eccard.popularmovies.data.network.model.Movie
+import com.eccard.popularmovies.data.network.model.MovieOrderType
 import com.eccard.popularmovies.databinding.ActivityMainBinding
-import com.eccard.popularmovies.di.ViewModelProviderFactory
-import com.eccard.popularmovies.utils.RetryCallback
-import com.eccard.popularmovies.ui.moviedetail.MovieDetailActivity
-import com.eccard.popularmovies.utils.ItemOffsetDecoration
-import com.google.android.material.snackbar.Snackbar
 import com.eccard.popularmovies.ui.base.BaseActivity
+import com.eccard.popularmovies.ui.moviedetail.MovieDetailActivity
+import com.eccard.popularmovies.utils.AppExecutors
+import com.eccard.popularmovies.utils.ItemOffsetDecoration
+import com.eccard.popularmovies.utils.RetryCallback
+import com.google.android.material.snackbar.Snackbar
+import dagger.android.DispatchingAndroidInjector
+import dagger.android.support.HasSupportFragmentInjector
 import javax.inject.Inject
 import kotlin.math.roundToInt
 
-class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(), LifecycleOwner {
+class MainActivity : BaseActivity<ActivityMainBinding>(), LifecycleOwner, HasSupportFragmentInjector {
+
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
+
 
     lateinit var adapter : MovieAdapter
     private lateinit var mActivityMainBinding: ActivityMainBinding
 
     @Inject
-    lateinit var factory: ViewModelProviderFactory
+    lateinit var dispatchingAndroidInjector: DispatchingAndroidInjector<Fragment>
 
     @Inject
     lateinit var appExecutors: AppExecutors
 
-    private lateinit var mainViewModel: MainViewModel
+    val mainViewModel: MainViewModel by viewModels {
+        viewModelFactory
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(R.style.AppTheme)
@@ -142,12 +151,6 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(), Lifecyc
 
     override fun getLayoutId(): Int = R.layout.activity_main
 
-    override fun getViewModel(): MainViewModel {
-        mainViewModel = ViewModelProviders.of(this,factory)
-                .get(MainViewModel::class.java)
-        return mainViewModel
-    }
-
     override fun getBindingVariable(): Int = BR.viewModel
 
 
@@ -158,4 +161,5 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(), Lifecyc
         startActivity(intent)
     }
 
+    override fun supportFragmentInjector() = dispatchingAndroidInjector
 }
