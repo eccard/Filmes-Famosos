@@ -31,7 +31,6 @@ class FrgSummary : BaseFragment<FrgSummaryBinding>() {
 
     override fun getLayoutId() = R.layout.frg_summary
 
-//    override fun getBindingVariable() : Int = BR.viewModelSummary
     internal var movieIsBookmarked = false
 
     private var movie: Movie? = null
@@ -41,7 +40,7 @@ class FrgSummary : BaseFragment<FrgSummaryBinding>() {
 
         frgSummaryBinding = getViewDataBinding()
 
-        frgSummaryBinding.setVariable(BR.viewModel,summaryViewModel)
+        frgSummaryBinding.setVariable(BR.viewModelSummary,summaryViewModel)
         frgSummaryBinding.executePendingBindings()
 
 
